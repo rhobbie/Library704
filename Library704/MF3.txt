@@ -1,0 +1,4 @@
+﻿.Module MF3
+MF3-[01-35][a-r] MF3-[A-R][a-h] : MF3
+.Connect
+.End

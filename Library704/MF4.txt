@@ -1,0 +1,4 @@
+﻿.Module MF4
+MF4-[01-38][a-r] MF4-[A-R][a-h] : MF4
+.Connect
+.End

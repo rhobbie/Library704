@@ -1,0 +1,62 @@
+﻿.Module PU7610 // 2.01.02 STG REG COLS (1-17)
+[J-R]xx-[1-8] : PU7610
+AI1 AI2 AO : AND2
+BI1 BI2 BO : AND2
+CI1 CI2 CO : AND2
+DI1 DI2 DI3 DO : OR3
+5BI 5BO : CFx
+6S 6I 6C 6O : D
+
+.Signals
+I Pxx-3 HOLD STG REG (1-8)(9-35)
+I Pxx-5 STG BUS (N)
+I Pxx-2 STG BUS (***) -> STG REG (***)
+I Pxx-7 OP PNL ENTRY KEY (N)
+I Nxx-6 OP PNL ENTRY KEYS -> STG REG
+O Lxx-6 TO ADDER (N)
+O Pxx-6 TO MQ REG (N)
+O Qxx-1 TO NEON INV (N)
+O Pxx-1 TEST POINT CF05B
+.Connect
+
+// AI1 AI2 AO : AND2
+W 6O AI1
+W Pxx-3 AI2 // HOLD STG REG (1-8)(9-35)
+
+// BI1 BI2 BO : AND2
+W Pxx-5 BI1 // STG BUS (N)
+W Pxx-2 BI2 // STG BUS (***) -> STG REG (***) 
+
+// CI1 CI2 CO : AND2
+W Pxx-7 CI1 // OP PNL ENTRY KEY (N)
+W Nxx-6 CI2 // OP PNL ENTRY KEYS -> STG REG
+
+
+// DI1 DI2 DI3 DO : OR3
+W AO DI1
+W BO DI2
+W CO DI3
+
+G>| DO +10V
+
+// 5BI 5BO : CFx
+
+W DO 5BI
+
+G>| -30V 5BO
+
+W 5BO Pxx-1 // TEST POINT CF05B
+
+
+// 6S 6I 6C 6O : D
+W 5BO 6I
+
+G>| -30V 6O
+
+W 6O Lxx-6 // TO ADDER (N)
+W 6O Pxx-6 // TO MQ REG (N)
+
+470R 6O Qxx-1 // TO NEON INV (N)
+
+.End
+

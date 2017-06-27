@@ -1,0 +1,6 @@
+﻿.Module MF1
+MF1-[01-35][a-r] MF1-[A-R][a-h] : MF1
+[J-R]34-[1-8] : PU9051 //2.01.04 STG REG COL (S) HOLD CKT
+                       //2.01.05 STG REG COLS (9-35) HOLD CKTS  STG REG COLS (1-8) HOLD CKTS
+.Connect
+.End

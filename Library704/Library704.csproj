@@ -48,5 +48,32 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="MF1.txt" />
+    <Content Include="MF2.txt" />
+    <Content Include="MF3.txt" />
+    <Content Include="MF4.txt" />
+    <Content Include="PU7610.txt" />
+    <Content Include="PU7611.txt" />
+    <Content Include="PU9023.txt" />
+    <Content Include="PU9024.txt" />
+    <Content Include="PU9026.txt" />
+    <Content Include="PU9027.txt" />
+    <Content Include="PU9028.txt" />
+    <Content Include="PU9051.txt" />
+    <Content Include="PU9060.txt" />
+    <Content Include="PU9061.txt" />
+    <Content Include="PU9065.txt" />
+    <Content Include="PU9066.txt" />
+    <Content Include="PU9067.txt" />
+    <Content Include="PU9120.txt" />
+    <Content Include="PU9177.txt" />
+    <Content Include="PU9179.txt" />
+    <Content Include="PU9180.txt" />
+    <Content Include="PU9181.txt" />
+    <Content Include="PU9182.txt" />
+    <Content Include="PU9300.txt" />
+    <Content Include="SYSTEM.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
