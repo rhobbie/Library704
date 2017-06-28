@@ -1,0 +1,7 @@
+﻿.Module Is			// Slow Inverter 
+Input Output : Is
+.Signals
+I Input
+O Output
+.Connect
+.End

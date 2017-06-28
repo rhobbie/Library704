@@ -1,0 +1,8 @@
+﻿.Module 2PCF		// Power Cathode Follower (B89)
+Input Output : 2PCF
+.Signals
+I Input
+O Output
+.Connect
+.End
+

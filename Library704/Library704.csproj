@@ -49,14 +49,38 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="2PCF.txt" />
+    <Content Include="4PCFx.txt" />
+    <Content Include="A.txt" />
+    <Content Include="AND2.txt" />
+    <Content Include="AND3.txt" />
+    <Content Include="As.txt" />
+    <Content Include="CF.txt" />
+    <Content Include="CFOR.txt" />
+    <Content Include="CFx.txt" />
+    <Content Include="D.txt" />
+    <Content Include="I.txt" />
+    <Content Include="Ild.txt" />
+    <Content Include="Is.txt" />
     <Content Include="MF1.txt" />
     <Content Include="MF2.txt" />
     <Content Include="MF3.txt" />
     <Content Include="MF4.txt" />
+    <Content Include="OR2.txt" />
+    <Content Include="OR3.txt" />
+    <Content Include="OR4.txt" />
+    <Content Include="OR5.txt" />
+    <Content Include="PCF.txt" />
     <Content Include="PU7610.txt" />
     <Content Include="PU7611.txt" />
+    <Content Include="PU9062.txt" />
+    <Content Include="PU9064.txt" />
+    <Content Include="PU9170.txt" />
+    <Content Include="PU9171.txt" />
+    <Content Include="PU9176.txt" />
     <Content Include="PU9023.txt" />
     <Content Include="PU9024.txt" />
+    <Content Include="PU9025.txt" />
     <Content Include="PU9026.txt" />
     <Content Include="PU9027.txt" />
     <Content Include="PU9028.txt" />
@@ -72,6 +96,7 @@
     <Content Include="PU9180.txt" />
     <Content Include="PU9181.txt" />
     <Content Include="PU9182.txt" />
+    <Content Include="PU9200.txt" />
     <Content Include="PU9300.txt" />
     <Content Include="SYSTEM.txt" />
   </ItemGroup>

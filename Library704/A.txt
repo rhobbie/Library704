@@ -1,0 +1,7 @@
+﻿.Module A  // Grounded-Grid Amplifier B63
+Input Output : A
+.Signals
+I Input
+O Output
+.Connect
+.End

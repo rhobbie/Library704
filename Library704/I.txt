@@ -1,0 +1,7 @@
+﻿.Module I			// High Speed Inverter (B13)
+Input Output : I
+.Signals
+I Input
+O Output
+.Connect
+.End

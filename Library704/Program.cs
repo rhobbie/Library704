@@ -59,6 +59,7 @@ namespace Library704
             public int numpins; /* anzahl Pins des Submoduls*/
             public List<Connection>[] To;    /* Verbindungen zu anderen pins */
             public List<Connection>[] From;  /* Verbindungen von anderen pins */
+            public string[] PinNames;
             public Submodule(string S)
             {
                 if (S == null || S == "")
@@ -82,16 +83,17 @@ namespace Library704
                     }
                 }
             }
-            public void SetPinNumber(int SubPins)
+            public void SetPinNames(List<string> AllPinNames)
             {
-                numpins = SubPins; /* Anzahl Pins speichern */
-                To = new List<Module.Connection>[SubPins];   /* connections anlegen */
-                From = new List<Module.Connection>[SubPins];   /* connections anlegen */
-                for (int i = 0; i < SubPins; i++)
+                numpins = AllPinNames.Count; /* Anzahl Pins speichern */
+                To = new List<Module.Connection>[numpins];   /* connections anlegen */
+                From = new List<Module.Connection>[numpins];   /* connections anlegen */
+                for (int i = 0; i < numpins; i++)
                 {
                     To[i] = new List<Module.Connection>();
                     From[i] = new List<Module.Connection>();
                 }
+                PinNames = AllPinNames.ToArray();
             }
         }
     }
@@ -288,6 +290,7 @@ namespace Library704
                             else
                             {
                                 Module.Submodule S = null;
+                                List<string> AllPinnames = new List<string>();
                                 if ((s.Length >= 3 && s[s.Length - 2] == ":") || (s.Length >= 2 && s[s.Length - 1] == ":"))
                                 {
                                     S = new Module.Submodule(s[s.Length - 1] == ":" ? null : s[s.Length - 1]);
@@ -310,9 +313,10 @@ namespace Library704
                                                 Error(string.Format("Module {0}, has duplicate Pin {1}", M.Name, Pinname));
                                             M.Pins.Add(Pinname, new Module.Pin(Pinname, SubIndex, SubPins));
                                             SubPins++;
+                                            AllPinnames.Add(Pinname);
                                         }
                                     }
-                                    S.SetPinNumber(SubPins);
+                                    S.SetPinNames(AllPinnames);
                                     M.Submodules.Add(S);       /* Submodul hinzufügen */
                                     if (S.Name == M.Name)
                                     {
@@ -355,9 +359,10 @@ namespace Library704
                                                     Error(string.Format("Module {0}, has duplicate Pin {2}", M.Name, Pinname));
                                                 M.Pins.Add(Pinname, new Module.Pin(Pinname, SubIndex, SubPins));
                                                 SubPins++;
+                                                AllPinnames.Add(Pinname);
                                             }
                                         }
-                                        S.SetPinNumber(SubPins);
+                                        S.SetPinNames(AllPinnames);
                                         M.Submodules.Add(S);       /* Submodul hinzufügen */
                                         if (S.Name == M.Name)
                                         {
@@ -427,23 +432,223 @@ namespace Library704
     }
     class Program
     {
+        static Dictionary<string, Module> Modules;
+        static HashSet<string> GetConnectedPins(Module M, int SubIndex, int PinIndex, bool[][] VisitedPins)
+        {
+            if (VisitedPins[SubIndex][PinIndex]) /* Schon besucht? */
+                return null; /* nicht auswerten */
+            VisitedPins[SubIndex][PinIndex] = true;
+            HashSet<string> x = new HashSet<string>();
+            Module.Submodule S = M.Submodules[SubIndex];
+            x.Add(S.PinNames[PinIndex]);
+            foreach (Module.Connection C in S.From[PinIndex])
+                if (C.Value == "W")
+                {
+                    Module.Pin P = C.From;
+                    HashSet<string> S2 = GetConnectedPins(M, P.SubIndex, P.PinIndex, VisitedPins);
+                    if (S2 != null)
+                        x.UnionWith(S2);
+                }
+
+            foreach (Module.Connection C in S.To[PinIndex])
+                if (C.Value == "W")
+                {
+                    Module.Pin P = C.To;
+                    HashSet<string> S2 = GetConnectedPins(M, P.SubIndex, P.PinIndex, VisitedPins);
+                    if (S2 != null)
+                        x.UnionWith(S2);
+                }
+            return x;
+        }
+        static void Check1()
+        {
+            foreach (KeyValuePair<string, Module> Mkvp in Modules)
+            {
+                Module M = Mkvp.Value;
+                foreach (Module.Submodule S in M.Submodules)
+                {
+                    if (S.Name != null)
+                    {
+                        if (Modules.TryGetValue(S.Name, out Module IM)) //Alle verwendeten submodule existieren
+                        {
+                            if (IM.NumPins != S.numpins) // Alle verwendeten submodule haben die korrekte pinanzahl.
+                            {
+                                Console.WriteLine("Module {0} has reference to Module {1} with pin number mismatch", M.Name, S.Name);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Module {0} has reference to unknown Module {1}", M.Name, S.Name);
+                        }
+                    }
+                }
+            }
+
+        }
+        static void Check2()
+        {
+            /* Prüfe: */
+            /* Alle signal pins sind verbunden. */
+            /* Bei allen mit W verbundenen Pinguppen gibt es genau ein Write und >=1 Read. */
+
+            foreach (KeyValuePair<string, Module> Mkvp in Modules)
+            {
+                if (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM") /* vorerst überspringen */
+                    continue;
+                bool[][] readpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls aus dem netzwerk liest*/
+                bool[][] writepin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls in das netzwerk schreibt*/
+
+                //* fülle readpin und writepin  */
+                int j = 0;
+                foreach (Module.Submodule S in Mkvp.Value.Submodules)
+                {
+                    if (S.Name != null)
+                    {
+                        readpin[j] = new bool[S.numpins];
+                        writepin[j] = new bool[S.numpins];
+                        Module M2 = Modules[S.Name];
+                        for (int i = 0; i < S.numpins; i++)
+                        {
+                            if (M2.SignalDirections[i] == Module.direction.undef)
+                            {
+                                if (S.To[i].Count > 0 || S.From[i].Count > 0)
+                                {
+                                    Console.WriteLine("Module {0} Submodule{1} Pin{2} is used without Signal Definiton", Mkvp.Key, S.Name, i);
+                                }
+                            }
+                            else
+                            {
+                                if (S.To[i].Count == 0 && S.From[i].Count == 0 && M2.Signals[i] != "")
+                                {
+                                    Console.WriteLine("Module {0}:  Signal \"{1}\" of Submodule {2} is not used", Mkvp.Key, M2.Signals[i], S.Name);
+                                }
+                                if (M2.SignalDirections[i] == Module.direction.input)
+                                {
+                                    if (M2.thismodule == j)
+                                        writepin[j][i] = true;
+                                    else
+                                        readpin[j][i] = true;
+                                }
+                                else
+                                {
+                                    if (M2.thismodule == j)
+                                        readpin[j][i] = true;
+                                    else
+                                        writepin[j][i] = true;
+
+                                }
+                            }
+                        }
+                    }
+                    j++;
+                }
+
+                bool[][] VisitedPin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls schon besucht wurde*/
+                j = 0;
+                foreach (Module.Submodule S in Mkvp.Value.Submodules)
+                {
+                    VisitedPin[j] = new bool[S.numpins];
+                    j++;
+                } /* initialisiere Visited Pins */
+                j = 0;
+                foreach (Module.Submodule S in Mkvp.Value.Submodules)
+                {
+                    for (int i = 0; i < S.numpins; i++)
+                    {
+                        HashSet<string> H = GetConnectedPins(Mkvp.Value, j, i, VisitedPin); /* alle Verbindungen raussuchen*/
+                        if (H == null) /* schon besucht? */
+                            continue;
+                        if (H.Count == 1) /* unverbundener Pin*/
+                        {
+                            if (j > 0)   /* kein Spannungs Pin*/
+                            {
+
+                                if (S.To[i].Count == 0 && S.From[i].Count == 0) /* auch nicht über Bauteil verbunden? */
+                                {
+                                    if (j == Mkvp.Value.thismodule) /* auf interface */
+                                    {
+                                        if (Mkvp.Value.Signals[i] != "" && Mkvp.Value.Signals[i] != null) /* Signal ist definiert?*/
+                                        {
+                                            String s = "";
+                                            foreach (string e in H)
+                                                s = e;
+                                            Console.WriteLine("Module {0}: Pin {1} is not connected", Mkvp.Key, s);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        String s = "";
+                                        foreach (string e in H)
+                                            s = e;
+                                        Console.WriteLine("Module {0}: Pin {1} of {2} is not connected", Mkvp.Key, s, S.Name);
+                                    }
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            int numread = 0;
+                            int numwrite = 0;
+                            StringBuilder s = new StringBuilder();
+                            foreach (string pinname in H)
+                            {  /* zähle wieoft in dieser Pingruppe gelesen oder geschrieben wird */
+                                Module.Pin P = Mkvp.Value.Pins[pinname];
+                                if (readpin[P.SubIndex] != null && readpin[P.SubIndex][P.PinIndex])
+                                    numread++;
+                                if (writepin[P.SubIndex] != null && writepin[P.SubIndex][P.PinIndex])
+                                    numwrite++;
+                                s.Append(pinname);
+                                s.Append(' ');
+                            }
+                            if (numwrite == 0 && numread > 0)
+                            {
+                                Console.WriteLine("Module {0}: Connected pins {1}have no signal source", Mkvp.Key, s.ToString());
+                            }
+                            if (numwrite > 1)
+                            {
+                                Console.WriteLine("Module {0}: Connected pins {1}have multiple signal sources", Mkvp.Key, s.ToString());
+                            }
+                            if (numread == 0)
+                            {
+                                Console.WriteLine("Module {0}: Connected pins {1}have no signal sink", Mkvp.Key, s.ToString());
+                            }
+
+                        }
+                    }
+                    j++;
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
+            Modules = new Dictionary<string, Module>();
             foreach (string n in Directory.GetFiles(@"..\..\", "*.txt"))
             {
-
                 using (Loader704 l = new Loader704(n))
                 {
                     while (!l.Eof)
                     {
                         Module M = l.Load();
                         if (M != null)
+                        {
                             Console.WriteLine(M.Name);
+                            if (Modules.ContainsKey(M.Name))
+                            {
+                                Console.WriteLine("Duplicate Module {0}", M.Name);
+                                Environment.Exit(-1);
+                            }
+                            Modules.Add(M.Name, M);
+                        }
                     }
                 }
-
             }
+            Check1();
+            Check2();
+
         }
     }
 }
+
 

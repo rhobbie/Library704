@@ -1,0 +1,7 @@
+﻿.Module As  //Slow Amplifier 
+Input Output : As
+.Signals
+I Input
+O Output
+.Connect
+.End

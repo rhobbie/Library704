@@ -1,0 +1,7 @@
+﻿.Module CF		// Cathode Follower (B85)
+Input Output : CF
+.Signals
+I Input
+O Output
+.Connect
+.End

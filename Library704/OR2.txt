@@ -1,0 +1,8 @@
+﻿.Module OR2
+A 3 OR2  //  Eingang_oben Eingang_unten Ausgang
+.Signals
+I A1
+I A2
+O A3
+.Connect
+.End

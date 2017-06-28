@@ -1,0 +1,11 @@
+﻿.Module OR5
+A 6 OR5
+.Signals
+I A1
+I A2
+I A3
+I A4
+I A5
+O A6
+.Connect
+.End
