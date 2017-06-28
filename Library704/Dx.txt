@@ -1,0 +1,9 @@
+﻿.Module Dx	
+Sync Input Clamp Output : Dx		// 1=Sync 2=Input 3=Clamp 4=Output
+.Signals
+I Sync
+I Input
+I Clamp
+O Output
+.Connect
+.End

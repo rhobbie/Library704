@@ -1,0 +1,12 @@
+﻿.Module OR6x
+A 7 OR6x
+.Signals
+I A1
+I A2
+I A3
+I A4
+I A5
+I A6
+O A7
+.Connect
+.End

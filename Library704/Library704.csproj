@@ -59,6 +59,7 @@
     <Content Include="CFOR.txt" />
     <Content Include="CFx.txt" />
     <Content Include="D.txt" />
+    <Content Include="Dx.txt" />
     <Content Include="I.txt" />
     <Content Include="Ild.txt" />
     <Content Include="Is.txt" />
@@ -70,11 +71,15 @@
     <Content Include="OR3.txt" />
     <Content Include="OR4.txt" />
     <Content Include="OR5.txt" />
+    <Content Include="OR6x.txt" />
     <Content Include="PCF.txt" />
+    <Content Include="PCFx.txt" />
     <Content Include="PU7610.txt" />
     <Content Include="PU7611.txt" />
+    <Content Include="PU9042.txt" />
     <Content Include="PU9062.txt" />
     <Content Include="PU9064.txt" />
+    <Content Include="PU9074.txt" />
     <Content Include="PU9170.txt" />
     <Content Include="PU9171.txt" />
     <Content Include="PU9176.txt" />
