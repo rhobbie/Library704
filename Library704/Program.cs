@@ -506,7 +506,11 @@ namespace Library704
                     {
                         readpin[j] = new bool[S.numpins];
                         writepin[j] = new bool[S.numpins];
-                        Module M2 = Modules[S.Name];
+                        if (!Modules.TryGetValue(S.Name, out Module M2))
+                        { 
+                            Console.WriteLine("Module {0} not found", S.Name);
+                            Environment.Exit(-1);
+                        }
                         for (int i = 0; i < S.numpins; i++)
                         {
                             if (M2.SignalDirections[i] == Module.direction.undef)
@@ -520,7 +524,7 @@ namespace Library704
                             {
                                 if (S.To[i].Count == 0 && S.From[i].Count == 0 && M2.Signals[i] != "")
                                 {
-                                    Console.WriteLine("Module {0}:  Signal \"{1}\" of Submodule {2} is not used", Mkvp.Key, M2.Signals[i], S.Name);
+                                    Console.WriteLine("Module {0}: Signal \"{1}\" of Submodule {2} is not used", Mkvp.Key, M2.Signals[i], S.Name);
                                 }
                                 if (M2.SignalDirections[i] == Module.direction.input)
                                 {

@@ -51,14 +51,17 @@
   <ItemGroup>
     <Content Include="2PCF.txt" />
     <Content Include="4PCFx.txt" />
+    <Content Include="6PCFx.txt" />
     <Content Include="A.txt" />
     <Content Include="AND2.txt" />
     <Content Include="AND3.txt" />
+    <Content Include="AND4.txt" />
     <Content Include="As.txt" />
     <Content Include="CF.txt" />
     <Content Include="CFOR.txt" />
     <Content Include="CFx.txt" />
     <Content Include="D.txt" />
+    <Content Include="DUx.txt" />
     <Content Include="Dx.txt" />
     <Content Include="I.txt" />
     <Content Include="Ild.txt" />
@@ -71,15 +74,20 @@
     <Content Include="OR3.txt" />
     <Content Include="OR4.txt" />
     <Content Include="OR5.txt" />
+    <Content Include="OR6.txt" />
     <Content Include="OR6x.txt" />
+    <Content Include="OR7.txt" />
     <Content Include="PCF.txt" />
     <Content Include="PCFx.txt" />
     <Content Include="PU7610.txt" />
     <Content Include="PU7611.txt" />
+    <Content Include="PU9035.txt" />
     <Content Include="PU9042.txt" />
+    <Content Include="PU9050.txt" />
     <Content Include="PU9062.txt" />
     <Content Include="PU9064.txt" />
     <Content Include="PU9074.txt" />
+    <Content Include="PU9111.txt" />
     <Content Include="PU9170.txt" />
     <Content Include="PU9171.txt" />
     <Content Include="PU9176.txt" />
@@ -104,6 +112,7 @@
     <Content Include="PU9200.txt" />
     <Content Include="PU9300.txt" />
     <Content Include="SYSTEM.txt" />
+    <Content Include="xCFOR.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

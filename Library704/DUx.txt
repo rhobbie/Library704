@@ -1,0 +1,10 @@
+.Module DUx	
+Sync Input Clamp Output Unpowered_Output : DUx		
+.Signals
+I Sync
+I Input
+I Clamp
+I Unpowered_Output
+O Output
+.Connect
+.End

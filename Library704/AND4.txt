@@ -1,0 +1,10 @@
+﻿.Module AND4
+A 5 AND4
+.Signals
+I A1
+I A2
+I A3
+I A4
+O A5
+.Connect
+.End
