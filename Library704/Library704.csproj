@@ -75,6 +75,7 @@
     <Content Include="OR2.txt" />
     <Content Include="OR3.txt" />
     <Content Include="OR4.txt" />
+    <Content Include="OR4x.txt" />
     <Content Include="OR5.txt" />
     <Content Include="OR6.txt" />
     <Content Include="OR6x.txt" />
@@ -111,6 +112,7 @@
     <Content Include="PU9180.txt" />
     <Content Include="PU9181.txt" />
     <Content Include="PU9182.txt" />
+    <Content Include="PU9190.txt" />
     <Content Include="PU9200.txt" />
     <Content Include="PU9300.txt" />
     <Content Include="SYSTEM.txt" />
