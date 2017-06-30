@@ -2,6 +2,6 @@
 Input Output : Ild
 .Signals
 I Input
-O Output
+LD Output
 .Connect
 .End

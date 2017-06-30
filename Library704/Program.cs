@@ -11,7 +11,7 @@ namespace Library704
 
     class Module
     {
-        public enum direction { undef, input, output };
+        public enum direction { undef, input, output,linedischarge };
         public string Name;  /* Name des Moduls */
         public Dictionary<string, Pin> Pins; /* alle Pins des Moduls  */
         public List<Submodule> Submodules; /* Alle Submodule */
@@ -248,7 +248,7 @@ namespace Library704
                                 state = 4;
                             else
                             {
-                                if (s.Length >= 2 && (s[0] == "I" || s[0] == "O") && M.Pins.TryGetValue(s[1], out Module.Pin su) && su.SubIndex == M.thismodule)
+                                if (s.Length >= 2 && (s[0] == "I" || s[0] == "O" || s[0] == "LD") && M.Pins.TryGetValue(s[1], out Module.Pin su) && su.SubIndex == M.thismodule)
                                 {
                                     int p = su.PinIndex;
                                     int i = rl.IndexOf(s[1]);
@@ -262,8 +262,10 @@ namespace Library704
                                     Module.direction d = Module.direction.undef;
                                     if (s[0] == "I")
                                         d = Module.direction.input;
-                                    else
+                                    else if (s[0] == "O")
                                         d = Module.direction.output;
+                                    else if (s[0] == "LD")
+                                        d = Module.direction.linedischarge;
                                     M.SignalDirections[p] = d;
                                 }
                                 else
@@ -495,8 +497,9 @@ namespace Library704
             {
                 if (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM") /* vorerst überspringen */
                     continue;
-                bool[][] readpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls aus dem netzwerk liest*/
-                bool[][] writepin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls in das netzwerk schreibt*/
+                bool[][] readpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls aus dem netzwerk liest */
+                bool[][] writepin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls in das netzwerk schreibt */
+                bool[][] ldpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein linedischarge pin ist */
 
                 //* fülle readpin und writepin  */
                 int j = 0;
@@ -506,6 +509,7 @@ namespace Library704
                     {
                         readpin[j] = new bool[S.numpins];
                         writepin[j] = new bool[S.numpins];
+                        ldpin[j] = new bool[S.numpins];
                         if (!Modules.TryGetValue(S.Name, out Module M2))
                         { 
                             Console.WriteLine("Module {0} not found", S.Name);
@@ -533,13 +537,19 @@ namespace Library704
                                     else
                                         readpin[j][i] = true;
                                 }
-                                else
+                                else if (M2.SignalDirections[i] == Module.direction.output)
                                 {
                                     if (M2.thismodule == j)
                                         readpin[j][i] = true;
                                     else
                                         writepin[j][i] = true;
-
+                                }
+                                else if (M2.SignalDirections[i] == Module.direction.linedischarge)
+                                {
+                                    if (M2.thismodule == j)
+                                        ldpin[j][i] = true;
+                                    else
+                                        ldpin[j][i] = true;
                                 }
                             }
                         }
@@ -594,6 +604,7 @@ namespace Library704
                         {
                             int numread = 0;
                             int numwrite = 0;
+                            int numld = 0;
                             StringBuilder s = new StringBuilder();
                             foreach (string pinname in H)
                             {  /* zähle wieoft in dieser Pingruppe gelesen oder geschrieben wird */
@@ -602,6 +613,8 @@ namespace Library704
                                     numread++;
                                 if (writepin[P.SubIndex] != null && writepin[P.SubIndex][P.PinIndex])
                                     numwrite++;
+                                if (ldpin[P.SubIndex] != null && ldpin[P.SubIndex][P.PinIndex])
+                                    numld++;
                                 s.Append(pinname);
                                 s.Append(' ');
                             }
@@ -617,7 +630,10 @@ namespace Library704
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have no signal sink", Mkvp.Key, s.ToString());
                             }
-
+                            if(numld>1)
+                            {
+                                Console.WriteLine("Module {0}: Connected pins {1}have multiple line dischargers", Mkvp.Key, s.ToString());
+                            }
                         }
                     }
                     j++;

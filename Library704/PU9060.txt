@@ -1,7 +1,8 @@
 ﻿.Module PU9060 // 2.01.06 STG REG COLS (21-35)
                // 2.03.04 ACC REG COL (35)
 			   // 2.04.06 MQ REGISTER COL (35)
-			   
+			   // 8.06.04 Inverted Sync and Clamp Line
+
 [J-R]xx-[1-8] : PU9060
 JI1 JI2 JO : AND2
 L1I1 L1I2 L1O : AND2
@@ -28,10 +29,14 @@ LI1 LI2 LI3 LI4 LI5 LI6 LO : OR6x
 03A_04BS 03A_04BI 03A_04BC 03A_04BO 03A_04BUO : DUx
 03BI 03BO : CFx
 04AI 04AO : CF
+
 05AI 05AO : CF
 5BI 5BO : CFx
 6S 6I 6C 6O : D
+07AI 07AO : CFx
 07BI 07BO : CF
+08AI 08AO : Isy
+08BI 08BO : Icl
 
 .Signals
 
@@ -76,6 +81,11 @@ O Nxx-2 TEST POINT CF03B
 O Lxx-8 MQ REG (N) OUTPUT 
 O Qxx-7 MQ REG (N) OUTPUT TO NEON INVERTER
 O Nxx-4 MQ REG (N) I/O BUS
+
+// 8.06.04 Inverted Sync and Clamp Line
+I Qxx-4 CLAMP
+I Qxx-2 SYNC
+O Qxx-8 SYNC (TO SYNC INV)
 
 
 .Connect
@@ -226,5 +236,26 @@ W 03A_04BO Lxx-8 // MQ REG (N) OUTPUT
 510R 03A_04BUO 05AI
 
 W 05AO Nxx-4 // MQ REG (N) I/O BUS
+
+// 8.06.04 Inverted Sync and Clamp Line
+
+//07AI 07AO : CFx
+470C Qxx-2 07AI // SYNC
+W 07AO Qxx-8 // SYNC (TO SYNC INV)
+
+// 08AI 08AO : Isy
+W 07AO 08AI
+
+W 08AO 02A_01BS
+W 08AO 03A_04BS
+W 08AO 6S
+
+// 08BI 08BO : Icl
+W Qxx-4 08BI // CLAMP
+
+W 08BO 02A_01BC
+W 08BO 03A_04BC
+W 08BO 6C
+
 
 .End

@@ -64,8 +64,10 @@
     <Content Include="DUx.txt" />
     <Content Include="Dx.txt" />
     <Content Include="I.txt" />
+    <Content Include="Icl.txt" />
     <Content Include="Ild.txt" />
     <Content Include="Is.txt" />
+    <Content Include="Isy.txt" />
     <Content Include="MF1.txt" />
     <Content Include="MF2.txt" />
     <Content Include="MF3.txt" />

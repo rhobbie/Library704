@@ -1,5 +1,7 @@
 ﻿.Module PU7611 // 2.01.02 STG REG COLS (1-17)
 			   // 2.03.03 ACC REG COLUMNS (9-34)
+               // 2.04.05 MQ REGISTER COL (9-34)
+			   // 8.06.04 Inverted Sync and Clamp Line
 
 [J-R]xx-[1-8] : PU7611
 AI1 AI2 AO : AND2
@@ -25,12 +27,17 @@ FI1 FI2 FI3 FI4 FI5 FO : OR5
 02A_01BS 02A_01BI 02A_01BC 02A_01BO : Dx
 02BI 02BO : CFx
 
-03BI 03BO : CFx
 03A_04BS 03A_04BI 03A_04BC 03A_04BO 03A_04BUO : DUx
+03BI 03BO : CFx
+
 05AI 05AO : xCFOR
 
 5BI 5BO : CFx
 6S 6I 6C 6O : D
+
+07AI 07AO : CFx
+08AI 08AO : Isy
+08BI 08BO : Icl
 
 .Signals
 // 2.01.02 STG REG COLS (1-17)
@@ -69,7 +76,10 @@ O Nxx-4 MQ REG (N) I/O BUS
 O Mxx-7 TEST POINT CF03B 
 O Qxx-7 MQ REG (N) OUTPUT TO NEON INVERTER
 
-
+// 8.06.04 Inverted Sync and Clamp Line
+I Qxx-4 CLAMP
+I Qxx-2 SYNC
+O Qxx-8 SYNC (TO SYNC INV)
 
 .Connect
 // 2.01.02 STG REG COLS (1-17)
@@ -203,6 +213,25 @@ W 03A_04BO Lxx-8 // MQ REG (N) OUTPUT
 W 05AO Nxx-4 // MQ REG (N) I/O BUS
 
 
+// 8.06.04 Inverted Sync and Clamp Line
+
+//07AI 07AO : CFx
+470C Qxx-2 07AI // SYNC
+W 07AO Qxx-8 // SYNC (TO SYNC INV)
+
+// 08AI 08AO : Isy
+W 07AO 08AI
+
+W 08AO 02A_01BS
+W 08AO 03A_04BS
+W 08AO 6S
+
+// 08BI 08BO : Icl
+W Qxx-4 08BI // CLAMP
+
+W 08BO 02A_01BC
+W 08BO 03A_04BC
+W 08BO 6C
 
 .End
 
