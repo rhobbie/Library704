@@ -49,10 +49,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="2CF.txt" />
     <Content Include="2PCF.txt" />
     <Content Include="4PCFx.txt" />
     <Content Include="6PCFx.txt" />
     <Content Include="A.txt" />
+    <Content Include="AND1.txt" />
     <Content Include="AND2.txt" />
     <Content Include="AND3.txt" />
     <Content Include="AND4.txt" />
@@ -84,9 +86,13 @@
     <Content Include="PCFx.txt" />
     <Content Include="PU7610.txt" />
     <Content Include="PU7611.txt" />
+    <Content Include="PU9013.txt" />
     <Content Include="PU9035.txt" />
     <Content Include="PU9042.txt" />
+    <Content Include="PU9049.txt" />
     <Content Include="PU9050.txt" />
+    <Content Include="PU9057.txt" />
+    <Content Include="PU9058.txt" />
     <Content Include="PU9062.txt" />
     <Content Include="PU9064.txt" />
     <Content Include="PU9074.txt" />
@@ -116,6 +122,8 @@
     <Content Include="PU9200.txt" />
     <Content Include="PU9300.txt" />
     <Content Include="SYSTEM.txt" />
+    <Content Include="TLINERx.txt" />
+    <Content Include="Tx.txt" />
     <Content Include="xCFOR.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

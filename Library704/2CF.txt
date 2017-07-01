@@ -1,0 +1,7 @@
+﻿.Module 2CF		
+Input Output : 2CF
+.Signals
+I Input
+O Output
+.Connect
+.End
