@@ -2,6 +2,6 @@
 Input Output : xCFOR
 .Signals
 I Input
-O Output
+B Output
 .Connect
 .End
