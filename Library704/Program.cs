@@ -497,7 +497,7 @@ namespace Library704
 
             foreach (KeyValuePair<string, Module> Mkvp in Modules)
             {
-                if (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM") /* vorerst überspringen */
+                if (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM" || Mkvp.Key == "SP") /* vorerst überspringen */
                     continue;
                 bool[][] readpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls aus dem netzwerk liest */
                 bool[][] writepin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls in das netzwerk schreibt */
@@ -639,7 +639,7 @@ namespace Library704
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have multiple signal sources", Mkvp.Key, s.ToString());
                             }
-                            if (numread == 0)
+                            if (numread == 0&&numbus==0)
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have no signal sink", Mkvp.Key, s.ToString());
                             }

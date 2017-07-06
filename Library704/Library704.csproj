@@ -84,6 +84,7 @@
     <Content Include="OR7.txt" />
     <Content Include="PCF.txt" />
     <Content Include="PCFx.txt" />
+    <Content Include="PCFxOR.txt" />
     <Content Include="PU7610.txt" />
     <Content Include="PU7611.txt" />
     <Content Include="PU9013.txt" />
@@ -121,6 +122,7 @@
     <Content Include="PU9190.txt" />
     <Content Include="PU9200.txt" />
     <Content Include="PU9300.txt" />
+    <Content Include="SP.txt" />
     <Content Include="SYSTEM.txt" />
     <Content Include="TLINERx.txt" />
     <Content Include="Tx.txt" />

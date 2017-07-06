@@ -1,0 +1,7 @@
+﻿.Module PCFxOR		
+Input Output : PCFxOR
+.Signals
+I Input
+B Output
+.Connect
+.End
