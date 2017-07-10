@@ -1,0 +1,7 @@
+﻿.Module Ig
+Input Output : Ig
+.Signals
+I Input
+O Output
+.Connect
+.End

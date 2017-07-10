@@ -53,6 +53,11 @@
     <Content Include="2PCF.txt" />
     <Content Include="4PCFx.txt" />
     <Content Include="6PCFx.txt" />
+    <Content Include="Ig.txt" />
+    <Content Include="LT.txt" />
+    <Content Include="OP.txt" />
+    <Content Include="PU5109.txt" />
+    <Content Include="PU9015.txt" />
     <Content Include="A.txt" />
     <Content Include="AND1.txt" />
     <Content Include="AND2.txt" />
@@ -97,7 +102,9 @@
     <Content Include="PU9062.txt" />
     <Content Include="PU9064.txt" />
     <Content Include="PU9074.txt" />
+    <Content Include="PU9075.txt" />
     <Content Include="PU9111.txt" />
+    <Content Include="PU9145.txt" />
     <Content Include="PU9170.txt" />
     <Content Include="PU9171.txt" />
     <Content Include="PU9176.txt" />
@@ -124,7 +131,8 @@
     <Content Include="PU9300.txt" />
     <Content Include="SP.txt" />
     <Content Include="SYSTEM.txt" />
-    <Content Include="TLINERx.txt" />
+    <Content Include="TNMx.txt" />
+    <Content Include="TRx.txt" />
     <Content Include="Tx.txt" />
     <Content Include="xCFOR.txt" />
   </ItemGroup>
