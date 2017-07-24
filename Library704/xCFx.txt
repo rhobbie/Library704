@@ -1,0 +1,7 @@
+﻿.Module xCFx		// Cathode Follower (B85)
+Input Output : xCFx
+.Signals
+I Input
+O Output
+.Connect
+.End

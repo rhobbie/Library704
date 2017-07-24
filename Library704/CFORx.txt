@@ -1,0 +1,7 @@
+﻿.Module CFORx
+Input Output : CFORx
+.Signals
+I Input
+B Output
+.Connect
+.End
