@@ -1,0 +1,11 @@
+﻿.Module PU9033 // 2.07.11 F.P. MPY EXEC CNTLS
+[A-H]24-[1-8] : PU9033
+02I 02O : 2CF
+.Signals
+I D24-7 PRI OPN 26 
+O C24-7 FP MPY
+.Connect
+// 02I 02O : 2CF
+W D24-7 02I // PRI OPN 26
+W 02O C24-7 // FP MPY 
+.End
