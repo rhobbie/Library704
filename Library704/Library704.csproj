@@ -59,6 +59,7 @@
     <Content Include="Ig.txt" />
     <Content Include="LT.txt" />
     <Content Include="OP.txt" />
+    <Content Include="OR7x.txt" />
     <Content Include="PU5109.txt" />
     <Content Include="PU9015.txt" />
     <Content Include="A.txt" />
@@ -96,6 +97,7 @@
     <Content Include="PU7610.txt" />
     <Content Include="PU7611.txt" />
     <Content Include="PU9013.txt" />
+    <Content Include="PU9033.txt" />
     <Content Include="PU9034.txt" />
     <Content Include="PU9035.txt" />
     <Content Include="PU9036.txt" />
