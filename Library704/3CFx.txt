@@ -1,0 +1,8 @@
+﻿.Module 3CFx	
+Input Output : 3CFx
+.Signals
+I Input
+O Output
+.Connect
+.End
+
