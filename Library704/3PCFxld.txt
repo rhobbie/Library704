@@ -1,0 +1,9 @@
+﻿.Module 3PCFxld	
+Input LD Output : 3PCFxld
+.Signals
+I Input
+I LD
+O Output
+.Connect
+.End
+

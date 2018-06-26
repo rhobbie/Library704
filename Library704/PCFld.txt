@@ -1,0 +1,9 @@
+﻿.Module PCFld	
+Input LD Output : PCFld
+.Signals
+I Input
+I LD
+O Output
+.Connect
+.End
+
