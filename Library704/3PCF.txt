@@ -1,0 +1,7 @@
+﻿.Module 3PCF		// Power Cathode Follower (B89)
+Input Output : 3PCF
+.Signals
+I Input
+O Output
+.Connect
+.End

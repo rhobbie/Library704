@@ -1,0 +1,19 @@
+﻿.Module OR13
+A 14 OR13
+.Signals
+I A1
+I A2
+I A3
+I A4
+I A5
+I A6
+I A7
+I A8
+I A9
+I A10
+I A11
+I A12
+I A13
+O A14
+.Connect
+.End
