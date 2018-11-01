@@ -494,11 +494,12 @@ namespace Library704
             /* Prüfe: */
             /* Alle signal pins sind verbunden. */
             /* Bei allen mit W verbundenen Pinguppen gibt es genau ein Write und >=1 Read. */
-
+            bool nocheck = false;
             foreach (KeyValuePair<string, Module> Mkvp in Modules)
             {
+
                 if (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM" || Mkvp.Key == "SP") /* vorerst überspringen */
-                    continue;
+                    nocheck=true;
                 bool[][] readpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls aus dem netzwerk liest */
                 bool[][] writepin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls in das netzwerk schreibt */
                 bool[][] ldpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein linedischarge pin ist */
@@ -524,14 +525,15 @@ namespace Library704
                             {
                                 if (S.To[i].Count > 0 || S.From[i].Count > 0)
                                 {
-                                    Console.WriteLine("Module {0} Submodule{1} Pin{2} is used without Signal Definiton", Mkvp.Key, S.Name, i);
+                                    Console.WriteLine("Module {0} Submodule {1} Pin {2} is used without Signal Definiton", Mkvp.Key, S.Name, S.PinNames[i]);
                                 }
                             }
                             else
                             {
                                 if (S.To[i].Count == 0 && S.From[i].Count == 0 && M2.Signals[i] != "")
                                 {
-                                    Console.WriteLine("Module {0}: Signal \"{1}\" of Submodule {2} is not used", Mkvp.Key, M2.Signals[i], S.Name);
+                                    if(!nocheck)
+                                        Console.WriteLine("Module {0}: Signal \"{1}\" of Submodule {2} is not used", Mkvp.Key, M2.Signals[i], S.Name);
                                 }
                                 if (M2.SignalDirections[i] == Module.direction.input)
                                 {
@@ -596,7 +598,8 @@ namespace Library704
                                             String s = "";
                                             foreach (string e in H)
                                                 s = e;
-                                            Console.WriteLine("Module {0}: Pin {1} is not connected", Mkvp.Key, s);
+                                            if(!nocheck)
+                                                Console.WriteLine("Module {0}: Pin {1} is not connected", Mkvp.Key, s);
                                         }
                                     }
                                     else
@@ -604,7 +607,8 @@ namespace Library704
                                         String s = "";
                                         foreach (string e in H)
                                             s = e;
-                                        Console.WriteLine("Module {0}: Pin {1} of {2} is not connected", Mkvp.Key, s, S.Name);
+                                        if (!nocheck)
+                                            Console.WriteLine("Module {0}: Pin {1} of {2} is not connected", Mkvp.Key, s, S.Name);
                                     }
                                 }
                             }

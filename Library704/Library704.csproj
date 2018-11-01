@@ -50,11 +50,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="2CF.txt" />
+    <Content Include="2PCFx.txt" />
     <Content Include="2CFx.txt" />
     <Content Include="2PCF.txt" />
     <Content Include="3CFx.txt" />
     <Content Include="3PCF.txt" />
     <Content Include="3PCFxld.txt" />
+    <Content Include="5PCF.txt" />
     <Content Include="4PCFx.txt" />
     <Content Include="5PCFx.txt" />
     <Content Include="6PCFx.txt" />
@@ -122,8 +124,11 @@
     <Content Include="PU9043.txt" />
     <Content Include="PU9045.txt" />
     <Content Include="PU9046.txt" />
+    <Content Include="PU9047.txt" />
+    <Content Include="PU9048.txt" />
     <Content Include="PU9049.txt" />
     <Content Include="PU9050.txt" />
+    <Content Include="PU9056.txt" />
     <Content Include="PU9057.txt" />
     <Content Include="PU9058.txt" />
     <Content Include="PU9062.txt" />

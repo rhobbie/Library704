@@ -1,0 +1,8 @@
+﻿.Module 5PCF		// Power Cathode Follower (B89)
+Input Output : 5PCF
+.Signals
+I Input
+O Output
+.Connect
+.End
+
