@@ -11,7 +11,7 @@ namespace Library704
 
     class Module
     {
-        public enum direction { undef, input, output,linedischarge,bus };
+        public enum direction { undef, input, output, linedischarge, bus };
         public string Name;  /* Name des Moduls */
         public Dictionary<string, Pin> Pins; /* alle Pins des Moduls  */
         public List<Submodule> Submodules; /* Alle Submodule */
@@ -499,7 +499,7 @@ namespace Library704
             {
 
                 if (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM" || Mkvp.Key == "SP") /* vorerst überspringen */
-                    nocheck=true;
+                    nocheck = true;
                 bool[][] readpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls aus dem netzwerk liest */
                 bool[][] writepin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls in das netzwerk schreibt */
                 bool[][] ldpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein linedischarge pin ist */
@@ -515,7 +515,7 @@ namespace Library704
                         ldpin[j] = new bool[S.numpins];
                         buspin[j] = new bool[S.numpins];
                         if (!Modules.TryGetValue(S.Name, out Module M2))
-                        { 
+                        {
                             Console.WriteLine("Module {0} not found", S.Name);
                             Environment.Exit(-1);
                         }
@@ -532,7 +532,7 @@ namespace Library704
                             {
                                 if (S.To[i].Count == 0 && S.From[i].Count == 0 && M2.Signals[i] != "")
                                 {
-                                    if(!nocheck)
+                                    if (!nocheck)
                                         Console.WriteLine("Module {0}: Signal \"{1}\" of Submodule {2} is not used", Mkvp.Key, M2.Signals[i], S.Name);
                                 }
                                 if (M2.SignalDirections[i] == Module.direction.input)
@@ -598,7 +598,7 @@ namespace Library704
                                             String s = "";
                                             foreach (string e in H)
                                                 s = e;
-                                            if(!nocheck)
+                                            if (!nocheck)
                                                 Console.WriteLine("Module {0}: Pin {1} is not connected", Mkvp.Key, s);
                                         }
                                     }
@@ -635,7 +635,7 @@ namespace Library704
                                 s.Append(pinname);
                                 s.Append(' ');
                             }
-                            if (numwrite == 0 && numbus==0 && numread > 0)
+                            if (numwrite == 0 && numbus == 0 && numread > 0)
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have no signal source", Mkvp.Key, s.ToString());
                             }
@@ -643,15 +643,15 @@ namespace Library704
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have multiple signal sources", Mkvp.Key, s.ToString());
                             }
-                            if (numread == 0&&numbus==0)
+                            if (numread == 0 && numbus == 0)
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have no signal sink", Mkvp.Key, s.ToString());
                             }
-                            if(numbus>0&&numwrite>0)
+                            if (numbus > 0 && numwrite > 0)
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1} have sources and bus pins", Mkvp.Key, s.ToString());
                             }
-                            if(numld>1)
+                            if (numld > 1)
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have multiple line dischargers", Mkvp.Key, s.ToString());
                             }
@@ -661,7 +661,33 @@ namespace Library704
                 }
             }
         }
+        static void Check3()
+        {
+            /* check if power supply or filament power pins are used for signals on PU */
+            int[] invalid_pins = new int[] { 0, 1, 2, 4, 5, 11, 15, 20, 43, 47, 52, 57, 58, 59, 62, 63 };
 
+            foreach (KeyValuePair<string, Module> Mkvp in Modules)
+            {
+                if (Mkvp.Key.StartsWith("PU"))
+                {
+
+                    Module M = Mkvp.Value;
+                    if (M.SignalDirections.Length < 64)
+                    {
+                        Console.WriteLine("{0} {1}", M.Name, M.SignalDirections.Length);
+                        break;
+                    }
+                    foreach (int ipin in invalid_pins)
+                    {
+                        if (M.SignalDirections[ipin] != Module.direction.undef)
+                        {
+                            Console.WriteLine("Module {0} uses invalid pin {1}-{2} for \"{3}\"", M.Name, (ipin / 8) + 1, (ipin % 8) + 1, M.Signals[ipin]);
+                        }
+                    }
+
+                }
+            }
+        }
         static void Main(string[] args)
         {
             Modules = new Dictionary<string, Module>();
@@ -687,6 +713,7 @@ namespace Library704
             }
             Check1();
             Check2();
+            Check3();
 
         }
     }
