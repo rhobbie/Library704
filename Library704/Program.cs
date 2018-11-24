@@ -494,12 +494,11 @@ namespace Library704
             /* Prüfe: */
             /* Alle signal pins sind verbunden. */
             /* Bei allen mit W verbundenen Pinguppen gibt es genau ein Write und >=1 Read. */
-            bool nocheck = false;
+            
             foreach (KeyValuePair<string, Module> Mkvp in Modules)
             {
 
-                if (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM" || Mkvp.Key == "SP") /* vorerst überspringen */
-                    nocheck = true;
+                bool nocheck = (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM" || Mkvp.Key == "SP"); /* vorerst überspringen */
                 bool[][] readpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls aus dem netzwerk liest */
                 bool[][] writepin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls in das netzwerk schreibt */
                 bool[][] ldpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein linedischarge pin ist */

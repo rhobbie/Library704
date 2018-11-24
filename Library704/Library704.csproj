@@ -79,6 +79,8 @@
     <Content Include="5PCF.txt" />
     <Content Include="4PCFx.txt" />
     <Content Include="5PCFx.txt" />
+    <Content Include="7PCFx.txt" />
+    <Content Include="8PCF.txt" />
     <Content Include="6PCFx.txt" />
     <Content Include="AND5.txt" />
     <Content Include="CFORx.txt" />
@@ -148,6 +150,8 @@
     <Content Include="PU9048.txt" />
     <Content Include="PU9049.txt" />
     <Content Include="PU9050.txt" />
+    <Content Include="PU9054.txt" />
+    <Content Include="PU9055.txt" />
     <Content Include="PU9056.txt" />
     <Content Include="PU9057.txt" />
     <Content Include="PU9058.txt" />
