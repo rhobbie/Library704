@@ -1,0 +1,8 @@
+﻿.Module 4CF	
+Input Output : 4CF
+.Signals
+I Input
+O Output
+.Connect
+.End
+

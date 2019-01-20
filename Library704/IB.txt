@@ -1,0 +1,7 @@
+﻿.Module IB			// Invertwe with Bus output
+Input Output : IB
+.Signals
+I Input
+B Output
+.Connect
+.End

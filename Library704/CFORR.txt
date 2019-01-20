@@ -1,5 +1,5 @@
-﻿.Module CFORR
-Input Output : CFORR
+﻿.Module CFOR
+Input Output : CFOR
 .Signals
 I Input
 B Output

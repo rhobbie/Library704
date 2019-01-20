@@ -1,5 +1,5 @@
-﻿.Module 4PCFx		// Power Cathode Follower (B89)
-Input Output : 4PCFx
+﻿.Module 4PCF		// Power Cathode Follower (B89)
+Input Output : 4PCF
 .Signals
 I Input
 O Output

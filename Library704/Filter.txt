@@ -1,0 +1,16 @@
+﻿.Module Filter
+Input Output : Filter
+P 1
+.Signals
+I Input
+O Output
+.Connect
+220nF Input Output
+51kOhm -30V Output
+33kOhm -30V P1
+>| P1 Output
+1.5kOhm 0V P1
+0.01uF 0V P1
+.End
+
+
