@@ -8,17 +8,15 @@ using System.IO;
 
 namespace Library704
 {
-
     class Module
     {
         public enum direction { undef, input, output, linedischarge, bus };
-        public string Name;  /* Name des Moduls */
-        public Dictionary<string, Pin> Pins; /* alle Pins des Moduls  */
-        public List<Submodule> Submodules; /* Alle Submodule */
-        public int thismodule; /* index in Submodules für Pindefinition des Modus */
-        public int NumPins; /* Anzahl Pins des Moduls */
-        public string[] Signals;
-        public bool SignalsDefined;
+        public string Name;  /* Name of Module */
+        public Dictionary<string, Pin> Pins; /* all pins of module: pins of current module, connectins pins and pins of all submodules */
+        public List<Submodule> Submodules; /* All submodule, including current Module and connections pins */
+        public int thismodule; /* index of current module in submodules List (for Pindefinition of current Module), or -1 if not yet defined */
+        public int NumPins; /* number of pins of this module,without submodules and without connection pins */
+        public string[] Signals; /* all singnals, or null if pin is not signal*/
         public direction[] SignalDirections;
         public Module(string N)
         {
@@ -26,9 +24,8 @@ namespace Library704
             Pins = new Dictionary<string, Pin>();
             Submodules = new List<Submodule>();
             thismodule = -1;
-            SignalsDefined = false;
         }
-        public class Pin /* Ein Pin des Moduls */
+        public class Pin /* one pin of the module */
         {
             public Pin(string N, int S, int P)
             {
@@ -36,58 +33,41 @@ namespace Library704
                 SubIndex = S;
                 PinIndex = P;
             }
-            public string Name; /* Name des Pins */
-            public int SubIndex;  /* Index des Submoduls */
-            public int PinIndex; /* Index des Pins innerhalb des Submodul */
+            public string Name; /* Name of the pins */
+            public int SubIndex;  /* Index of submoduls to that the pin belong */
+            public int PinIndex; /* Index of the pin in the submodule */
         }
         public class Connection
-        {   /* eine Verbindung des Moduls*/
+        {   /* eine Connection in a Module*/
             public Connection(string V, Pin F, Pin T)
             {
                 Value = V;
                 From = F;
                 To = T;
             }
-            public string Value;
-            public Pin From;
-            public Pin To;
+            public string Value; /* Circuit element that is used for the connection,  'W' for Wire */
+            public Pin From; /* Startpin */
+            public Pin To; /* Endpin */
         }
         public class Submodule
         {
-            public string Name; /* Name des Submoduls;*/
-            public string Param; /* Parameter des Submoduls;*/
-            public int numpins; /* anzahl Pins des Submoduls*/
-            public List<Connection>[] To;    /* Verbindungen zu anderen pins */
-            public List<Connection>[] From;  /* Verbindungen von anderen pins */
-            public string[] PinNames;
-            public Submodule(string S)
+            public string Name; /* Name of Submodule; or null if connection pins, or same as "Name" of current nodule if pin definition of current module */
+            public int numpins; /* Number of Pins */
+            public List<Connection>[] To;    /* for each pin: connections to other pins */
+            public List<Connection>[] From;  /* for each pin: Connections from other pins */
+            public string[] PinNames; /* for each pin: Name of pin */
+            public Submodule(string S)  /* Create empty Submodule */
             {
                 if (S == null || S == "")
-                {
                     Name = null;
-                    Param = null;
-                }
                 else
-                {
-                    int i = S.IndexOf('(');
-                    int j = S.IndexOf(')');
-                    if (i != -1 && j == S.Length - 1)
-                    {
-                        Name = S.Substring(0, i);
-                        Param = S.Substring(i, S.Length - i);
-                    }
-                    else
-                    {
-                        Name = S;
-                        Param = null;
-                    }
-                }
+                    Name = S;
             }
-            public void SetPinNames(List<string> AllPinNames)
+            public void SetPinNames(List<string> AllPinNames) /* add pins */
             {
-                numpins = AllPinNames.Count; /* Anzahl Pins speichern */
-                To = new List<Module.Connection>[numpins];   /* connections anlegen */
-                From = new List<Module.Connection>[numpins];   /* connections anlegen */
+                numpins = AllPinNames.Count; /* store number of Pins */
+                To = new List<Module.Connection>[numpins];   /* create connections */
+                From = new List<Module.Connection>[numpins];   /* create connections */
                 for (int i = 0; i < numpins; i++)
                 {
                     To[i] = new List<Module.Connection>();
@@ -97,14 +77,13 @@ namespace Library704
             }
         }
     }
-
-    class Loader704 : IDisposable
+    class ModuleLoader : IDisposable
     {
         StreamReader fi;
         int line;
         string filename;
 
-        public Loader704(string path)
+        public ModuleLoader(string path)
         {
             filename = path;
             fi = new StreamReader(path);
@@ -122,32 +101,35 @@ namespace Library704
                 return fi.EndOfStream;
             }
         }
-        static string Pin_join(string pin, int num)
+        static string Pin_join(string pin, int num) /* join basename with number */
         {
             StringBuilder s = new StringBuilder(pin);
-            if (Char.IsDigit(pin[pin.Length - 1]))
+            if (Char.IsDigit(pin[pin.Length - 1])) /* if basename ends with number then add '-' */
                 s.Append('-');
-            s.Append(num.ToString());
+            s.Append(num.ToString()); 
             return s.ToString();
         }
-        List<string> Create_elem(string from, string to)
+        List<string> Create_elem(string from, string to) /* replaces a range into a list by counting from 'from' to 'to'*/
         {
             List<string> l = new List<string>();
-            if (from.Length == 1 && to.Length == 1 && Char.IsLetter(from[0]) && char.IsLetter(to[0]))
+            if (from.Length == 1 && to.Length == 1 && Char.IsLetter(from[0]) && char.IsLetter(to[0])) /* Letter range */
             {
                 char f = from[0];
                 char t = to[0];
-                if (Char.IsLower(f) != Char.IsLower(t))
-                    Error("invalid List");
-                for (char c = f; c <= t; c++)
+                if (Char.IsLower(f) != Char.IsLower(t))  /* dont mix upper with lower case*/
+                    Error("invalid range");
+                if (t <= f)
+                    Error("invalid range");
+                for (char c = f; c <= t; c++)  /* create list of letters */
                 {
-                    if (c != 'o' && c != 'i' && c != 'O' && c != 'I')
+                    if (c != 'o' && c != 'i' && c != 'O' && c != 'I') /* skip o i O I */
                         l.Add(new string(c, 1));
                 }
             }
             else
-            {
+            {   /* number range */
                 bool test = true;
+                /* check if from and to are numbers */
                 foreach (char c in from)
                     if (!Char.IsDigit(c))
                         test = false;
@@ -155,97 +137,305 @@ namespace Library704
                     if (!Char.IsDigit(c))
                         test = false;
                 if (!test)
-                    Error("invalid list");
+                    Error("invalid range");
                 int f = int.Parse(from);
                 int t = int.Parse(to);
+                if(t<=f)
+                    Error("invalid range");
                 int minlen = 0;
-                if (from[0] == '0')
+                if (from[0] == '0')  /* if from has leading zero then use length of from */
                     minlen = from.Length;
-                for (int i = f; i <= t; i++)
+                for (int i = f; i <= t; i++) /* create list of numbers */
                     l.Add(Convert.ToString(i).PadLeft(minlen, '0'));
             }
             if (l.Count < 2)
-                Error("invalid list");
+                Error("invalid range");
             return l;
         }
-        List<string> Expand(string s)
+        List<string> Expand(string s) /* expand pindefs*/
         {
             List<string> l = new List<string>();
-            int op = s.LastIndexOf('[');
+            int op = s.LastIndexOf('['); /* pos of [ of last range*/
 
             if (op != -1)
             {
-                if (op > s.Length - 5)
+                if (op > s.Length - 5) /* enough chars for range?*/
+                    Error("invalid range");
+                string start = s.Substring(op + 1); /* part after [ */
+                s = s.Substring(0, op);  /* part before range */
+                int m = start.IndexOf('-'); /* pos of - */
+                if (m == -1 || m > start.Length - 3) /* not found or not enough char after -*/
+                    Error("invalid range");
+                string f = start.Substring(0, m); /* extract 'from' part */
+                start = start.Substring(m + 1);  /* part after - */
+                int cl = start.IndexOf(']');  /* pos of } */
+                if (cl == -1)  /* not found */
                     Error("invalid List");
-                string start = s.Substring(op + 1);
-                s = s.Substring(0, op);
-                int m = start.IndexOf('-');
-                if (m == -1 || m > start.Length - 3)
-                    Error("invalid List");
-                string f = start.Substring(0, m);
-                start = start.Substring(m + 1);
-                int cl = start.IndexOf(']');
-                if (cl == -1)
-                    Error("invalid List");
-                string t = start.Substring(0, cl);
-                string end = start.Substring(cl + 1);
-                List<string> l2 = Create_elem(f, t);
-                List<string> l1 = Expand(s);
-                foreach (string s1 in l1)
-                    foreach (string s2 in l2)
-                        l.Add(s1 + s2 + end);
-            }
+                string t = start.Substring(0, cl); /* extract 'to' part */
+                string end = start.Substring(cl + 1); /* part after ] */
+                List<string> l2 = Create_elem(f, t); /* build list from 'from' to 'to' */
+                List<string> l1 = Expand(s);  /* expand the other ranges (recursive call) */
+                foreach (string s1 in l1) /* all */
+                    foreach (string s2 in l2) /* combinations */
+                        l.Add(s1 + s2 + end); /* join parts and add to final list */            }
             else
-                l.Add(s);
-            return l;
+                l.Add(s); /*no expansion, only one element in list */
+                    return l;
         }
-        public Module Load()
+        #region Module file syntax and description 
+        /* 
+           Each line of a module file can contain a // followed by a comment 
+           The following refers to the remaining part of the line after removing of the // and the comment
+           The line is split into elements seperated by one or more spaces or tabs
+           Lines without elements are skipped, the following only refers the non empty lines
+           
+           A module file contains one or multiple module definitions or can be empty
+           A module definition contains the following sequence of lines
+
+           .Module <ModuleName>
+             <List of Submodule Definitions>
+           .Signals
+             <List of Signal Definitions>
+           .Connect
+             <List of Connections>
+           .End
+
+            The line .Module <ModuleName> defines the current module name
+            <ModuleName> can be a sequence of any character except space and tab.
+
+            The <List of Submodule Definitions> contains the pindefinitions of the submodule instances that are in the current module 
+            and also the pindefinition of the current module.
+            and the definitions of connection pins inside of the module.
+            The Submodule Definition of the current module is mandatory, the othe definitions are optional.            
+            A Submodule/Pin Definition has one the following forms:
+            <List of pindefs> : <Modulname>
+            <List of pindefs> :
+            <List of numbered pin definitions> <Modulname>
+            <List of numbered pin definitions>
+            If <Modulename> matches the current Module name the line defines the Pins of the current Module
+            If <Modulename> does not match the current Module name then the line defines the Pins of a module instance of <Modulname> inside the module.
+            If a line contains no <Modulename> the the line defines connection pins inside the module.
+            The Voltage pins 0V +220V +150V +10V -100V -30V -250V +15V are automatially added to each module.
+
+            
+            The Pinnames that are used for a Module instatiation can be different of the pinnames that are used of the definition of that Module.
+            The Number of pins must be the same.
+            The pins are matched by position.
+
+            A duplicate pinname inside of a moudle is not allowed.
+
+            The <List of pindefs> or <List of numbered pin definitions> are expanded to a list of pins in the following way:
+
+            A <List of pindefs> is a seqence of <pindef>            
+            A <pindef> is a sequence of characters that contain zero or more <range>
+            A <range> has one of the following form
+            [<uppercaseletter>-<uppercaseletter>]
+            [<lowercaseletter>-<loweercaseletter>]
+            [<number>-<number>]
+            A <pindef> defines one or more pins.
+            The pins are created by replacing the <range> by there respective letters or numbers from the range.
+            The letters 'o' 'O' 'i' 'I' are skipped during the expansion.
+            leading zeros of the first element can be used to define the min length of the resulting numbers.
+            If multiple <ranges> are present in a <pindef> then all possible combinations are gererated, the last <ranges> counts fastest.
+            Examples
+            N[1-5] is expanded to N1 N2 N3 N4 N5
+            A[a-c]X is expanded to AaX AbX AcX
+            [h-k]C is exüanded to hC jC kC
+            X[a-b]-[1-2]d is expanded to Xa-1d Xa-2d Xb-1d Xb-2d
+
+            A <List of numbered pin definitions> is a seqence of <numbered pin definition>
+            A <numbered pin definition> contains two elements
+            The second element is a number.
+            A <numbered pin definition> defines one or more pins.
+            The pins are generated by replacing the sencond element by a list of numbers from 1 to the value of the second element. and then placing it after the first element.
+            If the first elements ends with a digit then a '-' is inserted.
+            Example
+            P 2 is empanded to P1 P2 
+            ab0 3 is expanded ab0-1 ab0-2 ab0-3
+            
+            The <List of Signal Definitions> contains the definitions of the interface signals of the current modules.
+
+            A <Signal Definition> has the following form
+            <Pin Direction> <Pinname> <Pin description>
+
+            <Pin Direction> can be 
+            I  for input
+            O for output
+            B for a wired or bus
+            LD for a line discharge pin
+            <Pinname> must be a pin from the Pin definition of the current module from the Module section
+            <Pin description> can be any text
+            A duplicate Signal definition for the same pin is not allowed.
+            There can be pins in the pin definitions of the moudle with out a Signal definition, but these pins cannot be used in the connect section.
+
+            A <Connections> has the following form
+
+            <Connection Element> <Pin from> <Pin to>
+            This places the <Connection Element> between <Pin from> to <Pin to>
+
+            <Connection Element> can be W for Wire or any other text for a non-wire element.
+
+            <Pin from> and <Pin to> must be a pin defined in the module section.
+
+            if <Pin from> or <Pin to> is a pin of the current module then a comment must be present in the line were the text matches the <Pin description> of the <Signal Definiton> of that pin.
+
+            */
+
+        #endregion
+        enum States { before_Module, Module_just_read, after_Module, after_Signals, after_Connect, after_End };
+        public Module Load() /* parse text and load as Module */
         {
+            /* init return value */
             Module M = null;
-            int state = 0;
-            while (state != 5)
+
+            States state = States.before_Module;
+
+            while (state != States.after_End)
             {
-                if (fi.EndOfStream)
+                if (fi.EndOfStream) /* ENd of file reached? */
                 {
-                    if (state > 0)
+                    if (state != States.before_Module) /* not an empty file?  */
                         Error("unexpected End of File");
                     return null;
                 }
-                string rl;
-                if (state == 2)
+                string rl; /* current text line */
+                if (state == States.Module_just_read) /* was the .Module Keyword just read? */
                 {
+                    /* auto add Voltage pins */
                     rl = "0V +220V +150V +10V -100V -30V -250V +15V :";
-                    state = 3;
+                    state = States.after_Module; /* now parse content of .Module section */
                 }
                 else
                 {
+                    /* read next text line */
                     rl = fi.ReadLine();
                     line++;
                 }
+                /* position  of comment in line*/
                 int ci = rl.IndexOf("//");
+                /* for comment part of line */
                 string comm = "";
-                if (ci >= 0)
+                if (ci >= 0) /* is there a comment part in the line ? */
                 {
+                    /* split comment from line*/
                     comm = rl.Substring(ci + 2).Trim();
                     rl = rl.Substring(0, ci);
                 }
+                /* split line in parts seperated by space or tab */
                 string[] s = rl.Trim().Split(new char[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
+                /* not an empty line? */
                 if (s.Length > 0)
-                    switch (state)
+                    switch (state) /* in what part of the file are we? */
                     {
-                        case 0:
+                        case States.before_Module: /* before .Module Keyword ? */
                             if (s.Length == 2 && s[0] == ".Module")
                             {
+                                /* create new module with name */
                                 M = new Module(s[1]);
-                                state = 2;
+                                state = States.Module_just_read; /* new state: module Keyword was just read */
                             }
                             else
-                                Error(".Module missing");
+                                Error("wrong .Module line");
                             break;
-                        case 1:
+                        case States.after_Module: /* after .Module Keyword */
+                            if (s.Length == 1 && s[0] == ".Signals")
+                            {
+                                /* check if Pin Definition for this Module is missing*/
+                                if (M.thismodule == -1)
+                                    Error("Pin definition of current module is missing");
+                                state = States.after_Signals; /* now after .Signals Keyword */
+                            }
+                            else
+                            {
+                                Module.Submodule S = null; /* Current Submodule */
+                                List<string> AllPinnames = new List<string>(); /* all pinnames of submodule */
+                                int SubPins = 0; /* index of current pin of submodule */
+                                if ((s.Length >= 3 && s[s.Length - 2] == ":") || (s.Length >= 2 && s[s.Length - 1] == ":"))
+                                {
+                                    /* submodule definition
+                                     *  <List of pindefs> : <Modulname>
+                                     *  <List of pindefs> :
+                                     */
+                                    /* create submodule*/
+                                    S = new Module.Submodule(s[s.Length - 1] == ":" ? null : s[s.Length - 1]);
+
+                                    /* index of this submodule in module */
+                                    int SubIndex = M.Submodules.Count;                                    
+                                    if (S.Name == M.Name) /* pindefinition of current module ?*/
+                                    {
+                                        if (M.thismodule == -1) /* not defined yet */
+                                            M.thismodule = SubIndex; /* store index of pindefinition for current module */
+                                        else
+                                            Error("Duplicate Module Pin definitions");
+                                    }
+                                    for (int i = 0; s[i] != ":"; i++) /* for all pindefs */
+                                    {
+                                        List<string> Pinnames = Expand(s[i]); /* expand pindefs*/
+                                        foreach (string Pinname in Pinnames) /* for all pins of current pindef */
+                                        {
+                                            if (M.Pins.ContainsKey(Pinname)) /* pin already exist in current module */
+                                                Error(string.Format("Module {0}, has duplicate Pin {1}", M.Name, Pinname));
+                                            M.Pins.Add(Pinname, new Module.Pin(Pinname, SubIndex, SubPins)); /* create pin and add to module*/
+                                            SubPins++; /* count pins */
+                                            AllPinnames.Add(Pinname); /* collect pinnames */
+                                        }
+                                    }
+                                   
+                                }
+                                else
+                                {
+                                    /* submodule definition
+                                     <List of numbered pin definitions> <Modulname>
+                                     <List of numbered pin definitions>
+                                     */
+                                    if (s.Length % 2 == 1) /* unequal: Submodule */
+                                        S = new Module.Submodule(s[s.Length - 1]);
+                                    else if (s.Length >= 2) /* equal: connection */
+                                        S = new Module.Submodule(null);
+                                    else
+                                        Error("invalid Line");
+
+                                    /* index of this submodule in module */
+                                    int SubIndex = M.Submodules.Count;                                    
+
+                                    if (S.Name == M.Name) /* pindefinition of current module ?*/
+                                    {
+                                        if (M.thismodule == -1) /* not defined yet */
+                                            M.thismodule = SubIndex;  /* store index of pindefinition for current module */
+                                        else
+                                            Error("Duplicate Module Pin definitions");
+                                    }
+                                    for (int i = 0; i < s.Length - 1; i += 2)  /* for all numbered pin definitions */
+                                    {
+                                        string name = s[i]; /* first part: basename */
+                                        if (!int.TryParse(s[i + 1], out int num)) /* second element: Number of pins */
+                                            Error(String.Format("Invalid Number {0}", s[i + 1]));                                        
+                                        for (int j = 1; j <= num; j++) /* for all numbers */
+                                        {
+                                            string Pinname = Pin_join(name, j); /* join basename with number */
+                                            if (M.Pins.ContainsKey(Pinname))  /* pin already exist in current module */
+                                                Error(string.Format("Module {0}, has duplicate Pin {1}", M.Name, Pinname));
+                                            M.Pins.Add(Pinname, new Module.Pin(Pinname, SubIndex, SubPins)); /* create pin and add to module*/
+                                            SubPins++; /* count pins */
+                                            AllPinnames.Add(Pinname); /* collect pinnames */
+                                        }
+                                    }                                    
+                                }
+                                S.SetPinNames(AllPinnames); /* set all pinnames of current submodule */
+                                M.Submodules.Add(S);       /* add Submodule to Modul*/
+                                if (S.Name == M.Name)  /* pindefinition of current module ?*/
+                                {
+                                    /* create empty signal definitions */
+                                    M.Signals = new string[SubPins]; 
+                                    M.SignalDirections = new Module.direction[SubPins];
+                                    M.NumPins = SubPins;
+                                }
+                            }
+                            break;
+                        case States.after_Signals:
                             if (s.Length == 1 && s[0] == ".Connect")
-                                state = 4;
+                                state = States.after_Connect;
                             else
                             {
                                 if (s.Length >= 2 && (s[0] == "I" || s[0] == "O" || s[0] == "B" || s[0] == "LD") && M.Pins.TryGetValue(s[1], out Module.Pin su) && su.SubIndex == M.thismodule)
@@ -276,111 +466,9 @@ namespace Library704
                                 }
                             }
                             break;
-                        case 3:
-                            if (s.Length == 1 && s[0] == ".Connect")
-                            {
-
-                                if (M.thismodule == -1)
-                                    Error("Pin Definition Missing");
-                                state = 4;
-                            }
-                            else if (s.Length == 1 && s[0] == ".Signals")
-                            {
-                                if (M.thismodule == -1)
-                                    Error("Pin Definition Missing");
-                                M.SignalsDefined = true;
-                                state = 1;
-                            }
-                            else
-                            {
-                                Module.Submodule S = null;
-                                List<string> AllPinnames = new List<string>();
-                                if ((s.Length >= 3 && s[s.Length - 2] == ":") || (s.Length >= 2 && s[s.Length - 1] == ":"))
-                                {
-                                    S = new Module.Submodule(s[s.Length - 1] == ":" ? null : s[s.Length - 1]);
-
-                                    int SubIndex = M.Submodules.Count;
-                                    int SubPins = 0;
-                                    if (S.Name == M.Name)
-                                    {
-                                        if (M.thismodule == -1)
-                                            M.thismodule = SubIndex;
-                                        else
-                                            Error("Duplicate Module Pin definitions");
-                                    }
-                                    for (int i = 0; s[i] != ":"; i++)
-                                    {
-                                        List<string> Pinnames = Expand(s[i]);
-                                        foreach (string Pinname in Pinnames)
-                                        {
-                                            if (M.Pins.ContainsKey(Pinname))
-                                                Error(string.Format("Module {0}, has duplicate Pin {1}", M.Name, Pinname));
-                                            M.Pins.Add(Pinname, new Module.Pin(Pinname, SubIndex, SubPins));
-                                            SubPins++;
-                                            AllPinnames.Add(Pinname);
-                                        }
-                                    }
-                                    S.SetPinNames(AllPinnames);
-                                    M.Submodules.Add(S);       /* Submodul hinzufügen */
-                                    if (S.Name == M.Name)
-                                    {
-                                        M.Signals = new string[SubPins];
-                                        M.SignalDirections = new Module.direction[SubPins];
-                                        M.NumPins = SubPins;
-                                    }
-                                }
-                                else
-                                {
-                                    if (s.Length % 2 == 1) /* ungrade anzahl: Module referenz*/
-                                        S = new Module.Submodule(s[s.Length - 1]);
-                                    else if (s.Length >= 2) /* greade Anzahl: verbindungs Pins */
-                                        S = new Module.Submodule(null);
-                                    else
-                                        Error("invalid Line");
-                                    if (S != null)
-                                    {
-                                        int SubIndex = M.Submodules.Count;
-                                        int SubPins = 0;
-                                        if (S.Name == M.Name)
-                                        {
-                                            if (M.thismodule == -1)
-                                                M.thismodule = SubIndex;
-                                            else
-                                                Error("Duplicate Module Pin definitions");
-                                        }
-                                        for (int i = 0; i < s.Length - 1; i += 2)
-                                        {
-                                            string name = s[i];
-                                            if (!int.TryParse(s[i + 1], out int num))
-                                                Error(String.Format("Invalid Number {0}", s[i + 1]));
-                                            int min = 1;
-                                            if (name == "U")
-                                                min = 0;
-                                            for (int j = min; j <= num; j++)
-                                            {
-                                                string Pinname = Loader704.Pin_join(name, j);
-                                                if (M.Pins.ContainsKey(Pinname))
-                                                    Error(string.Format("Module {0}, has duplicate Pin {2}", M.Name, Pinname));
-                                                M.Pins.Add(Pinname, new Module.Pin(Pinname, SubIndex, SubPins));
-                                                SubPins++;
-                                                AllPinnames.Add(Pinname);
-                                            }
-                                        }
-                                        S.SetPinNames(AllPinnames);
-                                        M.Submodules.Add(S);       /* Submodul hinzufügen */
-                                        if (S.Name == M.Name)
-                                        {
-                                            M.Signals = new string[SubPins];
-                                            M.SignalDirections = new Module.direction[SubPins];
-                                            M.NumPins = SubPins;
-                                        }
-                                    }
-                                }
-                            }
-                            break;
-                        case 4:
+                        case States.after_Connect:
                             if (s.Length == 1 && s[0] == ".End")
-                                state = 5;
+                                state = States.after_End;
                             else if (s.Length == 3)
                             {
                                 if (!M.Pins.TryGetValue(s[1], out Module.Pin F))
@@ -389,7 +477,7 @@ namespace Library704
                                     Error(string.Format("Unkown Pin {0}", s[2]));
                                 if (T.SubIndex == M.thismodule)
                                 {
-                                    if ((M.SignalsDefined) && (M.Signals[T.PinIndex] == null || M.Signals[T.PinIndex] != comm))
+                                    if ( (M.Signals[T.PinIndex] == null || M.Signals[T.PinIndex] != comm))
                                     {
 
                                         Error("wrong Signal");
@@ -398,7 +486,7 @@ namespace Library704
                                 if (F.SubIndex == M.thismodule)
                                 {
 
-                                    if ((M.SignalsDefined) && (M.Signals[F.PinIndex] == null || M.Signals[F.PinIndex] != comm))
+                                    if ((M.Signals[F.PinIndex] == null || M.Signals[F.PinIndex] != comm))
                                     {
                                         Error("wrong Signal");
                                     }
@@ -494,7 +582,7 @@ namespace Library704
             /* Prüfe: */
             /* Alle signal pins sind verbunden. */
             /* Bei allen mit W verbundenen Pinguppen gibt es genau ein Write und >=1 Read. */
-            
+
             foreach (KeyValuePair<string, Module> Mkvp in Modules)
             {
 
@@ -689,27 +777,35 @@ namespace Library704
         }
         static void Main(string[] args)
         {
+            /* Library of all Modules */
             Modules = new Dictionary<string, Module>();
+
+            /* load all *.txt files from source Directory and add content to module library*/
             foreach (string n in Directory.GetFiles(@"..\..\", "*.txt"))
             {
-                using (Loader704 l = new Loader704(n))
+                using (ModuleLoader l = new ModuleLoader(n))
                 {
-                    while (!l.Eof)
+                    while (!l.Eof) /* more text in file ?*/
                     {
+                        /* parse text and load next Module */
                         Module M = l.Load();
-                        if (M != null)
+                        if (M != null) /* no error? */
                         {
+                            /* Write Module Name */
                             Console.WriteLine(M.Name);
-                            if (Modules.ContainsKey(M.Name))
+                            if (Modules.ContainsKey(M.Name)) /* Module with same name already exists in library ?*/
                             {
                                 Console.WriteLine("Duplicate Module {0}", M.Name);
                                 Environment.Exit(-1);
                             }
+                            /* add new Module to Library */
                             Modules.Add(M.Name, M);
                         }
                     }
                 }
             }
+
+            /* perform checks of Module library */
             Check1();
             Check2();
             Check3();

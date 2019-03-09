@@ -96,6 +96,7 @@
     <Content Include="CFORx.txt" />
     <Content Include="Filter.txt" />
     <Content Include="IB.txt" />
+    <Content Include="IC.txt" />
     <Content Include="Ig.txt" />
     <Content Include="Ild_2.txt" />
     <Content Include="LT.txt" />
@@ -108,6 +109,8 @@
     <Content Include="OR9x.txt" />
     <Content Include="PCFld.txt" />
     <Content Include="PU5107.txt" />
+    <Content Include="PU9008.txt" />
+    <Content Include="PU9044.txt" />
     <Content Include="PU9070.txt" />
     <Content Include="PU9071.txt" />
     <Content Include="PU9073.txt" />
@@ -230,10 +233,14 @@
     <Content Include="SYSTEM.txt" />
     <Content Include="PU9014.txt" />
     <Content Include="TNMx.txt" />
+    <Content Include="TLGRPRx.txt" />
+    <Content Include="TRPRx.txt" />
     <Content Include="TRNM.txt" />
     <Content Include="TR.txt" />
     <Content Include="TRx.txt" />
-    <Content Include="Tsx.txt" />
+    <Content Include="TsRPx.txt" />
+    <Content Include="TBRGx.txt" />
+    <Content Include="T.txt" />
     <Content Include="Tx.txt" />
     <Content Include="xCFOR.txt" />
     <Content Include="xCFx.txt" />

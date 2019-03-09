@@ -1,5 +1,5 @@
 ﻿.Module CFx		// Cathode Follower without clamping circuit (B85)
-Input Output : CFx(R)
+Input Output : CFx
 .Signals
 I Input
 O Output
