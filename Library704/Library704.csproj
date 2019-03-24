@@ -95,6 +95,8 @@
     <Content Include="CFORR.txt" />
     <Content Include="CFORx.txt" />
     <Content Include="Filter.txt" />
+    <Content Include="IN.txt" />
+    <Content Include="Ix.txt" />
     <Content Include="IB.txt" />
     <Content Include="IC.txt" />
     <Content Include="Ig.txt" />
@@ -110,6 +112,13 @@
     <Content Include="PCFld.txt" />
     <Content Include="PU5107.txt" />
     <Content Include="PU9008.txt" />
+    <Content Include="PU9017.txt" />
+    <Content Include="PU9020.txt" />
+    <Content Include="PU9022.txt" />
+    <Content Include="PU9031.txt" />
+    <Content Include="PU9194.txt" />
+    <Content Include="PU9019.txt" />
+    <Content Include="PU9018.txt" />
     <Content Include="PU9044.txt" />
     <Content Include="PU9070.txt" />
     <Content Include="PU9071.txt" />
@@ -203,6 +212,7 @@
     <Content Include="PU9166.txt" />
     <Content Include="PU9170.txt" />
     <Content Include="PU9171.txt" />
+    <Content Include="PU9175.txt" />
     <Content Include="PU9176.txt" />
     <Content Include="PU9023.txt" />
     <Content Include="PU9024.txt" />

@@ -1,0 +1,8 @@
+﻿.Module IN // inverter with Plate_Output
+Input Plate_Output Output : IN
+.Signals
+I Input
+O Plate_Output
+O Output
+.Connect
+.End

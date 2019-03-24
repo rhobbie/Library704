@@ -1,0 +1,7 @@
+﻿.Module Ix			// High Speed Inverter (B13)
+Input Output : Ix
+.Signals
+I Input
+O Output
+.Connect
+.End
