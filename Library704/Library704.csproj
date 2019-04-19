@@ -69,6 +69,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="2CFa.txt" />
     <Content Include="2CF.txt" />
     <Content Include="2PCFx.txt" />
     <Content Include="2CFx.txt" />
@@ -114,8 +115,16 @@
     <Content Include="PU9008.txt" />
     <Content Include="PU9017.txt" />
     <Content Include="PU9020.txt" />
+    <Content Include="PU9021.txt" />
     <Content Include="PU9022.txt" />
     <Content Include="PU9031.txt" />
+    <Content Include="PU9105.txt" />
+    <Content Include="PU9106.txt" />
+    <Content Include="PU9108.txt" />
+    <Content Include="PU9109.txt" />
+    <Content Include="PU9110.txt" />
+    <Content Include="PU9126.txt" />
+    <Content Include="PU9134.txt" />
     <Content Include="PU9194.txt" />
     <Content Include="PU9019.txt" />
     <Content Include="PU9018.txt" />
@@ -244,6 +253,7 @@
     <Content Include="PU9014.txt" />
     <Content Include="TNMx.txt" />
     <Content Include="TLGRPRx.txt" />
+    <Content Include="TLNM.txt" />
     <Content Include="TRPRx.txt" />
     <Content Include="TRNM.txt" />
     <Content Include="TR.txt" />
