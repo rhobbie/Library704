@@ -69,6 +69,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="-OR2.txt" />
     <Content Include="2CFa.txt" />
     <Content Include="2CF.txt" />
     <Content Include="2PCFx.txt" />
@@ -92,7 +93,9 @@
     <Content Include="7PCFx.txt" />
     <Content Include="8PCF.txt" />
     <Content Include="6PCFx.txt" />
+    <Content Include="-AND2.txt" />
     <Content Include="AND5.txt" />
+    <Content Include="CFT.txt" />
     <Content Include="CFORR.txt" />
     <Content Include="CFORx.txt" />
     <Content Include="Filter.txt" />
@@ -106,7 +109,9 @@
     <Content Include="OP.txt" />
     <Content Include="OR11.txt" />
     <Content Include="OR13.txt" />
+    <Content Include="-OR3.txt" />
     <Content Include="OR7x.txt" />
+    <Content Include="-AND8.txt" />
     <Content Include="OR8.txt" />
     <Content Include="OR8x.txt" />
     <Content Include="OR9x.txt" />
@@ -118,13 +123,16 @@
     <Content Include="PU9021.txt" />
     <Content Include="PU9022.txt" />
     <Content Include="PU9031.txt" />
+    <Content Include="PU9076.txt" />
     <Content Include="PU9105.txt" />
     <Content Include="PU9106.txt" />
+    <Content Include="PU9107.txt" />
     <Content Include="PU9108.txt" />
     <Content Include="PU9109.txt" />
     <Content Include="PU9110.txt" />
     <Content Include="PU9126.txt" />
     <Content Include="PU9134.txt" />
+    <Content Include="PU9138.txt" />
     <Content Include="PU9194.txt" />
     <Content Include="PU9019.txt" />
     <Content Include="PU9018.txt" />
@@ -251,6 +259,7 @@
     <Content Include="SP.txt" />
     <Content Include="SYSTEM.txt" />
     <Content Include="PU9014.txt" />
+    <Content Include="TBNMx.txt" />
     <Content Include="TNMx.txt" />
     <Content Include="TLGRPRx.txt" />
     <Content Include="TLNM.txt" />

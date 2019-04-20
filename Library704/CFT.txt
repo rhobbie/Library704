@@ -1,0 +1,7 @@
+﻿.Module CFT		// Cathode Follower (B85)
+Input Output : CFT
+.Signals
+I Input
+O Output
+.Connect
+.End

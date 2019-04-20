@@ -1,4 +1,4 @@
-﻿.Module TNMx	// Trigger with +/- DC or +/- Shift Input, CF Output, Power Reset
+﻿.Module TNMx	
 LH_Grid RH_Grid LH_Divider_Junction RH_Divider_Junction : TNMx 
 .Signals
 I LH_Grid

@@ -611,7 +611,7 @@ namespace Library704
                             Console.WriteLine("Module {0} not found", S.Name);
                             Environment.Exit(-1);
                         }
-                        for (int i = 0; i < S.numpins; i++)
+                        for (int i = 0; i < S.numpins && i<M2.SignalDirections.Length; i++)
                         {
                             if (M2.SignalDirections[i] == Module.direction.undef)
                             {
