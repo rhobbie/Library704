@@ -1,0 +1,12 @@
+﻿.Module AND6
+A 7 AND6
+.Signals
+I A1
+I A2
+I A3
+I A4
+I A5
+I A6
+O A7
+.Connect
+.End
