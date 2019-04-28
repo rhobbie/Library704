@@ -1,5 +1,5 @@
-﻿.Module 2CFa		
-Input Output : 2CFa
+﻿.Module IAND
+Input Output : IAND
 .Signals
 I Input
 A Output

@@ -70,7 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="-OR2.txt" />
-    <Content Include="2CFa.txt" />
+    <Content Include="2CFOR.txt" />
     <Content Include="2CF.txt" />
     <Content Include="2PCFx.txt" />
     <Content Include="2CFx.txt" />
@@ -100,6 +100,7 @@
     <Content Include="CFORR.txt" />
     <Content Include="CFORx.txt" />
     <Content Include="Filter.txt" />
+    <Content Include="IAND.txt" />
     <Content Include="IN.txt" />
     <Content Include="Ix.txt" />
     <Content Include="IB.txt" />
@@ -136,6 +137,8 @@
     <Content Include="PU9109.txt" />
     <Content Include="PU9110.txt" />
     <Content Include="PU9115.txt" />
+    <Content Include="PU9118.txt" />
+    <Content Include="PU9122.txt" />
     <Content Include="PU9126.txt" />
     <Content Include="PU9134.txt" />
     <Content Include="PU9138.txt" />

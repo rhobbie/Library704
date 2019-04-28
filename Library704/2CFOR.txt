@@ -1,0 +1,7 @@
+﻿.Module 2CFOR		
+Input Output : 2CFOR
+.Signals
+I Input
+B Output
+.Connect
+.End
