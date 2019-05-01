@@ -1,0 +1,8 @@
+﻿.Module TLG
+LH_Grid LH_Divider_Junction RH_Divider_Junction : TLG
+.Signals
+I LH_Grid
+O LH_Divider_Junction
+O RH_Divider_Junction
+.Connect
+.End

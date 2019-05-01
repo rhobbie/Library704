@@ -118,7 +118,12 @@
     <Content Include="OR8x.txt" />
     <Content Include="OR9x.txt" />
     <Content Include="PCFld.txt" />
+    <Content Include="PU5105.txt" />
+    <Content Include="PU5112.txt" />
+    <Content Include="PU2403.txt" />
+    <Content Include="PU2428.txt" />
     <Content Include="PU5107.txt" />
+    <Content Include="PU5113.txt" />
     <Content Include="PU9008.txt" />
     <Content Include="PU9017.txt" />
     <Content Include="PU9020.txt" />
@@ -140,6 +145,7 @@
     <Content Include="PU9118.txt" />
     <Content Include="PU9122.txt" />
     <Content Include="PU9126.txt" />
+    <Content Include="PU9129.txt" />
     <Content Include="PU9134.txt" />
     <Content Include="PU9138.txt" />
     <Content Include="PU9192.txt" />
@@ -269,6 +275,9 @@
     <Content Include="SP.txt" />
     <Content Include="SYSTEM.txt" />
     <Content Include="PU9014.txt" />
+    <Content Include="T - Kopieren.txt" />
+    <Content Include="TLG.txt" />
+    <Content Include="TRBNMx.txt" />
     <Content Include="TBNMx.txt" />
     <Content Include="TNMx.txt" />
     <Content Include="TLGRPRx.txt" />
@@ -279,7 +288,7 @@
     <Content Include="TRx.txt" />
     <Content Include="TsRPx.txt" />
     <Content Include="TBRGx.txt" />
-    <Content Include="T.txt" />
+    <Content Include="TLGRD.txt" />
     <Content Include="Tx.txt" />
     <Content Include="xCFOR.txt" />
     <Content Include="xCFx.txt" />

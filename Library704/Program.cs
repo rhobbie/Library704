@@ -1,23 +1,19 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-
 namespace Library704
 {
-    class Module
+    internal class Module
     {
-        public enum direction { undef, input, output, linedischarge, bus,and };
+        public enum Direction { undef, input, output, linedischarge, bus,and };
         public string Name;  /* Name of Module */
         public Dictionary<string, Pin> Pins; /* all pins of module: pins of current module, connectins pins and pins of all submodules */
         public List<Submodule> Submodules; /* All submodule, including current Module and connections pins */
         public int thismodule; /* index of current module in submodules List (for Pindefinition of current Module), or -1 if not yet defined */
         public int NumPins; /* number of pins of this module,without submodules and without connection pins */
         public string[] Signals; /* all singnals, or null if pin is not signal*/
-        public direction[] SignalDirections;
+        public Direction[] SignalDirections;
         public Module(string N)
         {
             Name = N;
@@ -77,11 +73,12 @@ namespace Library704
             }
         }
     }
-    class ModuleLoader : IDisposable
+
+    internal class ModuleLoader : IDisposable
     {
-        StreamReader fi;
-        int line;
-        string filename;
+        private StreamReader fi;
+        private int line;
+        private readonly string filename;
 
         public ModuleLoader(string path)
         {
@@ -89,7 +86,8 @@ namespace Library704
             fi = new StreamReader(path);
             line = 0;
         }
-        void Error(string s)
+
+        private void Error(string s)
         {
             Console.WriteLine("{0},{1}:{2}", filename, line, s);
             Environment.Exit(-1);
@@ -101,7 +99,8 @@ namespace Library704
                 return fi.EndOfStream;
             }
         }
-        static string Pin_join(string pin, int num) /* join basename with number */
+
+        private static string Pin_join(string pin, int num) /* join basename with number */
         {
             StringBuilder s = new StringBuilder(pin);
             if (Char.IsDigit(pin[pin.Length - 1])) /* if basename ends with number then add '-' */
@@ -109,7 +108,8 @@ namespace Library704
             s.Append(num.ToString()); 
             return s.ToString();
         }
-        List<string> Create_elem(string from, string to) /* replaces a range into a list by counting from 'from' to 'to'*/
+
+        private List<string> Create_elem(string from, string to) /* replaces a range into a list by counting from 'from' to 'to'*/
         {
             List<string> l = new List<string>();
             if (from.Length == 1 && to.Length == 1 && Char.IsLetter(from[0]) && char.IsLetter(to[0])) /* Letter range */
@@ -152,7 +152,8 @@ namespace Library704
                 Error("invalid range");
             return l;
         }
-        List<string> Expand(string s) /* expand pindefs*/
+
+        private List<string> Expand(string s) /* expand pindefs*/
         {
             List<string> l = new List<string>();
             int op = s.LastIndexOf('['); /* pos of [ of last range*/
@@ -283,9 +284,9 @@ namespace Library704
             */
 
         #endregion
-        enum States { before_Module, Module_just_read, after_Module, after_Signals, after_Connect, after_End };
-        public Module Load() /* parse text and load as Module */
-        {
+        private enum States { before_Module, Module_just_read, after_Module, after_Signals, after_Connect, after_End };
+        public Module Load(SortedDictionary<string, int> Links) /* parse text and load as Module */
+        {   
             /* init return value */
             Module M = null;
 
@@ -429,7 +430,7 @@ namespace Library704
                                 {
                                     /* create empty signal definitions */
                                     M.Signals = new string[SubPins]; 
-                                    M.SignalDirections = new Module.direction[SubPins];
+                                    M.SignalDirections = new Module.Direction[SubPins];
                                     M.NumPins = SubPins;
                                 }
                             }
@@ -450,17 +451,17 @@ namespace Library704
                                         Error("Duplicate Signal");
                                     }
                                     M.Signals[p] = rl.Substring(i + s[1].Length).Trim();
-                                    Module.direction d = Module.direction.undef;
+                                    Module.Direction d = Module.Direction.undef;
                                     if (s[0] == "I")
-                                        d = Module.direction.input;
+                                        d = Module.Direction.input;
                                     else if (s[0] == "O")
-                                        d = Module.direction.output;
+                                        d = Module.Direction.output;
                                     else if (s[0] == "LD")
-                                        d = Module.direction.linedischarge;
+                                        d = Module.Direction.linedischarge;
                                     else if (s[0] == "B")
-                                        d = Module.direction.bus;
+                                        d = Module.Direction.bus;
                                     else if (s[0] == "A")
-                                        d = Module.direction.and;
+                                        d = Module.Direction.and;
                                     M.SignalDirections[p] = d;
                                 }
                                 else
@@ -495,6 +496,21 @@ namespace Library704
                                     }
 
                                 }
+                                if (s[0] != "W")
+                                {
+                                    if (s[0] == "I" || s[0] == "O" || s[0] == "B" || s[0] == "A" || s[0] == "LD")
+                                    {
+                                        Error("invalid line");
+                                    }
+                                    if(Links.ContainsKey(s[0]))
+                                    {
+                                        Links[s[0]]++;
+                                    }                                        
+                                    else
+                                    {
+                                        Links[s[0]] = 1;
+                                    }
+                                }                                
                                 Module.Connection C = new Module.Connection(s[0], F, T);
                                 M.Submodules[F.SubIndex].To[F.PinIndex].Add(C);
                                 M.Submodules[T.SubIndex].From[T.PinIndex].Add(C);
@@ -525,10 +541,12 @@ namespace Library704
             }
         }
     }
-    class Program
+
+    internal class Program
     {
-        static Dictionary<string, Module> Modules;
-        static HashSet<string> GetConnectedPins(Module M, int SubIndex, int PinIndex, bool[][] VisitedPins)
+        private static Dictionary<string, Module> Modules;
+
+        private static HashSet<string> GetConnectedPins(Module M, int SubIndex, int PinIndex, bool[][] VisitedPins)
         {
             if (VisitedPins[SubIndex][PinIndex]) /* Schon besucht? */
                 return null; /* nicht auswerten */
@@ -555,7 +573,8 @@ namespace Library704
                 }
             return x;
         }
-        static void Check1()
+
+        private static void Check1()
         {
             foreach (KeyValuePair<string, Module> Mkvp in Modules)
             {
@@ -580,7 +599,8 @@ namespace Library704
             }
 
         }
-        static void Check2()
+
+        private static void Check2()
         {
             /* Prüfe: */
             /* Alle signal pins sind verbunden. */
@@ -613,7 +633,7 @@ namespace Library704
                         }
                         for (int i = 0; i < S.numpins && i<M2.SignalDirections.Length; i++)
                         {
-                            if (M2.SignalDirections[i] == Module.direction.undef)
+                            if (M2.SignalDirections[i] == Module.Direction.undef)
                             {
                                 if (S.To[i].Count > 0 || S.From[i].Count > 0)
                                 {
@@ -627,35 +647,35 @@ namespace Library704
                                     if (!nocheck)
                                         Console.WriteLine("Module {0}: Signal \"{1}\" of Submodule {2} is not used", Mkvp.Key, M2.Signals[i], S.Name);
                                 }
-                                if (M2.SignalDirections[i] == Module.direction.input)
+                                if (M2.SignalDirections[i] == Module.Direction.input)
                                 {
                                     if (M2.thismodule == j)
                                         writepin[j][i] = true;
                                     else
                                         readpin[j][i] = true;
                                 }
-                                else if (M2.SignalDirections[i] == Module.direction.output)
+                                else if (M2.SignalDirections[i] == Module.Direction.output)
                                 {
                                     if (M2.thismodule == j)
                                         readpin[j][i] = true;
                                     else
                                         writepin[j][i] = true;
                                 }
-                                else if (M2.SignalDirections[i] == Module.direction.linedischarge)
+                                else if (M2.SignalDirections[i] == Module.Direction.linedischarge)
                                 {
                                     if (M2.thismodule == j)
                                         ldpin[j][i] = true;
                                     else
                                         ldpin[j][i] = true;
                                 }
-                                else if (M2.SignalDirections[i] == Module.direction.bus)
+                                else if (M2.SignalDirections[i] == Module.Direction.bus)
                                 {
                                     if (M2.thismodule == j)
                                         buspin[j][i] = true;
                                     else
                                         buspin[j][i] = true;
                                 }
-                                if (M2.SignalDirections[i] == Module.direction.and)
+                                if (M2.SignalDirections[i] == Module.Direction.and)
                                 {
                                     if (M2.thismodule == j)
                                         andpin[j][i] = true;
@@ -767,7 +787,8 @@ namespace Library704
                 }
             }
         }
-        static void Check3()
+
+        private static void Check3()
         {
             /* check if power supply or filament power pins are used for signals on PU */
             int[] invalid_pins = new int[] { 0, 1, 2, 4, 5, 11, 15, 20, 43, 47, 52, 57, 58, 59, 62, 63 };
@@ -785,7 +806,7 @@ namespace Library704
                     }
                     foreach (int ipin in invalid_pins)
                     {
-                        if (M.SignalDirections[ipin] != Module.direction.undef)
+                        if (M.SignalDirections[ipin] != Module.Direction.undef)
                         {
                             Console.WriteLine("Module {0} uses invalid pin {1}-{2} for \"{3}\"", M.Name, (ipin / 8) + 1, (ipin % 8) + 1, M.Signals[ipin]);
                         }
@@ -794,8 +815,10 @@ namespace Library704
                 }
             }
         }
-        static void Main(string[] args)
+
+        private static void Main(string[] args)
         {
+            SortedDictionary<string,int> Links = new SortedDictionary<string, int>(); /* debug*/
             /* Library of all Modules */
             Modules = new Dictionary<string, Module>();
 
@@ -807,7 +830,7 @@ namespace Library704
                     while (!l.Eof) /* more text in file ?*/
                     {
                         /* parse text and load next Module */
-                        Module M = l.Load();
+                        Module M = l.Load(Links);
                         if (M != null) /* no error? */
                         {
                             /* Write Module Name */
@@ -828,8 +851,14 @@ namespace Library704
             Check1();
             Check2();
             Check3();
-
+#if print
+            foreach(KeyValuePair<string,int> c in Links)
+            {
+                Console.WriteLine("{0} {1}",c.Key,c.Value);
+            }
+#endif
         }
+
     }
 }
 
