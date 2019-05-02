@@ -6,7 +6,7 @@ namespace Library704
 {
     internal class Module
     {
-        public enum Direction { undef, input, output, linedischarge, bus,and };
+        public enum Direction { undef, input, output, linedischarge, bus, and, manualinput,testpoint };
         public string Name;  /* Name of Module */
         public Dictionary<string, Pin> Pins; /* all pins of module: pins of current module, connectins pins and pins of all submodules */
         public List<Submodule> Submodules; /* All submodule, including current Module and connections pins */
@@ -304,7 +304,7 @@ namespace Library704
                 if (state == States.Module_just_read) /* was the .Module Keyword just read? */
                 {
                     /* auto add Voltage pins */
-                    rl = "0V +220V +150V +10V -100V -30V -250V +15V :";
+                    rl = "0V +220V +150V +10V -100V -30V -250V +15V : ";
                     state = States.after_Module; /* now parse content of .Module section */
                 }
                 else
@@ -440,7 +440,7 @@ namespace Library704
                                 state = States.after_Connect;
                             else
                             {
-                                if (s.Length >= 2 && (s[0] == "I" || s[0] == "O" || s[0] == "B" || s[0] == "LD" || s[0] == "A") && M.Pins.TryGetValue(s[1], out Module.Pin su) && su.SubIndex == M.thismodule)
+                                if (s.Length >= 2 && (s[0] == "I" || s[0] == "O" || s[0] == "B" || s[0] == "LD" || s[0] == "A" || s[0] == "M" || s[0] == "T") && M.Pins.TryGetValue(s[1], out Module.Pin su) && su.SubIndex == M.thismodule)
                                 {
                                     int p = su.PinIndex;
                                     int i = rl.IndexOf(s[1]);
@@ -462,6 +462,10 @@ namespace Library704
                                         d = Module.Direction.bus;
                                     else if (s[0] == "A")
                                         d = Module.Direction.and;
+                                    else if (s[0] == "M")
+                                        d = Module.Direction.manualinput;
+                                    else if (s[0] == "T")
+                                        d = Module.Direction.testpoint;
                                     M.SignalDirections[p] = d;
                                 }
                                 else
@@ -498,7 +502,7 @@ namespace Library704
                                 }
                                 if (s[0] != "W")
                                 {
-                                    if (s[0] == "I" || s[0] == "O" || s[0] == "B" || s[0] == "A" || s[0] == "LD")
+                                    if (s[0] == "I" || s[0] == "O" || s[0] == "B" || s[0] == "A" || s[0] == "LD" || s[0] == "M" || s[0] == "T")
                                     {
                                         Error("invalid line");
                                     }
@@ -610,11 +614,14 @@ namespace Library704
             {
 
                 bool nocheck = (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM" || Mkvp.Key == "SP"); /* vorerst überspringen */
+                
                 bool[][] readpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls aus dem netzwerk liest */
                 bool[][] writepin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls in das netzwerk schreibt */
                 bool[][] ldpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein linedischarge pin ist */
                 bool[][] buspin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein wired or bus pin ist */
-                bool[][] andpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein additional output pin ist */
+                bool[][] andpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein wired and bus pin ist */
+                bool[][] manualinputpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein manual output pin ist */
+                bool[][] testpointpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein testpoint pin ist */
                 //* fülle readpin und writepin  */
                 int j = 0;
                 foreach (Module.Submodule S in Mkvp.Value.Submodules)
@@ -626,6 +633,8 @@ namespace Library704
                         ldpin[j] = new bool[S.numpins];
                         buspin[j] = new bool[S.numpins];
                         andpin[j] = new bool[S.numpins];
+                        manualinputpin[j] = new bool[S.numpins];
+                        testpointpin[j] = new bool[S.numpins];
                         if (!Modules.TryGetValue(S.Name, out Module M2))
                         {
                             Console.WriteLine("Module {0} not found", S.Name);
@@ -642,7 +651,7 @@ namespace Library704
                             }
                             else
                             {
-                                if (S.To[i].Count == 0 && S.From[i].Count == 0 && M2.Signals[i] != "")
+                                if (S.To[i].Count == 0 && S.From[i].Count == 0 && M2.Signals[i] != ""&&M2.SignalDirections[i]!=Module.Direction.manualinput && M2.SignalDirections[i] != Module.Direction.testpoint)
                                 {
                                     if (!nocheck)
                                         Console.WriteLine("Module {0}: Signal \"{1}\" of Submodule {2} is not used", Mkvp.Key, M2.Signals[i], S.Name);
@@ -663,24 +672,29 @@ namespace Library704
                                 }
                                 else if (M2.SignalDirections[i] == Module.Direction.linedischarge)
                                 {
-                                    if (M2.thismodule == j)
-                                        ldpin[j][i] = true;
-                                    else
-                                        ldpin[j][i] = true;
+                                    ldpin[j][i] = true;
                                 }
                                 else if (M2.SignalDirections[i] == Module.Direction.bus)
                                 {
-                                    if (M2.thismodule == j)
-                                        buspin[j][i] = true;
-                                    else
-                                        buspin[j][i] = true;
+                                    buspin[j][i] = true;
                                 }
                                 if (M2.SignalDirections[i] == Module.Direction.and)
                                 {
+                                   andpin[j][i] = true;
+                                }
+                                if (M2.SignalDirections[i] == Module.Direction.manualinput)
+                                {
                                     if (M2.thismodule == j)
-                                        andpin[j][i] = true;
+                                        writepin[j][i] = true;
                                     else
-                                        andpin[j][i] = true;
+                                        manualinputpin[j][i] = true;
+                                }
+                                if (M2.SignalDirections[i] == Module.Direction.testpoint)
+                                {
+                                    if (M2.thismodule == j)
+                                        readpin[j][i] = true;
+                                    else
+                                        testpointpin[j][i] = true;                                  
                                 }
                             }
                         }
@@ -723,11 +737,21 @@ namespace Library704
                                     }
                                     else
                                     {
-                                        String s = "";
-                                        foreach (string e in H)
-                                            s = e;
-                                        if (!nocheck)
-                                            Console.WriteLine("Module {0}: Pin {1} of {2} is not connected", Mkvp.Key, s, S.Name);
+                                        Module ms = Modules[S.Name];
+                                        if (/*ms.Signals[i] != "" &&*/ ms.Signals[i] != null) /* Signal ist definiert?*/
+                                        {
+                                            String s = "";
+                                            foreach (string e in H)
+                                                s = e;
+                                            if (!nocheck)
+                                            {
+                                                Module.Pin P = Mkvp.Value.Pins[s];
+                                                
+                                                    if (!(testpointpin[P.SubIndex] != null && testpointpin[P.SubIndex][P.PinIndex]) &&  /* testpoints und manual inputs dürfen offen sein */
+                                                        !(manualinputpin[P.SubIndex] != null && manualinputpin[P.SubIndex][P.PinIndex]))
+                                                        Console.WriteLine("Module {0}: Pin {1} of {2} is not connected", Mkvp.Key, s, S.Name);
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -740,6 +764,8 @@ namespace Library704
                             int numld = 0;
                             int numbus = 0;
                             int numand = 0;
+                            int numtestpoint = 0;
+                            int nummanualinput = 0;
                             StringBuilder s = new StringBuilder();
                             foreach (string pinname in H)
                             {  /* zähle wieoft in dieser Pingruppe gelesen oder geschrieben wird */
@@ -754,6 +780,14 @@ namespace Library704
                                     numbus++;
                                 if (andpin[P.SubIndex] != null && andpin[P.SubIndex][P.PinIndex])
                                     numand++;
+                                if (testpointpin[P.SubIndex] != null && testpointpin[P.SubIndex][P.PinIndex])
+                                    numtestpoint++;
+                                if (manualinputpin[P.SubIndex] != null && manualinputpin[P.SubIndex][P.PinIndex])
+                                    nummanualinput++;
+                                if (pinname == "-30V")
+                                    numwrite++;
+                                if (pinname == "+10V")
+                                    numwrite++;
                                 s.Append(pinname);
                                 s.Append(' ');
                             }
@@ -780,6 +814,14 @@ namespace Library704
                             if (numld > 1)
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have multiple line dischargers", Mkvp.Key, s.ToString());
+                            }
+                            if(numtestpoint>0)
+                            {
+                                Console.WriteLine("Module {0}: Connected pins {1} have testpoint", Mkvp.Key, s.ToString());
+                            }
+                            if (nummanualinput > 0)
+                            {
+                                Console.WriteLine("Module {0}: Connected pins {1} have manual input", Mkvp.Key, s.ToString());
                             }
                         }
                     }

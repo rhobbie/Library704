@@ -1,0 +1,11 @@
+﻿.Module T	// Trigger with +/- DC or +/- Shift Input, CF Output, Power Reset
+LH_Grid RH_Grid Manual_On Manual_Off LH_Divider_Junction RH_Divider_Junction : T
+.Signals
+I LH_Grid
+I RH_Grid
+I Manual_On
+I Manual_Off
+O LH_Divider_Junction
+O RH_Divider_Junction
+.Connect
+.End
