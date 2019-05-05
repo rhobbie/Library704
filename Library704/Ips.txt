@@ -1,0 +1,7 @@
+﻿.Module Ips			// pull over Inverter 
+Input Output : Ips
+.Signals
+I Input
+O Output
+.Connect
+.End

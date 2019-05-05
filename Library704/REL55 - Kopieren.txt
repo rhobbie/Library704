@@ -1,0 +1,7 @@
+﻿.Module REL55
+R55BOP R55BNC : REL55
+.Signals
+I R55BOP
+O R55BNC
+.Connect
+.End

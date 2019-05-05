@@ -1,0 +1,7 @@
+﻿.Module SS1000 // Single shot
+Input Output : SS1000
+.Signals
+I Input
+O Output
+.Connect
+.End

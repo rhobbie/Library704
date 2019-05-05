@@ -1,0 +1,8 @@
+﻿.Module BUTTON_T
+OP NC NO : BUTTON_T
+.Signals
+I OP
+O NC
+O NO
+.Connect
+.End

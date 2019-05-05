@@ -1,6 +1,0 @@
-﻿.Module LT
-L1 : LT
-.Signals
-I L1
-.Connect
-.End

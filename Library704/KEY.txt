@@ -1,0 +1,7 @@
+﻿.Module KEY
+OP NO : KEY
+.Signals
+I OP
+O NO
+.Connect
+.End

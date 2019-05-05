@@ -1,0 +1,10 @@
+﻿.Module TRIx	
+RH_Grid Manual_On Manual_Off LH_Divider_Junction RH_Divider_Junction : TRIx
+.Signals
+I RH_Grid
+I Manual_On
+I Manual_Off
+O LH_Divider_Junction
+O RH_Divider_Junction
+.Connect
+.End

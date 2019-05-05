@@ -1,0 +1,7 @@
+.Module NE51
+NA NB : NE51
+.Signals
+I NA
+I NB
+.Connect
+.End

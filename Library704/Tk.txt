@@ -1,0 +1,9 @@
+﻿.Module Tk // Key Trigger
+INL INR OUTL OUTR : Tk
+.Signals
+I INL 
+I INR 
+O OUTL 
+O OUTR
+.Connect
+.End

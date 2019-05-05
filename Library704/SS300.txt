@@ -1,0 +1,7 @@
+﻿.Module SS300 // Single shot
+Input Output : SS300
+.Signals
+I Input
+O Output
+.Connect
+.End
