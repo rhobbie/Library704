@@ -1,5 +1,5 @@
-.Module DUx	
-Sync Input Clamp Output Unpowered_Output : DUx		
+.Module DU	
+Sync Input Clamp Output Unpowered_Output : DU		
 .Signals
 I Sync
 I Input

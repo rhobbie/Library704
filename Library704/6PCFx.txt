@@ -1,7 +1,0 @@
-﻿.Module 6PCFx		// Power Cathode Follower (B89)
-Input Output : 6PCFx
-.Signals
-I Input
-O Output
-.Connect
-.End

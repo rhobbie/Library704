@@ -1,7 +1,0 @@
-﻿.Module 2CFx		// Cathode Follower (B85)
-Input Output : 2CFx
-.Signals
-I Input
-O Output
-.Connect
-.End

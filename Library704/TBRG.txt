@@ -1,5 +1,5 @@
-﻿.Module TBRGx	
-Binary RH_Grid Manual_On Manual_Off LH_Divider_Junction RH_Divider_Junction : TBRGx
+﻿.Module TBRG	
+Binary RH_Grid Manual_On Manual_Off LH_Divider_Junction RH_Divider_Junction : TBRG
 .Signals
 I Binary
 I RH_Grid

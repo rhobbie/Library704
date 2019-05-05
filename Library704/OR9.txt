@@ -1,5 +1,5 @@
-﻿.Module OR6x
-A 7 OR6x
+﻿.Module OR9
+A 10 OR9
 .Signals
 I A1
 I A2
@@ -7,6 +7,9 @@ I A3
 I A4
 I A5
 I A6
-O A7
+I A7
+I A8
+I A9
+O A10
 .Connect
 .End

@@ -1,7 +1,0 @@
-﻿.Module CFOR
-Input Output : CFOR
-.Signals
-I Input
-B Output
-.Connect
-.End

@@ -1,7 +1,0 @@
-﻿.Module xCFOR
-Input Output : xCFOR
-.Signals
-I Input
-B Output
-.Connect
-.End

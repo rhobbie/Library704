@@ -1,7 +1,0 @@
-﻿.Module AND1
-A 2 AND1
-.Signals
-I A1
-O A2
-.Connect
-.End

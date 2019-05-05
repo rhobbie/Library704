@@ -1,7 +1,0 @@
-﻿.Module Ild_2			
-Input Output : Ild_2
-.Signals
-I Input
-O Output
-.Connect
-.End

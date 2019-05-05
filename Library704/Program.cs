@@ -14,6 +14,7 @@ namespace Library704
         public int NumPins; /* number of pins of this module,without submodules and without connection pins */
         public string[] Signals; /* all singnals, or null if pin is not signal*/
         public Direction[] SignalDirections;
+        public int numused; /* counts how often this module is used */
         public Module(string N)
         {
             Name = N;
@@ -335,6 +336,10 @@ namespace Library704
                             {
                                 /* create new module with name */
                                 M = new Module(s[1]);
+                                if (Path.GetFileName(filename) != M.Name + ".txt")
+                                { 
+                                    Error(string.Format("wrong filename:{0} vs {1}",Path.GetFileName(filename), M.Name + ".txt"));
+                                }
                                 state = States.Module_just_read; /* new state: module Keyword was just read */
                             }
                             else
@@ -886,6 +891,25 @@ namespace Library704
                 }
             }
         }
+        private static void Traverse(Module current)
+        {
+            current.numused++;
+            if (current.numused > 1)
+                return;
+            foreach (Module.Submodule sub in current.Submodules)
+                if(sub.Name!=null&&sub.Name!=current.Name)
+                    Traverse(Modules[sub.Name]);
+        }
+        private static void Check4()
+        {
+            /* check if all modules are used */
+            Traverse(Modules["SYSTEM"]);
+            foreach(KeyValuePair<string,Module> kvp in Modules)
+            {
+                if(kvp.Value.numused==0)
+                    Console.WriteLine("Module {0} is not used", kvp.Key);
+            }
+        }
 
         private static void Main(string[] args)
         {
@@ -922,6 +946,7 @@ namespace Library704
             Check1();
             Check2();
             Check3();
+            Check4();
 #if print
             foreach(KeyValuePair<string,int> c in Links)
             {

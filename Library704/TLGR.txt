@@ -1,0 +1,9 @@
+﻿.Module TLGR
+LH_Grid Manual_On Manual_Off  RH_Divider_Junction : TLGR
+.Signals
+I LH_Grid
+I Manual_On
+I Manual_Off
+O RH_Divider_Junction
+.Connect
+.End

@@ -1,4 +1,4 @@
-﻿.Module Icl
+﻿.Module Icl  // Clamp Inverter
 Input Output : Icl
 .Signals
 I Input

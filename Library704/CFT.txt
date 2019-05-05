@@ -1,4 +1,4 @@
-﻿.Module CFT		// Cathode Follower (B85)
+﻿.Module CFT		// Cathode Follower for feeding binary input to trigger (B87)
 Input Output : CFT
 .Signals
 I Input

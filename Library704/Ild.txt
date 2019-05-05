@@ -1,4 +1,4 @@
-﻿.Module Ild			
+﻿.Module Ild			// Line discharge Inverter
 Input Output : Ild
 .Signals
 I Input

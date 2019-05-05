@@ -1,4 +1,4 @@
-﻿.Module IAND
+﻿.Module IAND // Inverter with wired AND output
 Input Output : IAND
 .Signals
 I Input

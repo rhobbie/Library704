@@ -1,5 +1,5 @@
-﻿.Module TRBNMx	
-LH_Grid Binary RH_Grid RH_Divider_Junction : TRBNMx 
+﻿.Module TRBNM	
+LH_Grid Binary RH_Grid RH_Divider_Junction : TRBNM 
 .Signals
 I LH_Grid
 I Binary

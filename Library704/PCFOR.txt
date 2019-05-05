@@ -1,0 +1,7 @@
+﻿.Module PCFOR		
+Input Output : PCFOR
+.Signals
+I Input
+B Output
+.Connect
+.End

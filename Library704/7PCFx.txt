@@ -1,7 +1,0 @@
-﻿.Module 7PCFx		// Power Cathode Follower (B89)
-Input Output : 7PCFx
-.Signals
-I Input
-O Output
-.Connect
-.End

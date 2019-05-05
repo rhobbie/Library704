@@ -1,7 +1,0 @@
-﻿.Module PCFx		// Power Cathode Follower (B89)
-Input Output : PCFx
-.Signals
-I Input
-O Output
-.Connect
-.End
