@@ -1,0 +1,7 @@
+﻿.Module IR			// Relay Inverter 
+Input Output : IR
+.Signals
+I Input
+O Output
+.Connect
+.End

@@ -6,7 +6,7 @@ namespace Library704
 {
     internal class Module
     {
-        public enum Direction { undef, input, output, linedischarge, bus, and, manualinput,testpoint,connect };
+        public enum Direction { undef, input, output, linedischarge, bus, and, manualinput, testpoint, connect };
         public string Name;  /* Name of Module */
         public Dictionary<string, Pin> Pins; /* all pins of module: pins of current module, connectins pins and pins of all submodules */
         public List<Submodule> Submodules; /* All submodule, including current Module and connections pins */
@@ -106,7 +106,7 @@ namespace Library704
             StringBuilder s = new StringBuilder(pin);
             if (Char.IsDigit(pin[pin.Length - 1])) /* if basename ends with number then add '-' */
                 s.Append('-');
-            s.Append(num.ToString()); 
+            s.Append(num.ToString());
             return s.ToString();
         }
 
@@ -141,7 +141,7 @@ namespace Library704
                     Error("invalid range");
                 int f = int.Parse(from);
                 int t = int.Parse(to);
-                if(t<=f)
+                if (t <= f)
                     Error("invalid range");
                 int minlen = 0;
                 if (from[0] == '0')  /* if from has leading zero then use length of from */
@@ -179,10 +179,11 @@ namespace Library704
                 List<string> l1 = Expand(s);  /* expand the other ranges (recursive call) */
                 foreach (string s1 in l1) /* all */
                     foreach (string s2 in l2) /* combinations */
-                        l.Add(s1 + s2 + end); /* join parts and add to final list */            }
+                        l.Add(s1 + s2 + end); /* join parts and add to final list */
+            }
             else
                 l.Add(s); /*no expansion, only one element in list */
-                    return l;
+            return l;
         }
         #region Module file syntax and description 
         /* 
@@ -287,7 +288,7 @@ namespace Library704
         #endregion
         private enum States { before_Module, Module_just_read, after_Module, after_Signals, after_Connect, after_End };
         public Module Load(SortedDictionary<string, int> Links) /* parse text and load as Module */
-        {   
+        {
             /* init return value */
             Module M = null;
 
@@ -337,8 +338,8 @@ namespace Library704
                                 /* create new module with name */
                                 M = new Module(s[1]);
                                 if (Path.GetFileName(filename) != M.Name + ".txt")
-                                { 
-                                    Error(string.Format("wrong filename:{0} vs {1}",Path.GetFileName(filename), M.Name + ".txt"));
+                                {
+                                    Error(string.Format("wrong filename:{0} vs {1}", Path.GetFileName(filename), M.Name + ".txt"));
                                 }
                                 state = States.Module_just_read; /* new state: module Keyword was just read */
                             }
@@ -368,7 +369,7 @@ namespace Library704
                                     S = new Module.Submodule(s[s.Length - 1] == ":" ? null : s[s.Length - 1]);
 
                                     /* index of this submodule in module */
-                                    int SubIndex = M.Submodules.Count;                                    
+                                    int SubIndex = M.Submodules.Count;
                                     if (S.Name == M.Name) /* pindefinition of current module ?*/
                                     {
                                         if (M.thismodule == -1) /* not defined yet */
@@ -388,7 +389,7 @@ namespace Library704
                                             AllPinnames.Add(Pinname); /* collect pinnames */
                                         }
                                     }
-                                   
+
                                 }
                                 else
                                 {
@@ -404,7 +405,7 @@ namespace Library704
                                         Error("invalid Line");
 
                                     /* index of this submodule in module */
-                                    int SubIndex = M.Submodules.Count;                                    
+                                    int SubIndex = M.Submodules.Count;
 
                                     if (S.Name == M.Name) /* pindefinition of current module ?*/
                                     {
@@ -417,7 +418,7 @@ namespace Library704
                                     {
                                         string name = s[i]; /* first part: basename */
                                         if (!int.TryParse(s[i + 1], out int num)) /* second element: Number of pins */
-                                            Error(String.Format("Invalid Number {0}", s[i + 1]));                                        
+                                            Error(String.Format("Invalid Number {0}", s[i + 1]));
                                         for (int j = 1; j <= num; j++) /* for all numbers */
                                         {
                                             string Pinname = Pin_join(name, j); /* join basename with number */
@@ -427,14 +428,14 @@ namespace Library704
                                             SubPins++; /* count pins */
                                             AllPinnames.Add(Pinname); /* collect pinnames */
                                         }
-                                    }                                    
+                                    }
                                 }
                                 S.SetPinNames(AllPinnames); /* set all pinnames of current submodule */
                                 M.Submodules.Add(S);       /* add Submodule to Modul*/
                                 if (S.Name == M.Name)  /* pindefinition of current module ?*/
                                 {
                                     /* create empty signal definitions */
-                                    M.Signals = new string[SubPins]; 
+                                    M.Signals = new string[SubPins];
                                     M.SignalDirections = new Module.Direction[SubPins];
                                     M.NumPins = SubPins;
                                 }
@@ -492,7 +493,7 @@ namespace Library704
                                     Error(string.Format("Unkown Pin {0}", s[2]));
                                 if (T.SubIndex == M.thismodule)
                                 {
-                                    if ( (M.Signals[T.PinIndex] == null || M.Signals[T.PinIndex] != comm))
+                                    if ((M.Signals[T.PinIndex] == null || M.Signals[T.PinIndex] != comm))
                                     {
 
                                         Error("wrong Signal");
@@ -513,15 +514,15 @@ namespace Library704
                                     {
                                         Error("invalid line");
                                     }
-                                    if(Links.ContainsKey(s[0]))
+                                    if (Links.ContainsKey(s[0]))
                                     {
                                         Links[s[0]]++;
-                                    }                                        
+                                    }
                                     else
                                     {
                                         Links[s[0]] = 1;
                                     }
-                                }                                
+                                }
                                 Module.Connection C = new Module.Connection(s[0], F, T);
                                 M.Submodules[F.SubIndex].To[F.PinIndex].Add(C);
                                 M.Submodules[T.SubIndex].From[T.PinIndex].Add(C);
@@ -620,8 +621,8 @@ namespace Library704
             foreach (KeyValuePair<string, Module> Mkvp in Modules)
             {
 
-                bool nocheck = (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM" || Mkvp.Key == "SP"); /* vorerst überspringen */
-                
+                bool nocheck = (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM" || Mkvp.Key == "SP" || Mkvp.Key == "OP"); /* vorerst überspringen */
+
                 bool[][] readpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls aus dem netzwerk liest */
                 bool[][] writepin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls in das netzwerk schreibt */
                 bool[][] ldpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein linedischarge pin ist */
@@ -651,7 +652,7 @@ namespace Library704
                             Console.WriteLine("Module {0} not found", S.Name);
                             Environment.Exit(-1);
                         }
-                        for (int i = 0; i < S.numpins && i<M2.SignalDirections.Length; i++)
+                        for (int i = 0; i < S.numpins && i < M2.SignalDirections.Length; i++)
                         {
                             if (M2.SignalDirections[i] == Module.Direction.undef)
                             {
@@ -662,7 +663,7 @@ namespace Library704
                             }
                             else
                             {
-                                if (S.To[i].Count == 0 && S.From[i].Count == 0 && M2.Signals[i] != ""&&M2.SignalDirections[i]!=Module.Direction.manualinput && M2.SignalDirections[i] != Module.Direction.testpoint && M2.SignalDirections[i] != Module.Direction.connect)
+                                if (S.To[i].Count == 0 && S.From[i].Count == 0 && M2.Signals[i] != "" && M2.SignalDirections[i] != Module.Direction.manualinput && M2.SignalDirections[i] != Module.Direction.testpoint && M2.SignalDirections[i] != Module.Direction.connect)
                                 {
                                     if (!nocheck)
                                         Console.WriteLine("Module {0}: Signal \"{1}\" of Submodule {2} is not used", Mkvp.Key, M2.Signals[i], S.Name);
@@ -691,7 +692,7 @@ namespace Library704
                                 }
                                 else if (M2.SignalDirections[i] == Module.Direction.and)
                                 {
-                                   andpin[j][i] = true;
+                                    andpin[j][i] = true;
                                 }
                                 else if (M2.SignalDirections[i] == Module.Direction.manualinput)
                                 {
@@ -712,7 +713,7 @@ namespace Library704
                                     if (M2.thismodule == j)
                                         openpin[j][i] = true;
                                     else
-                                        connectpin[j][i] = true;                                    
+                                        connectpin[j][i] = true;
                                 }
                             }
                         }
@@ -759,8 +760,17 @@ namespace Library704
                                     }
                                     else
                                     {
-                                        Module ms = Modules[S.Name];
-                                        if (/*ms.Signals[i] != "" &&*/ ms.Signals[i] != null) /* Signal ist definiert?*/
+                                        if (S.Name == null)
+                                        {
+                                            String s = "";
+                                            foreach (string e in H)
+                                                s = e;
+                                            if (!nocheck)
+                                            {
+                                                Console.WriteLine("Module {0}: Pin {1} is not connected", Mkvp.Key, s);
+                                            }
+                                        }
+                                        else if (i< Modules[S.Name].Signals.Length && Modules[S.Name].Signals[i] != null) /* Signal ist definiert?*/
                                         {
                                             String s = "";
                                             foreach (string e in H)
@@ -768,11 +778,10 @@ namespace Library704
                                             if (!nocheck)
                                             {
                                                 Module.Pin P = Mkvp.Value.Pins[s];
-                                                
-                                                    if (!(testpointpin[P.SubIndex] != null && testpointpin[P.SubIndex][P.PinIndex]) &&  /* testpoints und manual inputs dürfen offen sein */
-                                                        !(manualinputpin[P.SubIndex] != null && manualinputpin[P.SubIndex][P.PinIndex])&&
-                                                        !(openpin[P.SubIndex] != null && openpin[P.SubIndex][P.PinIndex]))
-                                                        Console.WriteLine("Module {0}: Pin {1} of {2} is not connected", Mkvp.Key, s, S.Name);
+                                                if (!(testpointpin[P.SubIndex] != null && testpointpin[P.SubIndex][P.PinIndex]) &&  /* testpoints und manual inputs dürfen offen sein */
+                                                    !(manualinputpin[P.SubIndex] != null && manualinputpin[P.SubIndex][P.PinIndex]) &&
+                                                    !(openpin[P.SubIndex] != null && openpin[P.SubIndex][P.PinIndex]))
+                                                    Console.WriteLine("Module {0}: Pin {1} of {2} is not connected", Mkvp.Key, s, S.Name);
                                             }
                                         }
                                     }
@@ -808,20 +817,22 @@ namespace Library704
                                     numtestpoint++;
                                 if (manualinputpin[P.SubIndex] != null && manualinputpin[P.SubIndex][P.PinIndex])
                                     nummanualinput++;
-                                if (openpin[P.SubIndex] !=null && openpin[P.SubIndex][P.PinIndex])
+                                if (openpin[P.SubIndex] != null && openpin[P.SubIndex][P.PinIndex])
                                     numopen++;
                                 if (pinname == "-30V")
                                     numwrite++;
                                 if (pinname == "+10V")
                                     numwrite++;
+                                if (pinname == "+150V")
+                                    numwrite++;
                                 if (pinname == "+40V")
                                     numwrite++;
                                 if (pinname == "40RETURN")
-                                    numread++;
+                                    numwrite++;
                                 s.Append(pinname);
                                 s.Append(' ');
                             }
-                            if (numwrite == 0 && numbus == 0 && numand==0 )
+                            if (numwrite == 0 && numbus == 0 && numand == 0)
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have no signal source", Mkvp.Key, s.ToString());
                             }
@@ -829,11 +840,11 @@ namespace Library704
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have multiple signal sources", Mkvp.Key, s.ToString());
                             }
-                            if (numread == 0 && numbus == 0 && numand==0)
+                            if (numread == 0 && numbus == 0 && numand == 0)
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have no signal sink", Mkvp.Key, s.ToString());
                             }
-                            if ((numbus > 0 || numand>0 ) && numwrite > 0)
+                            if ((numbus > 0 || numand > 0) && numwrite > 0)
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have source and bus pins", Mkvp.Key, s.ToString());
                             }
@@ -845,7 +856,7 @@ namespace Library704
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have multiple line dischargers", Mkvp.Key, s.ToString());
                             }
-                            if(numtestpoint>0)
+                            if (numtestpoint > 0)
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have testpoint", Mkvp.Key, s.ToString());
                             }
@@ -893,27 +904,27 @@ namespace Library704
         }
         private static void Traverse(Module current)
         {
-            current.numused++;
-            if (current.numused > 1)
+            if (current.numused != 0)
                 return;
+            current.numused++;            
             foreach (Module.Submodule sub in current.Submodules)
-                if(sub.Name!=null&&sub.Name!=current.Name)
+                if (sub.Name != null && sub.Name != current.Name)
                     Traverse(Modules[sub.Name]);
         }
         private static void Check4()
         {
             /* check if all modules are used */
             Traverse(Modules["SYSTEM"]);
-            foreach(KeyValuePair<string,Module> kvp in Modules)
+            foreach (KeyValuePair<string, Module> kvp in Modules)
             {
-                if(kvp.Value.numused==0)
+                if (kvp.Value.numused == 0)
                     Console.WriteLine("Module {0} is not used", kvp.Key);
             }
         }
 
         private static void Main(string[] args)
         {
-            SortedDictionary<string,int> Links = new SortedDictionary<string, int>(); /* debug*/
+            SortedDictionary<string, int> Links = new SortedDictionary<string, int>(); /* debug*/
             /* Library of all Modules */
             Modules = new Dictionary<string, Module>();
 

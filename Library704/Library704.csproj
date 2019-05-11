@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="-OR2.txt" />
+    <Content Include="-OR4.txt" />
     <Content Include="2CFOR.txt" />
     <Content Include="2CF.txt" />
     <Content Include="2PCF.txt" />
@@ -94,7 +95,12 @@
     <Content Include="CFT.txt" />
     <Content Include="Filter.txt" />
     <Content Include="Ips.txt" />
+    <Content Include="IR.txt" />
+    <Content Include="KEY3.txt" />
     <Content Include="LT.txt" />
+    <Content Include="PU9202.txt" />
+    <Content Include="REL1.txt" />
+    <Content Include="REL50.txt" />
     <Content Include="REL55.txt" />
     <Content Include="SS1000.txt" />
     <Content Include="SS300.txt" />
@@ -268,6 +274,7 @@
     <Content Include="PU9014.txt" />
     <Content Include="TkL.txt" />
     <Content Include="Tk.txt" />
+    <Content Include="TL.txt" />
     <Content Include="TRIRO.txt" />
     <Content Include="TRNMs.txt" />
     <Content Include="TRI.txt" />

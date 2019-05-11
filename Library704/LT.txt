@@ -1,6 +1,7 @@
-﻿.Module LT  // 48V Liter
-LI : LT
+﻿.Module LT  // 48V Lite
+LT_A LT_B : LT
 .Signals
-I LI
+I LT_A 
+I LT_B 
 .Connect
 .End

@@ -1,0 +1,12 @@
+﻿.Module REL50
+PUA PUB AUOP AUNO AUNC ALOP ALNO  : REL50
+.Signals
+I PUA
+I PUB
+I AUOP 
+O AUNO 
+O AUNC 
+I ALOP 
+O ALNO
+.Connect
+.End

@@ -1,0 +1,7 @@
+﻿.Module REL1
+R1-2OP R1-2NO : REL1
+.Signals
+I R1-2OP 
+O R1-2NO 
+.Connect
+.End
