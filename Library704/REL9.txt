@@ -1,0 +1,11 @@
+﻿.Module REL9 // MEM DISPLAY
+R9-P1 R9-P2 R9-2OP R9-2NC R9-2NO : REL9
+.Signals
+I R9-P1
+I R9-P2
+I R9-2OP 
+O R9-2NC
+O R9-2NO 
+.Connect
+
+.End

@@ -1,0 +1,14 @@
+﻿.Module REL7
+R7-P1 R7-P2 R7-2NC R7-2OP R7-3OP  R7-3NO R7-3NC R7-4NO R7-4OP  : REL7 
+.Signals
+I R7-P1
+I R7-P2
+I R7-2NC
+O R7-2OP 
+O R7-3OP 
+I R7-3NO 
+I R7-3NC
+I R7-4NO 
+B R7-4OP
+.Connect
+.End

@@ -1,6 +1,0 @@
-﻿.Module NEON
-NI : NEON
-.Signals
-I NI
-.Connect
-.End

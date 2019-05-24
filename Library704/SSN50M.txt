@@ -1,0 +1,7 @@
+﻿.Module SSN50M // Single shot Negative pulse
+Input Output : SSN50M
+.Signals
+I Input
+O Output
+.Connect
+.End

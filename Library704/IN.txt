@@ -1,0 +1,7 @@
+﻿.Module IN  // Neon Inverter
+Input Output : IN
+.Signals
+I Input
+O Output
+.Connect
+.End

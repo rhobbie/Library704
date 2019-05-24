@@ -1,0 +1,7 @@
+﻿.Module TB	// Schmitt Trigger
+Input Output : TB
+.Signals
+I Input
+O Output
+.Connect
+.End

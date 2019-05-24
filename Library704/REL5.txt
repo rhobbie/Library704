@@ -1,0 +1,12 @@
+﻿.Module REL5
+R5-P1 R5-P2 R5-1OP R5-1NO R5-1NC R5-2OP R5-2NO : REL5
+.Signals
+I R5-P1 
+I R5-P2 
+I R5-1OP 
+B R5-1NO 
+O R5-1NC 
+I R5-2NO 
+O R5-2OP 
+.Connect
+.End

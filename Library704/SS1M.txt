@@ -1,0 +1,7 @@
+﻿.Module SS1M // Single shot
+Input Output : SS1M
+.Signals
+I Input
+O Output
+.Connect
+.End

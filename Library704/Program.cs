@@ -6,7 +6,7 @@ namespace Library704
 {
     internal class Module
     {
-        public enum Direction { undef, input, output, linedischarge, bus, and, manualinput, testpoint, connect };
+        public enum Direction { undef, input, output, linedischarge, bus, and, manualinput, testpoint, connect,notused };
         public string Name;  /* Name of Module */
         public Dictionary<string, Pin> Pins; /* all pins of module: pins of current module, connectins pins and pins of all submodules */
         public List<Submodule> Submodules; /* All submodule, including current Module and connections pins */
@@ -306,7 +306,7 @@ namespace Library704
                 if (state == States.Module_just_read) /* was the .Module Keyword just read? */
                 {
                     /* auto add Voltage pins */
-                    rl = "0V +220V +150V +10V -100V -30V -250V +15V +40V 40RETURN :";
+                    rl = "0V +220V +150V +10V -100V -30V -250V +15V +40V 40RETURN +150RELAY :";
                     state = States.after_Module; /* now parse content of .Module section */
                 }
                 else
@@ -446,7 +446,7 @@ namespace Library704
                                 state = States.after_Connect;
                             else
                             {
-                                if (s.Length >= 2 && (s[0] == "I" || s[0] == "O" || s[0] == "B" || s[0] == "LD" || s[0] == "A" || s[0] == "M" || s[0] == "T" || s[0] == "C") && M.Pins.TryGetValue(s[1], out Module.Pin su) && su.SubIndex == M.thismodule)
+                                if (s.Length >= 2 && (s[0] == "I" || s[0] == "O" || s[0] == "B" || s[0] == "LD" || s[0] == "A" || s[0] == "M" || s[0] == "T" || s[0] == "C" || s[0] == "N") && M.Pins.TryGetValue(s[1], out Module.Pin su) && su.SubIndex == M.thismodule)
                                 {
                                     int p = su.PinIndex;
                                     int i = rl.IndexOf(s[1]);
@@ -474,6 +474,8 @@ namespace Library704
                                         d = Module.Direction.testpoint;
                                     else if (s[0] == "C")
                                         d = Module.Direction.connect;
+                                    else if (s[0] == "N")
+                                        d = Module.Direction.notused;
                                     M.SignalDirections[p] = d;
                                 }
                                 else
@@ -715,6 +717,8 @@ namespace Library704
                                     else
                                         connectpin[j][i] = true;
                                 }
+                                else if (M2.SignalDirections[i] == Module.Direction.notused)
+                                    openpin[j][i] = true;
                             }
                         }
                     }
@@ -825,9 +829,13 @@ namespace Library704
                                     numwrite++;
                                 if (pinname == "+150V")
                                     numwrite++;
+                                if (pinname == "+150RELAY")
+                                    numwrite++;
                                 if (pinname == "+40V")
                                     numwrite++;
                                 if (pinname == "40RETURN")
+                                    numwrite++;
+                                if (pinname == "0V")
                                     numwrite++;
                                 s.Append(pinname);
                                 s.Append(' ');
@@ -866,7 +874,7 @@ namespace Library704
                             }
                             if (numopen > 0)
                             {
-                                Console.WriteLine("Module {0}: Connected  pins {1}have wrong connect pin", Mkvp.Key, s.ToString());
+                                Console.WriteLine("Module {0}: Connected  pins {1}have invalid pin", Mkvp.Key, s.ToString());
                             }
                         }
                     }

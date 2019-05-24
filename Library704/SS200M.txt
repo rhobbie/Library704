@@ -1,0 +1,7 @@
+﻿.Module SS200M // Single shot
+Input Output : SS200M
+.Signals
+I Input
+O Output
+.Connect
+.End
