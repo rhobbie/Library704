@@ -95,8 +95,10 @@
     <Content Include="BUTTON.txt" />
     <Content Include="BUTTON_TB.txt" />
     <Content Include="BUTTON_T.txt" />
+    <Content Include="CFM.txt" />
     <Content Include="CFT.txt" />
     <Content Include="CE.txt" />
+    <Content Include="DLdot05.txt" />
     <Content Include="Filter.txt" />
     <Content Include="IN.txt" />
     <Content Include="IpsA.txt" />
@@ -109,6 +111,7 @@
     <Content Include="PU9032.txt" />
     <Content Include="PU9146.txt" />
     <Content Include="PU9147.txt" />
+    <Content Include="PU9150.txt" />
     <Content Include="PU9183.txt" />
     <Content Include="PU9202.txt" />
     <Content Include="REL1.txt" />

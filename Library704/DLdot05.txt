@@ -1,0 +1,8 @@
+﻿.Module DLdot05
+A 3 DLdot05
+.Signals
+I A1
+I A2
+O A3
+.Connect
+.End
