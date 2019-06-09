@@ -1,0 +1,9 @@
+﻿.Module 8_05_03 // 8.05.03 Cycle Timer Ctrl Tgr
+8_05_03_A1 : 8_05_03 
+.Signals
+I 8_05_03_A1 M INST TIME MANUAL CNTL
+
+.Connect
+1MEG 8_05_03_A1 0V // M INST TIME MANUAL CNTL
+
+.End

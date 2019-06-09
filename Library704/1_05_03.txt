@@ -1,0 +1,7 @@
+﻿.Module 1_05_03 // 1.05.03 Pulse Gen II
+1_05_03_A1 : 1_05_03
+.Signals
+O 1_05_03_A1 A0(D1)
+.Connect
+W -30V 1_05_03_A1 // A0(D1)
+.End

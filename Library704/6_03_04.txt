@@ -1,0 +1,10 @@
+﻿.Module 6_03_04 // 6.03.04 ETT trigger
+6_03_04_A[1-2] : 6_03_04 
+.Signals
+I 6_03_04_A1 ER0(D4)
+I 6_03_04_A2 ER9(D1)
+
+.Connect
+1MEG 6_03_04_A1 0V // ER0(D4)
+1MEG 6_03_04_A2 0V //ER9(D1)
+.End

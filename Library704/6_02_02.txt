@@ -1,0 +1,7 @@
+﻿.Module 6_02_02 // 6.02.02  Tape  Control
+6_02_02_A1 : 6_02_02
+.Signals
+I 6_02_02_A1 PRI OPN [70] COPY(&SKIP)
+.Connect
+1MEG 6_02_02_A1 0V // PRI OPN [70] COPY(&SKIP)
+.End

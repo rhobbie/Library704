@@ -1,0 +1,10 @@
+﻿.Module 6_03_03 // 6.03.03 Tape Redn Ctr
+6_03_03_A[1-2] : 6_03_03 
+.Signals
+I 6_03_03_A1 MQ REG (S) OUTPUT TO TAPE RDN CTR
+O 6_03_03_A2 TAPE -> MQ
+
+.Connect
+1MEG 6_03_03_A1 0V // MQ REG (S) OUTPUT TO TAPE RDN CTR
+W -30V 6_03_03_A2 // TAPE -> MQ
+.End

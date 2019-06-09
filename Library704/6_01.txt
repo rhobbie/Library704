@@ -1,0 +1,8 @@
+﻿.Module 6_01 // 6.01 Tape Sync Sel
+
+6_01_A1 : 6_01
+.Signals
+I 6_01_A1 INTERLOCK RESET
+.Connect
+1MEG 6_01_A1 0V // INTERLOCK RESET
+.End

@@ -1,0 +1,15 @@
+.Module 5_08_01 // 5.08.01 Clock Pulse Ckts
+5_08_01_A[1-4] : 5_08_01
+.Signals
+O 5_08_01_A1 ER TIME
+O 5_08_01_A2 A11(D1)
+O 5_08_01_A3 ER2(D1)
+O 5_08_01_A4 I11(D1)
+
+.Connect
+W -30V 5_08_01_A1  // ER TIME
+W -30V 5_08_01_A2 // A11(D1)
+W -30V 5_08_01_A3 // ER2(D1)
+W -30V 5_08_01_A4 // I11(D1)
+
+.End

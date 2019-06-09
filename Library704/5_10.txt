@@ -1,0 +1,14 @@
+﻿.Module 5_10 // 5.10 MQ Read In and Reset Ckts
+
+5_10_A[1-3] : 5_10
+
+.Signals
+O 5_10_A1 CLEAR MQ REG
+O 5_10_A2 I/O BUS (S-35) -> MQ
+I 5_10_A3 RESET INST CTR AND ADR REG ON LOAD
+
+.Connect
+W -30V 5_10_A1 // CLEAR MQ REG
+W -30V 5_10_A2 // I/O BUS (S-35) -> MQ
+1MEG 5_10_A3 0V // RESET INST CTR AND ADR REG ON LOAD
+.End

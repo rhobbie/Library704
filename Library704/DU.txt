@@ -1,9 +1,7 @@
 .Module DU	
-Sync Input Clamp Output Unpowered_Output : DU		
+Input Output Unpowered_Output : DU		
 .Signals
-I Sync
 I Input
-I Clamp
 I Unpowered_Output
 O Output
 .Connect

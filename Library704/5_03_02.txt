@@ -1,0 +1,8 @@
+﻿.Module 5_03_02  // 5.03.02 Enter Execute
+5_03_02_A1 : 5_03_02
+.Signals
+I 5_03_02_A1 PRI OPN [70] COPY(&SKIP)
+.Connect
+1MEG 5_03_02_A1 0V // PRI OPN [70] COPY(&SKIP)
+.End
+

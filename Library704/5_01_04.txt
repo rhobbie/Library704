@@ -1,0 +1,10 @@
+﻿.Module 5_01_04 // 5.01.04 I/O Selection Intlk
+5_01_04_A1 : 5_01_04
+
+.Signals
+O 5_01_04_A1 IO INTERLOCK
+
+.Connect
+W -30V 5_01_04_A1 // IO INTERLOCK
+
+.End

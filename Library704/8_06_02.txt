@@ -1,0 +1,10 @@
+﻿.Module 8_06_02
+8_06_02_A1 : 8_06_02
+
+.Signals
+I 8_06_02_A1 OPERATORS RESET LINE
+
+.Connect
+1MEG 8_06_02_A1 0V // OPERATORS RESET LINE
+
+.End

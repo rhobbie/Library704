@@ -1,0 +1,17 @@
+﻿.Module 8_03  // 8.03 Cycle Timer Mixing Ckts
+8_03_A[1-4] : 8_03
+
+.Signals
+O 8_03_A1 A1(D1)
+O 8_03_A2 I1(D1)
+O 8_03_A3 A2(D1)
+O 8_03_A4 E TIME
+
+.Connect
+W -30V 8_03_A1 // A1(D1)
+W -30V 8_03_A2 // I1(D1)
+W -30V 8_03_A3 // A2(D1)
+W -30V 8_03_A4 // E TIME
+
+.End
+

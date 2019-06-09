@@ -1,0 +1,13 @@
+﻿.Module 5_08_04 // 5.08.04 Clock Pulse Ckts
+
+5_08_04_A[1-2] : 5_08_04
+
+.Signals
+O 5_08_04_A1 A10(D5)
+O 5_08_04_A2 MINUS ON A10(D5)
+
+.Connect
+W -30V 5_08_04_A1 // A10(D5)
+W +10V 5_08_04_A2 // MINUS ON A10(D5)
+
+.End

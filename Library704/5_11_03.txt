@@ -1,0 +1,7 @@
+﻿.Module 5_11_03 // 5.11.03 Read-Write Disconnect Gate
+5_11_03_A1 : 5_11_03 
+.Signals
+I 5_11_03_A1 PRI OPN [70] COPY(&SKIP)
+.Connect
+1MEG 5_11_03_A1 0V // PRI OPN [70] COPY(&SKIP)
+.End

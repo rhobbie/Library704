@@ -1,0 +1,7 @@
+﻿.Module 5_06 // 5.06 End Op
+5_06_A1 : 5_06
+.Signals
+B 5_06_A1 END OPN I/O CNTL (CF OR CKT)
+.Connect
+1MEG 5_06_A1 -30V // END OPN I/O CNTL (CF OR CKT)
+.End

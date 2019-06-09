@@ -74,20 +74,17 @@ namespace Library704
             }
         }
     }
-
     internal class ModuleLoader : IDisposable
     {
         private StreamReader fi;
         private int line;
         private readonly string filename;
-
         public ModuleLoader(string path)
         {
             filename = path;
             fi = new StreamReader(path);
             line = 0;
         }
-
         private void Error(string s)
         {
             Console.WriteLine("{0},{1}:{2}", filename, line, s);
@@ -100,7 +97,6 @@ namespace Library704
                 return fi.EndOfStream;
             }
         }
-
         private static string Pin_join(string pin, int num) /* join basename with number */
         {
             StringBuilder s = new StringBuilder(pin);
@@ -109,7 +105,6 @@ namespace Library704
             s.Append(num.ToString());
             return s.ToString();
         }
-
         private List<string> Create_elem(string from, string to) /* replaces a range into a list by counting from 'from' to 'to'*/
         {
             List<string> l = new List<string>();
@@ -153,7 +148,6 @@ namespace Library704
                 Error("invalid range");
             return l;
         }
-
         private List<string> Expand(string s) /* expand pindefs*/
         {
             List<string> l = new List<string>();
@@ -377,7 +371,8 @@ namespace Library704
                                         else
                                             Error("Duplicate Module Pin definitions");
                                     }
-                                    for (int i = 0; s[i] != ":"; i++) /* for all pindefs */
+                                    int i;
+                                    for (i = 0; s[i] != ":"; i++) /* for all pindefs */
                                     {
                                         List<string> Pinnames = Expand(s[i]); /* expand pindefs*/
                                         foreach (string Pinname in Pinnames) /* for all pins of current pindef */
@@ -389,6 +384,8 @@ namespace Library704
                                             AllPinnames.Add(Pinname); /* collect pinnames */
                                         }
                                     }
+                                    if(i<s.Length-2)
+                                        Error("Wrong : in Pin definitions");
 
                                 }
                                 else
@@ -417,6 +414,8 @@ namespace Library704
                                     for (int i = 0; i < s.Length - 1; i += 2)  /* for all numbered pin definitions */
                                     {
                                         string name = s[i]; /* first part: basename */
+                                        if(name==":")
+                                            Error("Wrong : in Pin definitions");
                                         if (!int.TryParse(s[i + 1], out int num)) /* second element: Number of pins */
                                             Error(String.Format("Invalid Number {0}", s[i + 1]));
                                         for (int j = 1; j <= num; j++) /* for all numbers */
@@ -555,11 +554,9 @@ namespace Library704
             }
         }
     }
-
     internal class Program
     {
         private static Dictionary<string, Module> Modules;
-
         private static HashSet<string> GetConnectedPins(Module M, int SubIndex, int PinIndex, bool[][] VisitedPins)
         {
             if (VisitedPins[SubIndex][PinIndex]) /* Schon besucht? */
@@ -587,7 +584,6 @@ namespace Library704
                 }
             return x;
         }
-
         private static void Check1()
         {
             foreach (KeyValuePair<string, Module> Mkvp in Modules)
@@ -613,7 +609,6 @@ namespace Library704
             }
 
         }
-
         private static void Check2()
         {
             /* Prüfe: */
@@ -623,8 +618,8 @@ namespace Library704
             foreach (KeyValuePair<string, Module> Mkvp in Modules)
             {
 
-                bool nocheck = (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM" || Mkvp.Key == "SP" || Mkvp.Key == "OP"); /* vorerst überspringen */
-
+               bool nocheck =  (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM" || Mkvp.Key == "SP" || Mkvp.Key == "OP"); /* vorerst überspringen */
+              //  bool nocheck = Mkvp.Key == "SP";
                 bool[][] readpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls aus dem netzwerk liest */
                 bool[][] writepin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls in das netzwerk schreibt */
                 bool[][] ldpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein linedischarge pin ist */
@@ -665,7 +660,7 @@ namespace Library704
                             }
                             else
                             {
-                                if (S.To[i].Count == 0 && S.From[i].Count == 0 && M2.Signals[i] != "" && M2.SignalDirections[i] != Module.Direction.manualinput && M2.SignalDirections[i] != Module.Direction.testpoint && M2.SignalDirections[i] != Module.Direction.connect)
+                                if (S.To[i].Count == 0 && S.From[i].Count == 0 && M2.Signals[i] != "" && M2.SignalDirections[i] != Module.Direction.manualinput && M2.SignalDirections[i] != Module.Direction.testpoint && M2.SignalDirections[i] != Module.Direction.connect && M2.SignalDirections[i] != Module.Direction.notused)
                                 {
                                     if (!nocheck)
                                         Console.WriteLine("Module {0}: Signal \"{1}\" of Submodule {2} is not used", Mkvp.Key, M2.Signals[i], S.Name);
@@ -882,7 +877,6 @@ namespace Library704
                 }
             }
         }
-
         private static void Check3()
         {
             /* check if power supply or filament power pins are used for signals on PU */
@@ -929,7 +923,6 @@ namespace Library704
                     Console.WriteLine("Module {0} is not used", kvp.Key);
             }
         }
-
         private static void Main(string[] args)
         {
             SortedDictionary<string, int> Links = new SortedDictionary<string, int>(); /* debug*/
@@ -973,7 +966,6 @@ namespace Library704
             }
 #endif
         }
-
     }
 }
 
