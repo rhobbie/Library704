@@ -1,8 +1,0 @@
-﻿.Module TRNM
-LH_Grid RH_Grid RH_Divider_Junction : TRNM
-.Signals
-I LH_Grid
-I RH_Grid
-O RH_Divider_Junction
-.Connect
-.End

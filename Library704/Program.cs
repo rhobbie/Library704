@@ -6,14 +6,14 @@ namespace Library704
 {
     internal class Module
     {
-        public enum Direction { undef, input, output, linedischarge, bus, and, manualinput, testpoint, connect,notused };
+        public enum Direction { undef, input, output, linedischarge, bus, and, manualinput, testpoint, connect,notused }; /* signal directinon for a pin */
         public string Name;  /* Name of Module */
         public Dictionary<string, Pin> Pins; /* all pins of module: pins of current module, connectins pins and pins of all submodules */
-        public List<Submodule> Submodules; /* All submodule, including current Module and connections pins */
+        public List<Submodule> Submodules; /* All submodules, including current Module and connections pins */
         public int thismodule; /* index of current module in submodules List (for Pindefinition of current Module), or -1 if not yet defined */
         public int NumPins; /* number of pins of this module,without submodules and without connection pins */
         public string[] Signals; /* all singnals, or null if pin is not signal*/
-        public Direction[] SignalDirections;
+        public Direction[] SignalDirections; /* signal directions for the elements of Signals[] */
         public int numused; /* counts how often this module is used */
         public Module(string N)
         {
@@ -31,11 +31,11 @@ namespace Library704
                 PinIndex = P;
             }
             public string Name; /* Name of the pins */
-            public int SubIndex;  /* Index of submoduls to that the pin belong */
+            public int SubIndex;  /* Index of submodul to that the pin belong */
             public int PinIndex; /* Index of the pin in the submodule */
         }
         public class Connection
-        {   /* eine Connection in a Module*/
+        {   /* one connection in a module*/
             public Connection(string V, Pin F, Pin T)
             {
                 Value = V;
@@ -60,7 +60,7 @@ namespace Library704
                 else
                     Name = S;
             }
-            public void SetPinNames(List<string> AllPinNames) /* add pins */
+            public void SetPinNames(List<string> AllPinNames) /* set pins */
             {
                 numpins = AllPinNames.Count; /* store number of Pins */
                 To = new List<Module.Connection>[numpins];   /* create connections */
@@ -280,7 +280,7 @@ namespace Library704
             */
 
         #endregion
-        private enum States { before_Module, Module_just_read, after_Module, after_Signals, after_Connect, after_End };
+        private enum States { before_Module, Module_just_read, after_Module, after_Signals, after_Connect, after_Logic, after_End }; /* states for module loader */
         public Module Load(SortedDictionary<string, int> Links) /* parse text and load as Module */
         {
             /* init return value */
@@ -309,7 +309,7 @@ namespace Library704
                     rl = fi.ReadLine();
                     line++;
                 }
-                /* position  of comment in line*/
+                /* position of comment in line*/
                 int ci = rl.IndexOf("//");
                 /* for comment part of line */
                 string comm = "";
@@ -331,7 +331,7 @@ namespace Library704
                             {
                                 /* create new module with name */
                                 M = new Module(s[1]);
-                                if (Path.GetFileName(filename) != M.Name + ".txt")
+                                if (Path.GetFileName(filename) != M.Name + ".txt") /* check if filename matches with modulename */
                                 {
                                     Error(string.Format("wrong filename:{0} vs {1}", Path.GetFileName(filename), M.Name + ".txt"));
                                 }
@@ -443,6 +443,8 @@ namespace Library704
                         case States.after_Signals:
                             if (s.Length == 1 && s[0] == ".Connect")
                                 state = States.after_Connect;
+                            else if (s.Length == 1 && s[0] == ".Logic")
+                                state = States.after_Logic;
                             else
                             {
                                 if (s.Length >= 2 && (s[0] == "I" || s[0] == "O" || s[0] == "B" || s[0] == "LD" || s[0] == "A" || s[0] == "M" || s[0] == "T" || s[0] == "C" || s[0] == "N") && M.Pins.TryGetValue(s[1], out Module.Pin su) && su.SubIndex == M.thismodule)
@@ -530,6 +532,10 @@ namespace Library704
                             }
                             else
                                 Error("invalid Line");
+                            break;
+                        case States.after_Logic:
+                            if (s.Length == 1 && s[0] == ".End")
+                                state = States.after_End;
                             break;
                     }
             }

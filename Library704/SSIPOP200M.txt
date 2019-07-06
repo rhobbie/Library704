@@ -1,0 +1,34 @@
+﻿.Module SSIPOP200M // Single shot
+InputPos OutputPos Clock32768 : SSIPOP200M
+.Signals
+I InputPos
+O OutputPos
+I Clock32768
+
+.Logic
+
+wire State;
+wire[2:0] Cnt;
+
+initial State=0;
+
+always @(posedge Clock32768)
+begin
+if(State)
+{
+  Cnt++;
+  if(Cnt>=6)
+  {
+     State=0;
+  }
+}
+end
+
+always @(posedge InputPos)
+begin
+  Cnt=0;
+  State=1;  
+end
+
+assign OutputPos=State;
+.End

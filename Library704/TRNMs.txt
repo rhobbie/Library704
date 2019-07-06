@@ -1,8 +1,0 @@
-﻿.Module TRNMs // Slow Speed Trigger
-INL INR OUTR : TRNMs
-.Signals
-I INL 
-I INR 
-O OUTR
-.Connect
-.End

@@ -1,0 +1,35 @@
+﻿.Module TLGPRGPERGPMx
+LH_GridPos RH_GridPosEdge RH_GridPos Manual_On Manual_Off Reset LH_Divider_Junction RH_Divider_Junction : TLGPRGPERGPMx
+
+.Signals
+I LH_GridPos
+I RH_GridPosEdge
+I RH_GridPos
+I Manual_On
+I Manual_Off
+I Reset
+O LH_Divider_Junction
+O RH_Divider_Junction
+
+.Logic
+reg State;
+
+initial State=0;
+
+always @(LH_GridPos, RH_GridPos,Reset)
+begin
+    if(RH_GridPos||Reset)
+        assign State=0;    
+    else if(LH_GridPos) 
+        assign State=1;
+    else
+        deassign State;
+end
+
+always @(posedge RH_GridPosEdge) 
+   State=0;
+
+assign RH_Divider_Junction=State;
+assign LH_Divider_Junction=!State;
+
+.End

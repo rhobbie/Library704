@@ -3,5 +3,6 @@ Input Output : CFOR
 .Signals
 I Input
 B Output
-.Connect
+.Logic
+assign Output = Input;
 .End

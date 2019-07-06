@@ -4,5 +4,6 @@ A 3 -OR2
 I A1
 I A2
 O A3
-.Connect
+.Logic
+assign A3 = A1 && A2;
 .End

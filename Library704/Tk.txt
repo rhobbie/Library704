@@ -5,5 +5,18 @@ I INL
 I INR 
 O OUTL 
 O OUTR
-.Connect
+.Logic
+reg State;
+
+initial State=0;
+
+always @(INL or INR)
+begin
+    if(INR)
+        State=0;    
+    else if(INL) 
+        State=1;
+end
+assign OUTR=State;
+assign OUTL=!State;
 .End

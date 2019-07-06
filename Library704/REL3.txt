@@ -1,20 +1,40 @@
 ﻿.Module REL3
-R3-PU1A R3-PU1B R3-HA R3-HB R3-4NC R3-4NO R3-4OP R3-5NC R3-5NO R3-5OP R3-6NC R3-6NO R3-6OP R3-7NO R3-7OP : REL3
+R3_PU1A R3_PU1B R3_HA R3_HB R3_4NC R3_4NO R3_4OP R3_5NC R3_5NO R3_5OP R3_6NC R3_6NO R3_6OP R3_7NO R3_7OP : REL3
 .Signals
-I R3-PU1A 
-I R3-PU1B 
-I R3-HA 
-I R3-HB
-I R3-4NC 
-I R3-4NO 
-O R3-4OP
-I R3-5NC
-I R3-5NO
-O R3-5OP
-I R3-6NC 
-I R3-6NO
-O R3-6OP
-I R3-7NO 
-O R3-7OP
-.Connect
+I R3_PU1A 
+I R3_PU1B 
+I R3_HA 
+I R3_HB
+I R3_4NC 
+I R3_4NO 
+O R3_4OP
+I R3_5NC
+I R3_5NO
+O R3_5OP
+I R3_6NC 
+I R3_6NO
+O R3_6OP
+I R3_7NO 
+O R3_7OP
+.Logic
+reg State;
+wire PU,H;
+
+initial State=0;
+
+assign PU=R3_PU1A && !R3_PU1B;
+assign H=R3_HA && !R3_HB;
+
+always @(PU,H) 
+begin
+if(PU)
+  State=1;
+else if(!H)
+  State=0;
+end
+
+assign R3_4OP = (R3_4NO&&State)||(R3_4NC&&!State) ;
+assign R3_5OP = (R3_5NO&&State)||(R3_5NC&&!State) ;
+assign R3_6OP = (R3_6NO&&State)||(R3_6NC&&!State) ;
+assign R3_7OP = R3_7NO&&State;
 .End

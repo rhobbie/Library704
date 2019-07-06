@@ -12,5 +12,12 @@ I R50BUOP
 O R50BUNC
 I R50BLOP
 O R50BLNO
-.Connect
+.Logic
+wire State;
+assign State=R50PUA && !R50PUB;
+assign R50AUNO=R50AUOP && State; 
+assign R50AUNC=R50AUOP && !State; 
+assign R50ALNO=R50ALOP && State; 
+assign R50BUNC=R50BUOP && !State; 
+assign R50BLNO=R50BLOP && State;
 .End

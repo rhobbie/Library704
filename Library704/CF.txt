@@ -3,5 +3,6 @@ Input Output : CF
 .Signals
 I Input
 O Output
-.Connect
+.Logic
+assign Output = Input;
 .End

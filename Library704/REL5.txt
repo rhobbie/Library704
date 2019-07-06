@@ -1,12 +1,17 @@
 ﻿.Module REL5
-R5-P1 R5-P2 R5-1OP R5-1NO R5-1NC R5-2OP R5-2NO : REL5
+R5_P1 R5_P2 R5_1OP R5_1NO R5_1NC R5_2OP R5_2NO : REL5
 .Signals
-I R5-P1 
-I R5-P2 
-I R5-1OP 
-B R5-1NO 
-O R5-1NC 
-I R5-2NO 
-O R5-2OP 
-.Connect
+I R5_P1 
+I R5_P2 
+I R5_1OP 
+B R5_1NO 
+O R5_1NC 
+I R5_2NO 
+O R5_2OP 
+.Logic
+wire State;
+assign State=R5_P1 && !R5_P2;
+assign R5_1NO=R5_1OP && State;
+assign R5_1NC=R5_1OP && !State;
+assign R5_2OP=R5_2NO && State;
 .End

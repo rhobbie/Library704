@@ -11,5 +11,6 @@ I A7
 I A8
 I A9
 O A10
-.Connect
+.Logic
+assign A10 = A1 || A2 || A3 || A4 || A5 || A6 || A7 || A8 || A9;
 .End

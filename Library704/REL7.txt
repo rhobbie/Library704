@@ -1,14 +1,19 @@
 ﻿.Module REL7
-R7-P1 R7-P2 R7-2NC R7-2OP R7-3OP  R7-3NO R7-3NC R7-4NO R7-4OP  : REL7 
+R7_P1 R7_P2 R7_2NC R7_2OP R7_3OP  R7_3NO R7_3NC R7_4NO R7_4OP  : REL7 
 .Signals
-I R7-P1
-I R7-P2
-I R7-2NC
-O R7-2OP 
-O R7-3OP 
-I R7-3NO 
-I R7-3NC
-I R7-4NO 
-B R7-4OP
-.Connect
+I R7_P1
+I R7_P2
+I R7_2NC
+O R7_2OP 
+O R7_3OP 
+I R7_3NO 
+I R7_3NC
+I R7_4NO 
+B R7_4OP
+.Logic
+wire State;
+assign State=R7_P1 && !R7_P2;
+assign R7_2OP=R7_2NC&&!State;
+assign R7_3OP=(R7_3NO&&State)||(R7_3NC&&!State);
+assign R7_4OP=R7_4NO&&State;
 .End

@@ -1,0 +1,30 @@
+﻿.Module TLGNELGPEx	
+LH_GridNegEdge LH_GridPosEdge Reset LH_Divider_Junction RH_Divider_Junction : TLGNELGPEx
+
+.Signals
+I LH_GridNegEdge
+I LH_GridPosEdge
+I Reset
+O LH_Divider_Junction
+O RH_Divider_Junction
+.Logic
+reg State;
+
+initial State=0;
+
+always @(Reset)
+if(Reset)
+  assign State=0;
+else
+  deassign State;
+
+always @(negedge LH_GridNegEdge) 
+   State=0;
+   
+always @(posedge LH_GridPosEdge)
+   State=1;
+
+assign RH_Divider_Junction=State;
+assign LH_Divider_Junction=!State;
+
+.End

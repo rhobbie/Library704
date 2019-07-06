@@ -1,23 +1,46 @@
-﻿.Module REL11 // LOAD DRUM - DISP. XR B
-R11-P1 R11-P2 R11-H1 R11-H2 R11-1OP R11-1NO R11-2NC R11-2OP R11-3NC R11-3OP R11-4OP R11-4NO R11-5OP R11-5NO R11-5NC R11-6OP R11-6NO : REL11
+﻿.Module REL11 // LOAD DRUM _ DISP. XR B
+R11_P1 R11_P2 R11_H1 R11_H2 R11_1OP R11_1NO R11_2NC R11_2OP R11_3NC R11_3OP R11_4OP R11_4NO R11_5OP R11_5NO R11_5NC R11_6OP R11_6NO : REL11
 .Signals
-I R11-P1
-I R11-P2 
-I R11-H1 
-I R11-H2
-I R11-1OP 
-O R11-1NO
-I R11-2NC
-O R11-2OP
-I R11-3NC 
-O R11-3OP 
-I R11-4OP 
-B R11-4NO 
-I R11-5OP 
-O R11-5NO 
-O R11-5NC
-I R11-6OP 
-O R11-6NO
-.Connect
+I R11_P1
+I R11_P2 
+I R11_H1 
+I R11_H2
+I R11_1OP 
+O R11_1NO
+I R11_2NC
+O R11_2OP
+I R11_3NC 
+O R11_3OP 
+I R11_4OP 
+B R11_4NO 
+I R11_5OP 
+O R11_5NO 
+O R11_5NC
+I R11_6OP 
+O R11_6NO
+.Logic
+reg State;
+wire PU,H;
+
+initial State=0;
+
+assign PU=R11_P1 && !R11_P2;
+assign H=R11_H1 && !R11_H2;
+
+always @(PU,H) 
+begin
+if(PU)
+  State=1;
+else if(!H)
+  State=0;
+end
+
+assign R11_1NO=R11_1OP && State; 
+assign R11_2OP=R11_2NC && !State; 
+assign R11_3OP=R11_3NC && !State;  
+assign R11_4NO=R11_4OP && State; 
+assign R11_5NO=R11_5OP && State; 
+assign R11_5NC=R11_5OP && !State; 
+assign R11_6NO=R11_6OP && State; 
 
 .End

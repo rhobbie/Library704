@@ -1,0 +1,22 @@
+﻿.Module TLGPRGPMLDNR
+LH_GridPos RH_GridPos Manual_On Manual_Off  LH_Divider_Junction : TLGPRGPMLDNR
+.Signals
+I LH_GridPos
+I RH_GridPos
+I Manual_On
+I Manual_Off
+O LH_Divider_Junction
+.Logic
+reg State;
+
+initial State=0;
+
+always @(LH_GridPos or RH_GridPos)
+begin
+    if(RH_GridPos)
+        State=0;    
+    else if(LH_GridPos) 
+        State=1;
+end
+assign LH_Divider_Junction=!State;
+.End

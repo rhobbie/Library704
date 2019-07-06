@@ -6,5 +6,11 @@ I R61P2
 I R61AOP 
 O R61ANO 
 O R61ANC
-.Connect
+.Logic
+wire State;
+assign State=R61P1 && !R61P2;
+
+assign R61ANO = R61AOP && State
+assign R61ANC = R61AOP && !State
+
 .End

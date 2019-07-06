@@ -1,7 +1,12 @@
 ﻿.Module D	// Microsecond Delay Unit  B101
-Input Output : D		// 1=Sync 2=Input 3=Clamp 4=Output
+Input Output Clock : D		
 .Signals
 I Input
 O Output
-.Connect
+I Clock
+.Logic
+reg State;
+initial State=0;
+always @(posedge Clock) State=Input;
+assign Output=State;
 .End

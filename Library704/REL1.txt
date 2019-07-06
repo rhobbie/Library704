@@ -1,17 +1,38 @@
 ﻿.Module REL1
-R1-PU1A R1-PU1B R1-HA R1-HB  R1-1NO R1-1NC R1-1OP R1-2OP R1-2NO R1-4OP R1-4NO : REL1
+R1_PU1A R1_PU1B R1_HA R1_HB  R1_1NO R1_1NC R1_1OP R1_2OP R1_2NO R1_4OP R1_4NO : REL1
 
 .Signals
-I R1-PU1A 
-I R1-PU1B 
-I R1-HA 
-I R1-HB 
-I R1-1NO 
-I R1-1NC 
-O R1-1OP 
-I R1-2OP 
-O R1-2NO 
-I R1-4OP 
-O R1-4NO 
-.Connect
+I R1_PU1A 
+I R1_PU1B 
+I R1_HA 
+I R1_HB 
+I R1_1NO 
+I R1_1NC 
+O R1_1OP 
+I R1_2OP 
+O R1_2NO 
+I R1_4OP 
+O R1_4NO 
+
+.Logic
+reg State;
+wire PU,H;
+
+initial State=0;
+
+assign PU=R1_PU1A && !R1_PU1B;
+assign H=R1_HA && !R1_HB;
+
+always @(PU,H) 
+begin
+if(PU)
+  State=1;
+else if(!H)
+  State=0;
+end
+
+assign R1_1OP=(R1_1NO&&State)||(R1_1NC&&!State);
+assign R1_2NO=R1_2OP&&State;
+assign R1_4NO=R1_4OP&&State;
+
 .End

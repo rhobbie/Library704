@@ -1,8 +1,14 @@
 .Module DU	
-Input Output Unpowered_Output : DU		
+Input Output Unpowered_Output Clock : DU		
 .Signals
 I Input
 I Unpowered_Output
 O Output
-.Connect
+I Clock
+.Logic
+reg State;
+initial State=0;
+always @(posedge Clock) State=Input;
+assign Output=State;
+assign Unpowered_Output=State;
 .End

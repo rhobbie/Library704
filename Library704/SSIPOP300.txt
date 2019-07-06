@@ -1,0 +1,33 @@
+﻿.Module SSIPOP300 // Single shot
+InputPos OutputPos Clock64 : SSIPOP300
+.Signals
+I InputPos
+O OutputPos
+I Clock64
+.Logic
+
+wire State;
+wire[2:0] Cnt;
+
+initial State=0;
+
+always @(posedge Clock64)
+begin
+if(State)
+{
+  Cnt++;
+  if(Cnt>=4)
+  {
+     State=0;
+  }
+}
+end
+
+always @(posedge InputPos)
+begin
+  Cnt=0;
+  State=1;  
+end
+
+assign OutputPos=State;
+.End

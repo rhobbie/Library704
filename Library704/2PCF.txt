@@ -3,6 +3,6 @@ Input Output : 2PCF
 .Signals
 I Input
 O Output
-.Connect
+.Logic
+assign Output = Input;
 .End
-

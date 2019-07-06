@@ -3,5 +3,6 @@ Input Output : IpsA
 .Signals
 I Input
 A Output
-.Connect
+.Logic
+assign Output = !Input;
 .End

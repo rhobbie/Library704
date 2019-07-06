@@ -1,6 +1,6 @@
 ﻿.Module PU9019 // 2.12.01 INDEX REGISTER
                // 2.12.04 INDEX REGISTER MIXING
-[A-H]xx-[1-8] : PU9019
+[A-H]xx-[1-8] CL : PU9019
 
 AI1 AI2 AO : AND2
 BI1 BI2 BO : AND2
@@ -21,14 +21,14 @@ QI1 QI2 QO : AND2
 RI1 RI2 RI3 RO : OR3
 
 
-01I 01O : D	
+01I 01O 01C : D	
 02AI 02AO : CF
 02BI 02BO : CF
-03I 03O : D	
-04I 04O : D	
+03I 03O 03C : D	
+04I 04O 04C : D	
 05AI 05AO : CF
 05BI 05BO : CF
-06I 06O : D	
+06I 06O 06C : D	
 08AI 08AO : I
 08BI 08BO : CF
 
@@ -60,6 +60,7 @@ I Gxx-3 XRC COL 9,10,11,12 OUTPUT
 O Gxx-6 COMPL XR COL (9,10,11,12) OUTPUT
 O Hxx-6 XR COL 9,10,11,12 NEON
 
+I CL Clock
 
 .Connect
 // 2.12.01 INDEX REGISTER 
@@ -82,8 +83,9 @@ W JO 02BI
 >|G -30V 02BO
 
 
-// 01I 01O : D	
+// 01I 01O 01C : D	
 W 02BO 01I
+W CL 01C // Clock
 
 W 01O Axx-7 // XR(*) COL(N) OUTPUT [*=A,B,C][N=6,7,8]
 
@@ -108,8 +110,10 @@ W KO 02AI
 >|G -30V 02AO
 
 
-// 03I 03O : D
+// 03I 03O 03C : D
 W 02AO 03I
+W CL 03C // Clock
+
 W 03O Cxx-7 // XR(*) COL(N) OUTPUT [*=A,B,C][N=9,10,11]
 
 // GI1 GI2 GO : AND2
@@ -132,7 +136,8 @@ W MO 05BI
 >|G -30V 05BO
 
 
-// 04I 04O : D
+// 04I 04O 04C : D
+W CL 04C // Clock
 W 05BO 04I  
 W 04O Dxx-7 // XR(*) COL(N) OUTPUT [*=A,B,C][N=12,13,14]
 
@@ -155,8 +160,9 @@ W LO 05AI
 
 >|G -30V 05AO
 
-// 06I 06O : D
+// 06I 06O 06C : D
 W 05AO 06I
+W CL 06C // Clock
 
 W 06O Exx-7 // XR(*) COL(N) OUTPUT [*=A,B,C][N=15,16,17]
 

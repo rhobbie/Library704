@@ -1,5 +1,5 @@
 ﻿.Module PU9018 // 2.12.01 INDEX REGISTER
-[A-H]xx-[1-8] : PU9018
+[A-H]xx-[1-8] CL : PU9018
 
 AI1 AI2 AO : AND2
 BI1 BI2 BO : AND2
@@ -14,14 +14,14 @@ KI1 KI2 KO : OR2
 LI1 LI2 LO : OR2
 MI1 MI2 MO : OR2
 
-01I 01O : D	
+01I 01O 01C : D	
 02AI 02AO : CF
 02BI 02BO : CF
-03I 03O : D	
-04I 04O : D	
+03I 03O 03C : D	
+04I 04O 04C : D	
 05AI 05AO : CF
 05BI 05BO : CF
-06I 06O : D	
+06I 06O 06C : D	
 
 .Signals
 I Axx-8 HOLD(XR-*) *:(A,B,C)
@@ -36,6 +36,8 @@ O Axx-7 XR(*) COL(N) OUTPUT [*=A,B,C][N=6,7,8]
 O Cxx-7 XR(*) COL(N) OUTPUT [*=A,B,C][N=9,10,11]
 O Dxx-7 XR(*) COL(N) OUTPUT [*=A,B,C][N=12,13,14]
 O Exx-7 XR(*) COL(N) OUTPUT [*=A,B,C][N=15,16,17]
+
+I CL Clock
 
 .Connect
 
@@ -57,7 +59,8 @@ W JO 02BI
 
 >|G -30V 02BO
 
-// 01I 01O : D	
+// 01I 01O 01C : D	
+W CL 01C // Clock
 W 02BO 01I
 
 
@@ -83,7 +86,8 @@ W KO 02AI
 
 >|G -30V 02AO
 
-// 03I 03O : D
+// 03I 03O 03C : D
+W CL 03C // Clock
 W 02AO 03I
 W 03O Cxx-7 // XR(*) COL(N) OUTPUT [*=A,B,C][N=9,10,11]
 
@@ -106,8 +110,10 @@ W MO 05BI
 
 >|G -30V 05BO
 
-// 04I 04O : D
+// 04I 04O 04C : D
 W 05BO 04I  
+W CL 04C // Clock
+
 W 04O Dxx-7 // XR(*) COL(N) OUTPUT [*=A,B,C][N=12,13,14]
 
 // EI1 EI2 EO : AND2
@@ -129,8 +135,9 @@ W LO 05AI
 
 >|G -30V 05AO
 
-// 06I 06O : D
+// 06I 06O 06C : D
 W 05AO 06I
+W CL 06C // Clock
 
 W 06O Exx-7 // XR(*) COL(N) OUTPUT [*=A,B,C][N=15,16,17]
 

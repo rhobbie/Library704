@@ -1,8 +1,0 @@
-﻿.Module SSNP500 // Single shot , negative and positive pulse
-Input NOutput POutput : SSNP500
-.Signals
-I Input
-O NOutput
-O POutput
-.Connect
-.End

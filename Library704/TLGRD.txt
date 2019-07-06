@@ -1,7 +1,0 @@
-﻿.Module TLGRD	
-LH_Grid RH_Divider_Junction : TLGRD
-.Signals
-I LH_Grid
-O RH_Divider_Junction
-.Connect
-.End

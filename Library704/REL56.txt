@@ -3,5 +3,7 @@ R56PUA R56PUB : REL56
 .Signals
 I R56PUA
 I R56PUB
-.Connect
+.Logic
+wire State;
+assign State=R56PUA && !R56PUB;
 .End

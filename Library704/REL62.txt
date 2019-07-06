@@ -1,10 +1,18 @@
 ﻿.Module REL62
-R62PUA R62PUB R63AOP R62ANC R62ANO : REL62
+R62PUA R62PUB R62AOP R62ANC R62ANO : REL62
 .Signals
 I R62PUA 
 I R62PUB 
-I R63AOP 
+I R62AOP 
 O R62ANC 
 O R62ANO 
-.Connect
+.Logic
+wire State;
+assign State=R62PUA && !R62PUB;
+
+I R62AOP 
+assign R62ANC = R62AOP && !State;
+assign R62ANO = R62AOP && State;
+
+
 .End

@@ -3,5 +3,6 @@ Input Output : Ild
 .Signals
 I Input
 LD Output
-.Connect
+.Logic
+assign Output = !Input;
 .End

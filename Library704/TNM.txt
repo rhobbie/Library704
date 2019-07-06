@@ -1,9 +1,0 @@
-﻿.Module TNM	
-LH_Grid RH_Grid LH_Divider_Junction RH_Divider_Junction : TNM 
-.Signals
-I LH_Grid
-I RH_Grid
-O LH_Divider_Junction
-O RH_Divider_Junction
-.Connect
-.End

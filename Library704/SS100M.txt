@@ -1,7 +1,0 @@
-﻿.Module SS100M // Single shot
-Input Output : SS100M
-.Signals
-I Input
-O Output
-.Connect
-.End

@@ -1,8 +1,0 @@
-﻿.Module SSNP100M // Single shot , negative and positive pulse
-Input NOutput POutput : SSNP100M
-.Signals
-I Input
-O NOutput
-O POutput
-.Connect
-.End
