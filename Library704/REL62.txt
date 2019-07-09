@@ -10,7 +10,7 @@ O R62ANO
 wire State;
 assign State=R62PUA && !R62PUB;
 
-I R62AOP 
+ 
 assign R62ANC = R62AOP && !State;
 assign R62ANO = R62AOP && State;
 

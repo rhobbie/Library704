@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+
 namespace Library704
 {
     internal class Module
     {
-        public enum Direction { undef, input, output, linedischarge, bus, and, manualinput, testpoint, connect,notused }; /* signal directinon for a pin */
+        public enum Direction { undef, input, output, linedischarge, bus, and, manualinput, testpoint, connect, notused }; /* signal directinon for a pin */
         public string Name;  /* Name of Module */
         public Dictionary<string, Pin> Pins; /* all pins of module: pins of current module, connectins pins and pins of all submodules */
         public List<Submodule> Submodules; /* All submodules, including current Module and connections pins */
@@ -384,7 +385,7 @@ namespace Library704
                                             AllPinnames.Add(Pinname); /* collect pinnames */
                                         }
                                     }
-                                    if(i<s.Length-2)
+                                    if (i < s.Length - 2)
                                         Error("Wrong : in Pin definitions");
 
                                 }
@@ -414,7 +415,7 @@ namespace Library704
                                     for (int i = 0; i < s.Length - 1; i += 2)  /* for all numbered pin definitions */
                                     {
                                         string name = s[i]; /* first part: basename */
-                                        if(name==":")
+                                        if (name == ":")
                                             Error("Wrong : in Pin definitions");
                                         if (!int.TryParse(s[i + 1], out int num)) /* second element: Number of pins */
                                             Error(String.Format("Invalid Number {0}", s[i + 1]));
@@ -560,6 +561,446 @@ namespace Library704
             }
         }
     }
+
+    internal class ModuleConverter : IDisposable
+    {
+        StreamReader fi;
+        StreamWriter fo;
+        private int line;
+        private readonly string filename;
+        public ModuleConverter(string path, string DestDir)
+        {
+            filename = path;
+            line = 0;
+            fi = new StreamReader(path);
+            fo = new StreamWriter(DestDir + sconv(Path.GetFileNameWithoutExtension(path)) + ".v");
+        }
+        private void Error(string s)
+        {
+            Console.WriteLine("{0},{1}:{2}", filename, line, s);
+            Environment.Exit(-1);
+        }
+        public bool Eof
+        {
+            get
+            {
+                return fi.EndOfStream;
+            }
+        }
+#if raus
+        private static string Pin_join(string pin, int num) /* join basename with number */
+        {
+            StringBuilder s = new StringBuilder(pin);
+            if (Char.IsDigit(pin[pin.Length - 1])) /* if basename ends with number then add '-' */
+                s.Append('-');
+            s.Append(num.ToString());
+            return s.ToString();
+        }
+        private List<string> Create_elem(string from, string to) /* replaces a range into a list by counting from 'from' to 'to'*/
+        {
+            List<string> l = new List<string>();
+            if (from.Length == 1 && to.Length == 1 && Char.IsLetter(from[0]) && char.IsLetter(to[0])) /* Letter range */
+            {
+                char f = from[0];
+                char t = to[0];
+                if (Char.IsLower(f) != Char.IsLower(t))  /* dont mix upper with lower case*/
+                    Error("invalid range");
+                if (t <= f)
+                    Error("invalid range");
+                for (char c = f; c <= t; c++)  /* create list of letters */
+                {
+                    if (c != 'o' && c != 'i' && c != 'O' && c != 'I') /* skip o i O I */
+                        l.Add(new string(c, 1));
+                }
+            }
+            else
+            {   /* number range */
+                bool test = true;
+                /* check if from and to are numbers */
+                foreach (char c in from)
+                    if (!Char.IsDigit(c))
+                        test = false;
+                foreach (char c in to)
+                    if (!Char.IsDigit(c))
+                        test = false;
+                if (!test)
+                    Error("invalid range");
+                int f = int.Parse(from);
+                int t = int.Parse(to);
+                if (t <= f)
+                    Error("invalid range");
+                int minlen = 0;
+                if (from[0] == '0')  /* if from has leading zero then use length of from */
+                    minlen = from.Length;
+                for (int i = f; i <= t; i++) /* create list of numbers */
+                    l.Add(Convert.ToString(i).PadLeft(minlen, '0'));
+            }
+            if (l.Count < 2)
+                Error("invalid range");
+            return l;
+        }
+        private List<string> Expand(string s) /* expand pindefs*/
+        {
+            List<string> l = new List<string>();
+            int op = s.LastIndexOf('['); /* pos of [ of last range*/
+
+            if (op != -1)
+            {
+                if (op > s.Length - 5) /* enough chars for range?*/
+                    Error("invalid range");
+                string start = s.Substring(op + 1); /* part after [ */
+                s = s.Substring(0, op);  /* part before range */
+                int m = start.IndexOf('-'); /* pos of - */
+                if (m == -1 || m > start.Length - 3) /* not found or not enough char after -*/
+                    Error("invalid range");
+                string f = start.Substring(0, m); /* extract 'from' part */
+                start = start.Substring(m + 1);  /* part after - */
+                int cl = start.IndexOf(']');  /* pos of } */
+                if (cl == -1)  /* not found */
+                    Error("invalid List");
+                string t = start.Substring(0, cl); /* extract 'to' part */
+                string end = start.Substring(cl + 1); /* part after ] */
+                List<string> l2 = Create_elem(f, t); /* build list from 'from' to 'to' */
+                List<string> l1 = Expand(s);  /* expand the other ranges (recursive call) */
+                foreach (string s1 in l1) /* all */
+                    foreach (string s2 in l2) /* combinations */
+                        l.Add(s1 + s2 + end); /* join parts and add to final list */
+            }
+            else
+                l.Add(s); /*no expansion, only one element in list */
+            return l;
+        }
+#endif
+        private enum States { before_Module, after_Module, after_Signals, after_Connect, after_Logic, after_End }; /* states for module loader */
+        private string getcommonPrefix(string[] names,int start)
+        {
+            int i;
+            for (i = start; i < names[0].Length; i++)
+            {
+                char c = names[0][i];
+                int j;
+                for (j = 1; j < names.Length; j++)
+                {
+                    if (names[j][i] != c)
+                        break;
+                }
+                if (j < names.Length)
+                    break;
+            }
+            if(i==start)
+            {
+                return names[0].Substring(0, start) + getcommonPrefix(names, start + 1);
+            }
+            return names[0].Substring(0, i);
+        }
+        private string sconv(string s)
+        {
+            string r = s;
+            if (char.IsDigit(s[0]))
+                r = "_" + s;
+            return r.Replace('-', '_');
+        }
+        public void Converter(Dictionary<string, Module> Modules)
+        {
+            States state = States.before_Module;
+            Module M = null;
+            fo.WriteLine("`default_nettype none");
+            while (state != States.after_End)
+            {
+                if (fi.EndOfStream) /* ENd of file reached? */
+                {
+                    if (state != States.before_Module) /* not an empty file?  */
+                        Error("unexpected End of File");
+                    return;
+                }
+                string rl; /* current text line */
+                           /* read next text line */
+                rl = fi.ReadLine();
+                line++;
+
+                /* position of comment in line*/
+                int ci = rl.IndexOf("//");
+                /* for comment part of line */
+                string comm = "";
+                if (ci >= 0) /* is there a comment part in the line ? */
+                {
+                    /* split comment from line*/
+                    comm = rl.Substring(ci + 2).Trim();
+                    rl = rl.Substring(0, ci);
+                }
+                /* split line in parts seperated by space or tab */
+                string[] s = rl.Trim().Split(new char[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+
+                switch (state) /* in what part of the file are we? */
+                {
+                    case States.before_Module: /* before .Module Keyword ? */
+                        if (s.Length == 2 && s[0] == ".Module")
+                        {
+                            fo.Write("module {0} (", sconv(s[1]));
+                            if (comm != "")
+                            {
+                                fo.Write(" // {0}", comm);
+                            }
+                            fo.WriteLine();
+                            M = Modules[s[1]];
+                            /* search for last signal*/
+                            int lastsignal = -1;
+                            for (lastsignal = M.NumPins - 1; lastsignal >= 0; lastsignal--)
+                            {
+                                if (M.SignalDirections[lastsignal] != Module.Direction.undef&& M.SignalDirections[lastsignal] != Module.Direction.testpoint && M.SignalDirections[lastsignal] != Module.Direction.manualinput)
+                                    break;
+                            }
+                            for (int i = 0; i < M.NumPins; i++)
+                            {
+                                bool printsig = true;
+                                switch (M.SignalDirections[i])
+                                {
+                                    case Module.Direction.input:
+                                        fo.Write("input wire ");
+                                        break;
+                                    case Module.Direction.output:
+                                        fo.Write("output wire ");
+                                        break;
+                                    case Module.Direction.bus:
+                                        fo.Write("inout wor ");
+                                        break;
+                                    case Module.Direction.and:
+                                    case Module.Direction.linedischarge:
+                                        fo.Write("inout wand ");
+                                        break;
+                                    case Module.Direction.undef:
+                                    case Module.Direction.testpoint:
+                                    case Module.Direction.notused:
+                                    case Module.Direction.connect:
+                                    case Module.Direction.manualinput:
+                                        printsig = false;
+                                        break;
+                                    default:
+                                        Error("wrong signal direction");
+                                        break;
+                                }
+                                if (printsig)
+                                {
+                                    if (i < lastsignal)
+                                    {
+                                        if (M.Signals[i] != "")
+                                            fo.WriteLine("{0}, // {1} ", sconv(M.Submodules[M.thismodule].PinNames[i]), M.Signals[i]);
+                                        else
+                                            fo.WriteLine("{0},", sconv(M.Submodules[M.thismodule].PinNames[i]));
+                                    }
+                                    else
+                                    {
+                                        if (M.Signals[i] != "")
+                                            fo.WriteLine("{0} // {1} ", sconv(M.Submodules[M.thismodule].PinNames[i]), M.Signals[i]);
+                                        else
+                                            fo.WriteLine("{0}", sconv(M.Submodules[M.thismodule].PinNames[i]));
+                                    }
+                                }
+                            }
+                            fo.WriteLine(");");
+
+                            for (int i = 0; i < M.Submodules.Count; i++)
+                            {
+                                if (i != M.thismodule && M.Submodules[i].Name != null)
+                                {
+                                    Module.Submodule S = M.Submodules[i];
+                                    string instance = getcommonPrefix(S.PinNames,0);
+                                    if (instance[instance.Length - 1] == '-')
+                                        instance = instance.Substring(0, instance.Length - 1);
+                                    Module N = Modules[S.Name];
+
+                                    lastsignal = -1;
+                                    for (lastsignal = N.NumPins - 1; lastsignal >= 0; lastsignal--)
+                                    {
+                                        if (N.SignalDirections[lastsignal] != Module.Direction.undef && N.SignalDirections[lastsignal] != Module.Direction.testpoint)
+                                            break;
+                                    }
+                                    bool prif = false;
+                                    for (int j = 0; j < N.NumPins; j++)
+                                    {
+                                        if (N.SignalDirections[j] == Module.Direction.input || N.SignalDirections[j] == Module.Direction.output)
+                                        {
+                                            if (!prif)
+                                            {
+                                                fo.Write("wire ");
+                                                prif = true;
+                                            }
+                                            else
+                                                fo.Write(",");
+                                            fo.Write(sconv(S.PinNames[j]));
+                                        }
+                                    }
+                                    if (prif)
+                                        fo.WriteLine(";");
+                                    prif = false;
+                                    for (int j = 0; j < N.NumPins; j++)
+                                    {
+                                        if (N.SignalDirections[j] == Module.Direction.bus)
+                                        {
+                                            if (!prif)
+                                            {
+                                                fo.Write("wor ");
+                                                prif = true;
+                                            }
+                                            else
+                                                fo.Write(",");
+                                            fo.Write(sconv(S.PinNames[j]));
+                                        }
+                                    }
+                                    if (prif)
+                                        fo.WriteLine(";");
+
+                                    fo.Write("{0} {1}(", sconv(S.Name), sconv(instance));
+                                    for (int j = 0; j < N.NumPins; j++)
+                                    {
+                                        bool printsig = true;
+                                        switch (N.SignalDirections[j])
+                                        {
+                                            case Module.Direction.input:
+                                            case Module.Direction.output:
+                                            case Module.Direction.bus:
+                                            case Module.Direction.linedischarge:
+                                            case Module.Direction.and:
+                                            case Module.Direction.connect:
+                                                break;
+                                            case Module.Direction.testpoint:
+                                            case Module.Direction.undef:
+                                            case Module.Direction.manualinput:
+                                            case Module.Direction.notused:
+                                                printsig = false;
+                                                break;
+                                            default:
+                                                Error("wrong signal direction");
+                                                break;
+                                        }
+                                        if (printsig)
+                                        {
+                                            if (j < lastsignal)
+                                                fo.Write("{0},", sconv(S.PinNames[j]));
+                                            else
+                                                fo.Write("{0}", sconv(S.PinNames[j]));
+                                        }
+                                    }
+                                    fo.WriteLine(");");
+                                }
+                            }
+                            state = States.after_Module;
+                        }
+                        break;
+                    case States.after_Module: /* after .Module Keyword */
+                        if (s.Length == 1 && s[0] == ".Signals")
+                        {
+                            state = States.after_Signals; /* now after .Signals Keyword */
+                        }
+                        else
+                        {
+
+                        }
+                        break;
+                    case States.after_Signals:
+                        if (s.Length == 1 && s[0] == ".Connect")
+                            state = States.after_Connect;
+                        else if (s.Length == 1 && s[0] == ".Logic")
+                            state = States.after_Logic;
+                        break;
+                    case States.after_Connect:
+                        if (s.Length == 1 && s[0] == ".End")
+                        {
+                            state = States.after_End;
+                            fo.WriteLine("endmodule");
+                        }
+                        else if (s.Length == 3)
+                        {
+                            if (s[0] == "W"|| s[0] == "R" || s[0] == "N" || s[0] == "470R" || s[0] == "510R")
+                            {
+                                Module.Pin P = M.Pins[s[2]];
+                                if (Modules[M.Submodules[P.SubIndex].Name].SignalDirections[P.PinIndex] != Module.Direction.testpoint)
+                                {
+                                    if(s[1]=="-30V"||s[1]=="40RETURN" || s[1] == "+150RELAY")
+                                        fo.Write("assign {0}=0;", sconv(s[2]));
+                                    else if (s[1] == "+10V"|| s[1] == "+40V" || s[1] == "+150V")
+                                        fo.Write("assign {0}=1;", sconv(s[2]));
+                                    else
+                                        fo.Write("assign {0}={1};", sconv(s[2]), sconv(s[1]));
+                                    if (comm != "")
+                                    {
+                                        fo.WriteLine(" // {0}", comm);
+                                    }
+                                    else
+                                        fo.WriteLine();
+                                }
+                            }
+                            else if (s[0].StartsWith("|<"))
+                            {
+                                if (s[1] != "+10V"&& s[1] != "+15V" && s[2] != "-30V")
+                                    Error("wrong diode connection");
+                            }
+                            else if (s[0].StartsWith(">|"))
+                            {
+                                if (s[1] != "-30V" && s[2] != "+10V" && s[2] != "+15V")
+                                    Error("wrong diode connection");
+                            }
+                            else if((s[0] == "1MEG"|| s[0]== "200k" || s[0] =="220C"|| s[0] == "12k") && s[2]=="0V" )
+                            {
+
+                            }
+                            else if ((s[0] == "2.7k"|| s[0] == "1MEG") && ( s[2] == "-30V"|| s[1] == "-30V"))
+                            {
+
+                            }
+                            else
+                            {
+                                Error("wrong connection");
+                            }
+                        }
+                        else if (s.Length == 0)
+                        {
+
+                            if (comm != "")
+                            {
+                                fo.WriteLine("// {0}", comm);
+                            }
+                            else
+                                fo.WriteLine();
+                        }
+                        break;
+                    case States.after_Logic:
+                        if (s.Length == 1 && s[0] == ".End")
+                        {
+                            state = States.after_End;
+                            fo.WriteLine("endmodule");
+                        }
+                        else
+                            fo.WriteLine(rl);
+                        break;
+                }
+            }
+        }
+        // Dispose() calls Dispose(true)  
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        // The bulk of the clean-up code is implemented in Dispose(bool)  
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // free managed resources  
+                if (fi != null)
+                {
+                    fi.Dispose();
+                    fi = null;
+                }
+                if (fo != null)
+                {
+                    fo.Dispose();
+                    fo = null;
+                }
+            }
+        }
+    }
     internal class Program
     {
         private static Dictionary<string, Module> Modules;
@@ -624,7 +1065,7 @@ namespace Library704
             foreach (KeyValuePair<string, Module> Mkvp in Modules)
             {
 
-               // bool nocheck =  (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM" || Mkvp.Key == "SP" || Mkvp.Key == "OP"); /* vorerst überspringen */
+                // bool nocheck =  (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM" || Mkvp.Key == "SP" || Mkvp.Key == "OP"); /* vorerst überspringen */
                 bool nocheck = Mkvp.Key == "SP";
                 bool[][] readpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls aus dem netzwerk liest */
                 bool[][] writepin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls in das netzwerk schreibt */
@@ -775,7 +1216,7 @@ namespace Library704
                                                 Console.WriteLine("Module {0}: Pin {1} is not connected", Mkvp.Key, s);
                                             }
                                         }
-                                        else if (i< Modules[S.Name].Signals.Length && Modules[S.Name].Signals[i] != null) /* Signal ist definiert?*/
+                                        else if (i < Modules[S.Name].Signals.Length && Modules[S.Name].Signals[i] != null) /* Signal ist definiert?*/
                                         {
                                             String s = "";
                                             foreach (string e in H)
@@ -914,7 +1355,7 @@ namespace Library704
         {
             if (current.numused != 0)
                 return;
-            current.numused++;            
+            current.numused++;
             foreach (Module.Submodule sub in current.Submodules)
                 if (sub.Name != null && sub.Name != current.Name)
                     Traverse(Modules[sub.Name]);
@@ -959,12 +1400,24 @@ namespace Library704
                     }
                 }
             }
-
             /* perform checks of Module library */
             Check1();
             Check2();
             Check3();
             Check4();
+
+            /* convert all *.txt files from source Dir to *.v files */
+            foreach (string n in Directory.GetFiles(@"..\..\", "*.txt"))
+            {
+                using (ModuleConverter MC = new ModuleConverter(n, @"D:\"))
+                {
+                    while (!MC.Eof) /* more text in file ?*/
+                    {
+                        /* convert next Module */
+                        MC.Converter(Modules);
+                    }
+                }
+            }
 #if print
             foreach(KeyValuePair<string,int> c in Links)
             {
@@ -974,5 +1427,3 @@ namespace Library704
         }
     }
 }
-
-

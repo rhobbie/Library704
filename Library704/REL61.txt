@@ -10,7 +10,7 @@ O R61ANC
 wire State;
 assign State=R61P1 && !R61P2;
 
-assign R61ANO = R61AOP && State
-assign R61ANC = R61AOP && !State
+assign R61ANO = R61AOP && State;
+assign R61ANC = R61AOP && !State;
 
 .End

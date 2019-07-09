@@ -14,13 +14,11 @@ initial State=0;
 always @(posedge Clock8192)
 begin
 if(State)
-{
+begin
   Cnt++;
   if(Cnt>=6)
-  {
      State=0;
-  }
-}
+end
 end
 
 always @(negedge InputNeg)

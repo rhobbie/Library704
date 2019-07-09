@@ -1,8 +1,9 @@
-﻿.Module Tk // Key Trigger
-INL INR OUTL OUTR : Tk
+﻿.Module Tkx // Key Trigger
+INL INR Reset OUTL OUTR : Tkx
 .Signals
 I INL 
 I INR 
+I Reset
 O OUTL 
 O OUTR
 .Logic
@@ -10,9 +11,9 @@ reg State;
 
 initial State=0;
 
-always @(INL or INR)
+always @(INL,INR,Reset)
 begin
-    if(INR)
+    if(INR||Reset)
         State=0;    
     else if(INL) 
         State=1;

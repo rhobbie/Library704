@@ -15,13 +15,11 @@ initial State=0;
 always @(posedge Clock64)
 begin
 if(State)
-{
+begin
   Cnt++;
   if(Cnt>=7)
-  {
      State=0;
-  }
-}
+end
 end
 
 always @(posedge InputPos)
