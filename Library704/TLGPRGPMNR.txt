@@ -3,8 +3,8 @@ LH_GridPos RH_GridPos Manual_On Manual_Off LH_Divider_Junction RH_Divider_Juncti
 .Signals
 I LH_GridPos
 I RH_GridPos
-I Manual_On
-I Manual_Off
+M Manual_On
+M Manual_Off
 O LH_Divider_Junction
 O RH_Divider_Junction
 .Logic
@@ -12,7 +12,7 @@ reg State;
 
 initial State=0;
 
-always @(LH_GridPos,RH_GridPos,Reset)
+always @(LH_GridPos,RH_GridPos)
 begin
     if(RH_GridPos)
         State=0;    

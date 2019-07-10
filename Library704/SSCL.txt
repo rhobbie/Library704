@@ -8,7 +8,7 @@ O CL8192
 O CL16384 
 O CL32768 
 .Logic
-wire[14:0] Cnt;
+reg[14:0] Cnt;
 initial Cnt=0;
 
 always @(negedge CL)  Cnt++;

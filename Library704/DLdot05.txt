@@ -1,8 +1,12 @@
 ﻿.Module DLdot05
-A 3 DLdot05
+Input Clock Output : DLdot05
 .Signals
-I A1
-I A2
-O A3
-.Connect
+I Input
+I Clock
+O Output
+.Logic
+reg State;
+always @(posedge Clock, negedge Clock)
+	State=Input;
+assign Output=State;
 .End

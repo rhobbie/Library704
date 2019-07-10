@@ -4,8 +4,8 @@ RH_GridNegEdge1 RH_GridNegEdge2 RH_GridPos Manual_On Manual_Off Reset RH_Divider
 I RH_GridNegEdge1 
 I RH_GridNegEdge2 
 I RH_GridPos
-I Manual_On
-I Manual_Off
+M Manual_On
+M Manual_Off
 I Reset
 O RH_Divider_Junction
 .Logic

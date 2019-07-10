@@ -74,6 +74,8 @@
     <Content Include="1_05_02.txt" />
     <Content Include="1_05_03.txt" />
     <Content Include="1_05_01.txt" />
+    <Content Include="3PCFA.txt" />
+    <Content Include="4PCFA.txt" />
     <Content Include="5_01_01.txt" />
     <Content Include="5_01_04.txt" />
     <Content Include="5_01_05.txt" />
@@ -89,6 +91,7 @@
     <Content Include="5_08_01.txt" />
     <Content Include="5_08_03.txt" />
     <Content Include="5_09_01.txt" />
+    <Content Include="6PCFA.txt" />
     <Content Include="6_01.txt" />
     <Content Include="6_01_01.txt" />
     <Content Include="6_02_01.txt" />
@@ -153,6 +156,7 @@
     <Content Include="KEY3.txt" />
     <Content Include="LT.txt" />
     <Content Include="NIP.txt" />
+    <Content Include="PCFA.txt" />
     <Content Include="PU5108.txt" />
     <Content Include="PU9032.txt" />
     <Content Include="PU9146.txt" />

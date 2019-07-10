@@ -1,0 +1,8 @@
+﻿.Module 3PCFA		// Power Cathode Follower (B89)
+Input Output : 3PCFA
+.Signals
+I Input
+A Output
+.Logic
+assign Output = Input;
+.End

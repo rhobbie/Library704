@@ -7,7 +7,7 @@ namespace Library704
 {
     internal class Module
     {
-        public enum Direction { undef, input, output, linedischarge, bus, and, manualinput, testpoint, connect, notused }; /* signal directinon for a pin */
+        public enum Direction { undef, input, output, bus, and, manualinput, testpoint, connect, notused }; /* signal directinon for a pin */
         public string Name;  /* Name of Module */
         public Dictionary<string, Pin> Pins; /* all pins of module: pins of current module, connectins pins and pins of all submodules */
         public List<Submodule> Submodules; /* All submodules, including current Module and connections pins */
@@ -448,7 +448,7 @@ namespace Library704
                                 state = States.after_Logic;
                             else
                             {
-                                if (s.Length >= 2 && (s[0] == "I" || s[0] == "O" || s[0] == "B" || s[0] == "LD" || s[0] == "A" || s[0] == "M" || s[0] == "T" || s[0] == "C" || s[0] == "N") && M.Pins.TryGetValue(s[1], out Module.Pin su) && su.SubIndex == M.thismodule)
+                                if (s.Length >= 2 && (s[0] == "I" || s[0] == "O" || s[0] == "B" || s[0] == "A" || s[0] == "M" || s[0] == "T" || s[0] == "C" || s[0] == "N") && M.Pins.TryGetValue(s[1], out Module.Pin su) && su.SubIndex == M.thismodule)
                                 {
                                     int p = su.PinIndex;
                                     int i = rl.IndexOf(s[1]);
@@ -464,8 +464,6 @@ namespace Library704
                                         d = Module.Direction.input;
                                     else if (s[0] == "O")
                                         d = Module.Direction.output;
-                                    else if (s[0] == "LD")
-                                        d = Module.Direction.linedischarge;
                                     else if (s[0] == "B")
                                         d = Module.Direction.bus;
                                     else if (s[0] == "A")
@@ -514,7 +512,7 @@ namespace Library704
                                 }
                                 if (s[0] != "W")
                                 {
-                                    if (s[0] == "I" || s[0] == "O" || s[0] == "B" || s[0] == "A" || s[0] == "LD" || s[0] == "M" || s[0] == "T")
+                                    if (s[0] == "I" || s[0] == "O" || s[0] == "B" || s[0] == "A" || s[0] == "M" || s[0] == "T")
                                     {
                                         Error("invalid line");
                                     }
@@ -672,7 +670,7 @@ namespace Library704
         }
 #endif
         private enum States { before_Module, after_Module, after_Signals, after_Connect, after_Logic, after_End }; /* states for module loader */
-        private string getcommonPrefix(string[] names,int start)
+        private string getcommonPrefix(string[] names, int start)
         {
             int i;
             for (i = start; i < names[0].Length; i++)
@@ -687,7 +685,9 @@ namespace Library704
                 if (j < names.Length)
                     break;
             }
-            if(i==start)
+            if (i == names[0].Length)
+                i--;
+            if (i == start)
             {
                 return names[0].Substring(0, start) + getcommonPrefix(names, start + 1);
             }
@@ -748,7 +748,11 @@ namespace Library704
                             int lastsignal = -1;
                             for (lastsignal = M.NumPins - 1; lastsignal >= 0; lastsignal--)
                             {
-                                if (M.SignalDirections[lastsignal] != Module.Direction.undef&& M.SignalDirections[lastsignal] != Module.Direction.testpoint && M.SignalDirections[lastsignal] != Module.Direction.manualinput)
+                                if (M.SignalDirections[lastsignal] != Module.Direction.undef
+                                    && M.SignalDirections[lastsignal] != Module.Direction.testpoint
+                                    && M.SignalDirections[lastsignal] != Module.Direction.manualinput
+                                    && M.SignalDirections[lastsignal] != Module.Direction.connect
+                                    && M.SignalDirections[lastsignal] != Module.Direction.notused)
                                     break;
                             }
                             for (int i = 0; i < M.NumPins; i++)
@@ -766,7 +770,6 @@ namespace Library704
                                         fo.Write("inout wor ");
                                         break;
                                     case Module.Direction.and:
-                                    case Module.Direction.linedischarge:
                                         fo.Write("inout wand ");
                                         break;
                                     case Module.Direction.undef:
@@ -805,7 +808,7 @@ namespace Library704
                                 if (i != M.thismodule && M.Submodules[i].Name != null)
                                 {
                                     Module.Submodule S = M.Submodules[i];
-                                    string instance = getcommonPrefix(S.PinNames,0);
+                                    string instance = getcommonPrefix(S.PinNames, 0);
                                     if (instance[instance.Length - 1] == '-')
                                         instance = instance.Substring(0, instance.Length - 1);
                                     Module N = Modules[S.Name];
@@ -813,13 +816,18 @@ namespace Library704
                                     lastsignal = -1;
                                     for (lastsignal = N.NumPins - 1; lastsignal >= 0; lastsignal--)
                                     {
-                                        if (N.SignalDirections[lastsignal] != Module.Direction.undef && N.SignalDirections[lastsignal] != Module.Direction.testpoint)
+                                        if (N.SignalDirections[lastsignal] != Module.Direction.undef
+                                    && N.SignalDirections[lastsignal] != Module.Direction.testpoint
+                                    && N.SignalDirections[lastsignal] != Module.Direction.manualinput
+                                    && N.SignalDirections[lastsignal] != Module.Direction.connect
+                                    && N.SignalDirections[lastsignal] != Module.Direction.notused)
                                             break;
                                     }
                                     bool prif = false;
+                                    int pcnt = 0;
                                     for (int j = 0; j < N.NumPins; j++)
                                     {
-                                        if (N.SignalDirections[j] == Module.Direction.input || N.SignalDirections[j] == Module.Direction.output)
+                                        if (N.SignalDirections[j] == Module.Direction.input || N.SignalDirections[j] == Module.Direction.output || N.SignalDirections[j] == Module.Direction.connect)
                                         {
                                             if (!prif)
                                             {
@@ -829,11 +837,19 @@ namespace Library704
                                             else
                                                 fo.Write(",");
                                             fo.Write(sconv(S.PinNames[j]));
+                                            pcnt++;
+                                            if(pcnt>15)
+                                            {
+                                                fo.WriteLine(";");
+                                                prif = false;
+                                                pcnt = 0;
+                                            }
                                         }
                                     }
                                     if (prif)
                                         fo.WriteLine(";");
                                     prif = false;
+                                    pcnt = 0;
                                     for (int j = 0; j < N.NumPins; j++)
                                     {
                                         if (N.SignalDirections[j] == Module.Direction.bus)
@@ -846,12 +862,46 @@ namespace Library704
                                             else
                                                 fo.Write(",");
                                             fo.Write(sconv(S.PinNames[j]));
+
+                                            pcnt++;
+                                            if (pcnt > 15)
+                                            {
+                                                fo.WriteLine(";");
+                                                prif = false;
+                                                pcnt = 0;
+                                            }
+                                        }
+                                    }
+                                    if (prif)
+                                        fo.WriteLine(";");
+                                    prif = false;
+                                    pcnt = 0;
+                                    for (int j = 0; j < N.NumPins; j++)
+                                    {
+                                        if (N.SignalDirections[j] == Module.Direction.and)
+                                        {
+                                            if (!prif)
+                                            {
+                                                fo.Write("wand ");
+                                                prif = true;
+                                            }
+                                            else
+                                                fo.Write(",");
+                                            fo.Write(sconv(S.PinNames[j]));
+                                            pcnt++;
+                                            if (pcnt > 15)
+                                            {
+                                                fo.WriteLine(";");
+                                                prif = false;
+                                                pcnt = 0;
+                                            }
                                         }
                                     }
                                     if (prif)
                                         fo.WriteLine(";");
 
                                     fo.Write("{0} {1}(", sconv(S.Name), sconv(instance));
+                                    pcnt = 0;
                                     for (int j = 0; j < N.NumPins; j++)
                                     {
                                         bool printsig = true;
@@ -860,10 +910,9 @@ namespace Library704
                                             case Module.Direction.input:
                                             case Module.Direction.output:
                                             case Module.Direction.bus:
-                                            case Module.Direction.linedischarge:
                                             case Module.Direction.and:
-                                            case Module.Direction.connect:
                                                 break;
+                                            case Module.Direction.connect:
                                             case Module.Direction.testpoint:
                                             case Module.Direction.undef:
                                             case Module.Direction.manualinput:
@@ -880,6 +929,13 @@ namespace Library704
                                                 fo.Write("{0},", sconv(S.PinNames[j]));
                                             else
                                                 fo.Write("{0}", sconv(S.PinNames[j]));
+                                            pcnt++;
+                                            if (pcnt > 15)
+                                            {
+                                                fo.WriteLine();
+                                                fo.Write("    ");
+                                                pcnt = 0;
+                                            }
                                         }
                                     }
                                     fo.WriteLine(");");
@@ -912,17 +968,53 @@ namespace Library704
                         }
                         else if (s.Length == 3)
                         {
-                            if (s[0] == "W"|| s[0] == "R" || s[0] == "N" || s[0] == "470R" || s[0] == "510R")
+                            if (s[0] == "W" || s[0] == "R" || s[0] == "N" || s[0] == "470R" || s[0] == "510R")
                             {
-                                Module.Pin P = M.Pins[s[2]];
-                                if (Modules[M.Submodules[P.SubIndex].Name].SignalDirections[P.PinIndex] != Module.Direction.testpoint)
+                                Module.Pin P2 = M.Pins[s[2]];
+                                Module.Pin P1 = M.Pins[s[1]];
+                                Module.Direction d1 = Module.Direction.undef;
+                                if (P1.SubIndex != 0)
                                 {
-                                    if(s[1]=="-30V"||s[1]=="40RETURN" || s[1] == "+150RELAY")
+                                    d1 = Modules[M.Submodules[P1.SubIndex].Name].SignalDirections[P1.PinIndex];
+                                    if (P1.SubIndex == M.thismodule)
+                                    {
+                                        if (d1 == Module.Direction.input)
+                                            d1 = Module.Direction.output;
+                                        else if (d1 == Module.Direction.output)
+                                            d1 = Module.Direction.input;
+                                    }
+                                }
+
+                                Module.Direction d2 = Module.Direction.undef;
+                                if (P2.SubIndex != 0)
+                                {
+                                    d2 = Modules[M.Submodules[P2.SubIndex].Name].SignalDirections[P2.PinIndex];
+                                    if (P2.SubIndex == M.thismodule)
+                                    {                                        
+                                        if (d2 == Module.Direction.input)
+                                            d2 = Module.Direction.output;
+                                        else if (d2 == Module.Direction.output)
+                                            d2 = Module.Direction.input;
+                                    }
+                                }
+                                if(d2==Module.Direction.output|| d1 == Module.Direction.input||d1==Module.Direction.testpoint)
+                                { 
+                                    Console.WriteLine("{0} {1} {2}", s[0], s[1], s[2]);
+                                    Console.WriteLine("{0}:{1} - {2}:{3}",M.Submodules[P1.SubIndex].Name, d1, M.Submodules[P2.SubIndex].Name,d2);
+                                    Error("Wrong signal direction");
+                                }
+                                /* check direction*/
+                                if (d2 != Module.Direction.testpoint
+                                    && d1 != Module.Direction.manualinput
+                                    && d2 != Module.Direction.manualinput)
+                                {
+                                    if (s[1] == "-30V" || s[1] == "40RETURN" || s[1] == "+150RELAY")
                                         fo.Write("assign {0}=0;", sconv(s[2]));
-                                    else if (s[1] == "+10V"|| s[1] == "+40V" || s[1] == "+150V")
+                                    else if (s[1] == "+10V" || s[1] == "+40V" || s[1] == "+150V")
                                         fo.Write("assign {0}=1;", sconv(s[2]));
                                     else
                                         fo.Write("assign {0}={1};", sconv(s[2]), sconv(s[1]));
+
                                     if (comm != "")
                                     {
                                         fo.WriteLine(" // {0}", comm);
@@ -933,7 +1025,7 @@ namespace Library704
                             }
                             else if (s[0].StartsWith("|<"))
                             {
-                                if (s[1] != "+10V"&& s[1] != "+15V" && s[2] != "-30V")
+                                if (s[1] != "+10V" && s[1] != "+15V" && s[2] != "-30V")
                                     Error("wrong diode connection");
                             }
                             else if (s[0].StartsWith(">|"))
@@ -941,11 +1033,11 @@ namespace Library704
                                 if (s[1] != "-30V" && s[2] != "+10V" && s[2] != "+15V")
                                     Error("wrong diode connection");
                             }
-                            else if((s[0] == "1MEG"|| s[0]== "200k" || s[0] =="220C"|| s[0] == "12k") && s[2]=="0V" )
+                            else if ((s[0] == "1MEG" || s[0] == "200k" || s[0] == "220C" || s[0] == "12k") && s[2] == "0V")
                             {
 
                             }
-                            else if ((s[0] == "2.7k"|| s[0] == "1MEG") && ( s[2] == "-30V"|| s[1] == "-30V"))
+                            else if ((s[0] == "2.7k" || s[0] == "1MEG") && (s[2] == "-30V" || s[1] == "-30V"))
                             {
 
                             }
@@ -1069,7 +1161,6 @@ namespace Library704
                 bool nocheck = Mkvp.Key == "SP";
                 bool[][] readpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls aus dem netzwerk liest */
                 bool[][] writepin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls in das netzwerk schreibt */
-                bool[][] ldpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein linedischarge pin ist */
                 bool[][] buspin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein wired or bus pin ist */
                 bool[][] andpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein wired and bus pin ist */
                 bool[][] manualinputpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein manual output pin ist */
@@ -1084,7 +1175,6 @@ namespace Library704
                     {
                         readpin[j] = new bool[S.numpins];
                         writepin[j] = new bool[S.numpins];
-                        ldpin[j] = new bool[S.numpins];
                         buspin[j] = new bool[S.numpins];
                         andpin[j] = new bool[S.numpins];
                         manualinputpin[j] = new bool[S.numpins];
@@ -1126,10 +1216,6 @@ namespace Library704
                                     else
                                         writepin[j][i] = true;
                                 }
-                                else if (M2.SignalDirections[i] == Module.Direction.linedischarge)
-                                {
-                                    ldpin[j][i] = true;
-                                }
                                 else if (M2.SignalDirections[i] == Module.Direction.bus)
                                 {
                                     buspin[j][i] = true;
@@ -1140,10 +1226,10 @@ namespace Library704
                                 }
                                 else if (M2.SignalDirections[i] == Module.Direction.manualinput)
                                 {
-                                    if (M2.thismodule == j)
-                                        writepin[j][i] = true;
-                                    else
-                                        manualinputpin[j][i] = true;
+                                    //  if (M2.thismodule == j)
+                                    //    writepin[j][i] = true;
+                                    //else
+                                    manualinputpin[j][i] = true;
                                 }
                                 else if (M2.SignalDirections[i] == Module.Direction.testpoint)
                                 {
@@ -1239,7 +1325,6 @@ namespace Library704
                         {
                             int numread = 0;
                             int numwrite = 0;
-                            int numld = 0;
                             int numbus = 0;
                             int numand = 0;
                             int numtestpoint = 0;
@@ -1253,8 +1338,6 @@ namespace Library704
                                     numread++;
                                 if (writepin[P.SubIndex] != null && writepin[P.SubIndex][P.PinIndex])
                                     numwrite++;
-                                if (ldpin[P.SubIndex] != null && ldpin[P.SubIndex][P.PinIndex])
-                                    numld++;
                                 if (buspin[P.SubIndex] != null && buspin[P.SubIndex][P.PinIndex])
                                     numbus++;
                                 if (andpin[P.SubIndex] != null && andpin[P.SubIndex][P.PinIndex])
@@ -1282,7 +1365,7 @@ namespace Library704
                                 s.Append(pinname);
                                 s.Append(' ');
                             }
-                            if (numwrite == 0 && numbus == 0 && numand == 0)
+                            if (numwrite == 0 && numbus == 0 && numand == 0 && nummanualinput == 0)
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have no signal source", Mkvp.Key, s.ToString());
                             }
@@ -1290,7 +1373,7 @@ namespace Library704
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have multiple signal sources", Mkvp.Key, s.ToString());
                             }
-                            if (numread == 0 && numbus == 0 && numand == 0)
+                            if (numread == 0 && numbus == 0 && numand == 0 && nummanualinput == 0)
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have no signal sink", Mkvp.Key, s.ToString());
                             }
@@ -1302,17 +1385,13 @@ namespace Library704
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have \"wired and\" and \"wired or\" bus pins", Mkvp.Key, s.ToString());
                             }
-                            if (numld > 1)
-                            {
-                                Console.WriteLine("Module {0}: Connected pins {1}have multiple line dischargers", Mkvp.Key, s.ToString());
-                            }
                             if (numtestpoint > 0)
                             {
                                 Console.WriteLine("Module {0}: Connected pins {1}have testpoint", Mkvp.Key, s.ToString());
                             }
-                            if (nummanualinput > 0)
+                            if (nummanualinput > 0 && (nummanualinput != 2 || 0 != (numread + numwrite + numbus + numand + numtestpoint)))
                             {
-                                Console.WriteLine("Module {0}: Connected pins {1}have manual input", Mkvp.Key, s.ToString());
+                                Console.WriteLine("Module {0}: Connected pins {1}have manual input and something else", Mkvp.Key, s.ToString());
                             }
                             if (numopen > 0)
                             {
@@ -1355,7 +1434,7 @@ namespace Library704
         {
             if (current.numused != 0)
                 return;
-            current.numused++;
+            current.numused = 1;
             foreach (Module.Submodule sub in current.Submodules)
                 if (sub.Name != null && sub.Name != current.Name)
                     Traverse(Modules[sub.Name]);

@@ -3,8 +3,8 @@ LH_GridNegEdge LH_GridPos  Manual_On Manual_Off  Reset RH_Divider_Junction : TxL
 .Signals
 I LH_GridNegEdge
 I LH_GridPos
-I Manual_On
-I Manual_Off
+M Manual_On
+M Manual_Off
 I Reset
 O RH_Divider_Junction
 .Logic

@@ -6,8 +6,8 @@ O OutputNeg
 I Clock8192
 
 .Logic
-wire State;
-wire[2:0] Cnt;
+reg State;
+reg[2:0] Cnt;
 
 initial State=0;
 

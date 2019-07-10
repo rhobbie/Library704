@@ -2,7 +2,7 @@
 Input Output Unpowered_Output Clock : DU		
 .Signals
 I Input
-I Unpowered_Output
+O Unpowered_Output
 O Output
 I Clock
 .Logic

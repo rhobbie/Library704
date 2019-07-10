@@ -3,8 +3,8 @@ LH_GridPos RH_GridPos Manual_On Manual_Off RH_Divider_Junction : TLGPRGPMRDNR
 .Signals
 I LH_GridPos
 I RH_GridPos
-I Manual_On
-I Manual_Off
+M Manual_On
+M Manual_Off
 O RH_Divider_Junction
 .Logic
 reg State;
