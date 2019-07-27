@@ -1,0 +1,9 @@
+﻿.Module AND2OR
+A 3 AND2OR
+.Signals
+I A1
+I A2
+B A3
+.Logic
+assign A3 = A1 && A2;
+.End

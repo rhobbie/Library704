@@ -1,7 +1,10 @@
 ﻿.Module 1_05_01 // 1.05.01 Use time
-1_05_01_A1 : 1_05_01
+1_05_01_A[1-2] : 1_05_01
+P 1
 .Signals
 O 1_05_01_A1 E TIME
+I 1_05_01_A2 M E TIME
 .Connect
-W -30V 1_05_01_A1 // E TIME
+W 1_05_01_A2 P1 // M E TIME
+W P1 1_05_01_A1 // E TIME
 .End

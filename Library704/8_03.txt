@@ -1,17 +1,46 @@
 ﻿.Module 8_03  // 8.03 Cycle Timer Mixing Ckts
-8_03_A[1-4] : 8_03
-
+8_03_[A-B][1-9] : 8_03
+AI1 AI2 AO : AND2
+BI1 BI2 BO : AND2
+P 4
+// 
 .Signals
 O 8_03_A1 A1(D1)
 O 8_03_A2 I1(D1)
 O 8_03_A3 A2(D1)
 O 8_03_A4 E TIME
+O 8_03_A5 I6(D1)
+O 8_03_A6 A0(D1)
+
+I 8_03_A7 MA0(D1)
+I 8_03_A8 MA1(D1)
+I 8_03_A9 MA2(D1)
+I 8_03_B1 MA6(D1)
+I 8_03_B2 M E TIME
+I 8_03_B3 M INST TIME
+
+
 
 .Connect
-W -30V 8_03_A1 // A1(D1)
-W -30V 8_03_A2 // I1(D1)
-W -30V 8_03_A3 // A2(D1)
-W -30V 8_03_A4 // E TIME
+// AI1 AI2 AO : AND2
+W 8_03_A8 AI1 // MA1(D1)
+W 8_03_B3 AI2 // M INST TIME
+W AO 8_03_A2 // I1(D1)
+
+// BI1 BI2 BO : AND2
+W 8_03_B1 BI1 // MA6(D1)
+W 8_03_B3 BI2 // M INST TIME
+W BO 8_03_A5 // I6(D1)
+
+// P 4
+W 8_03_A7 P1 // MA0(D1)
+W P1 8_03_A6 // A0(D1)
+W 8_03_A8 P2 // MA1(D1)
+W P2 8_03_A1 // A1(D1)
+W 8_03_A9 P3 // MA2(D1)
+W P3 8_03_A3 // A2(D1)
+W 8_03_B2 P4 // M E TIME
+W P4 8_03_A4 // E TIME
 
 .End
 

@@ -98,11 +98,6 @@
     <Content Include="6_02_02.txt" />
     <Content Include="6_03_04.txt" />
     <Content Include="7_01.txt" />
-    <Content Include="8_04_02.txt" />
-    <Content Include="8_04_03.txt" />
-    <Content Include="8_04_01.txt" />
-    <Content Include="8_05_03.txt" />
-    <Content Include="8_05_04.txt" />
     <Content Include="1_04_05.txt" />
     <Content Include="5_01_02.txt" />
     <Content Include="5_10.txt" />
@@ -118,7 +113,7 @@
     <Content Include="6_03_03.txt" />
     <Content Include="7_02_02.txt" />
     <Content Include="8_04.txt" />
-    <Content Include="8_05_01.txt" />
+    <Content Include="8_05.txt" />
     <Content Include="2CFOR.txt" />
     <Content Include="2CF.txt" />
     <Content Include="2PCF.txt" />
@@ -137,6 +132,7 @@
     <Content Include="6PCF.txt" />
     <Content Include="-AND2.txt" />
     <Content Include="8_06_02.txt" />
+    <Content Include="AND2OR.txt" />
     <Content Include="AND6.txt" />
     <Content Include="AND5.txt" />
     <Content Include="BUTTON_B.txt" />
@@ -360,7 +356,11 @@
     <Content Include="TLGNELGPEx.txt" />
     <Content Include="TLGNELGPELGPRDx.txt" />
     <Content Include="TLGNELGPERDx.txt" />
+    <Content Include="TxLGPRGP.txt" />
     <Content Include="TRGNERGPMx.txt" />
+    <Content Include="TLGNRGNERDx.txt" />
+    <Content Include="TxLGNRGNERD.txt" />
+    <Content Include="TxLGNRGNELD.txt" />
     <Content Include="TxLGPRGNERGPM.txt" />
     <Content Include="TLGPRGPMRDx.txt" />
     <Content Include="TLGPRGPMRDNR.txt" />

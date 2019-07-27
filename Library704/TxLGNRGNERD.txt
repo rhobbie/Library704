@@ -1,0 +1,20 @@
+﻿.Module TxLGNRGNERD
+LH_GridNeg RH_GridNegEdge Reset RH_Divider_Junction : TxLGNRGNERD
+.Signals
+I LH_GridNeg 
+I RH_GridNegEdge 
+I Reset 
+O RH_Divider_Junction
+.Logic
+reg State=1;
+always @(LH_GridNeg,Reset)
+if(Reset)
+   assign State=1;
+else if(!LH_GridNeg)
+   assign State=0;
+else
+   deassign State;
+always @(negedge RH_GridNegEdge)
+   State=1;
+assign RH_Divider_Junction=State;
+.End

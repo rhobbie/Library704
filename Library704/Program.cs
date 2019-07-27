@@ -16,6 +16,7 @@ namespace Library704
         public string[] Signals; /* all singnals, or null if pin is not signal*/
         public Direction[] SignalDirections; /* signal directions for the elements of Signals[] */
         public int numused; /* counts how often this module is used */
+        public bool Logic; /* has .Logic part */
         public Module(string N)
         {
             Name = N;
@@ -445,7 +446,10 @@ namespace Library704
                             if (s.Length == 1 && s[0] == ".Connect")
                                 state = States.after_Connect;
                             else if (s.Length == 1 && s[0] == ".Logic")
+                            {
                                 state = States.after_Logic;
+                                M.Logic = true;
+                            }
                             else
                             {
                                 if (s.Length >= 2 && (s[0] == "I" || s[0] == "O" || s[0] == "B" || s[0] == "A" || s[0] == "M" || s[0] == "T" || s[0] == "C" || s[0] == "N") && M.Pins.TryGetValue(s[1], out Module.Pin su) && su.SubIndex == M.thismodule)
@@ -803,9 +807,35 @@ namespace Library704
                             }
                             fo.WriteLine(");");
 
-                            for (int i = 0; i < M.Submodules.Count; i++)
+                            for (int i = 1; i < M.Submodules.Count; i++)
                             {
-                                if (i != M.thismodule && M.Submodules[i].Name != null)
+                                if (M.Submodules[i].Name == null)
+                                {
+                                    Module.Submodule S = M.Submodules[i];
+                                    bool prif = false;
+                                    int pcnt = 0;
+                                    for (int j = 0; j < S.numpins; j++)
+                                    {
+                                        if (!prif)
+                                        {
+                                            fo.Write("wire ");
+                                            prif = true;
+                                        }
+                                        else
+                                            fo.Write(",");
+                                        fo.Write(sconv(S.PinNames[j]));
+                                        pcnt++;
+                                        if (pcnt > 15)
+                                        {
+                                            fo.WriteLine(";");
+                                            prif = false;
+                                            pcnt = 0;
+                                        }
+                                    }
+                                    if (prif)
+                                        fo.WriteLine(";");
+                                }
+                                else if (i != M.thismodule && M.Submodules[i].Name != null)
                                 {
                                     Module.Submodule S = M.Submodules[i];
                                     string instance = getcommonPrefix(S.PinNames, 0);
@@ -838,7 +868,7 @@ namespace Library704
                                                 fo.Write(",");
                                             fo.Write(sconv(S.PinNames[j]));
                                             pcnt++;
-                                            if(pcnt>15)
+                                            if (pcnt > 15)
                                             {
                                                 fo.WriteLine(";");
                                                 prif = false;
@@ -958,6 +988,7 @@ namespace Library704
                         if (s.Length == 1 && s[0] == ".Connect")
                             state = States.after_Connect;
                         else if (s.Length == 1 && s[0] == ".Logic")
+
                             state = States.after_Logic;
                         break;
                     case States.after_Connect:
@@ -973,7 +1004,7 @@ namespace Library704
                                 Module.Pin P2 = M.Pins[s[2]];
                                 Module.Pin P1 = M.Pins[s[1]];
                                 Module.Direction d1 = Module.Direction.undef;
-                                if (P1.SubIndex != 0)
+                                if (P1.SubIndex != 0 && M.Submodules[P1.SubIndex].Name!=null)
                                 {
                                     d1 = Modules[M.Submodules[P1.SubIndex].Name].SignalDirections[P1.PinIndex];
                                     if (P1.SubIndex == M.thismodule)
@@ -986,7 +1017,7 @@ namespace Library704
                                 }
 
                                 Module.Direction d2 = Module.Direction.undef;
-                                if (P2.SubIndex != 0)
+                                if (P2.SubIndex != 0 && M.Submodules[P2.SubIndex].Name!=null)
                                 {
                                     d2 = Modules[M.Submodules[P2.SubIndex].Name].SignalDirections[P2.PinIndex];
                                     if (P2.SubIndex == M.thismodule)
@@ -1158,7 +1189,7 @@ namespace Library704
             {
 
                 // bool nocheck =  (Mkvp.Key.StartsWith("MF") || Mkvp.Key == "SYSTEM" || Mkvp.Key == "SP" || Mkvp.Key == "OP"); /* vorerst überspringen */
-                bool nocheck = Mkvp.Key == "SP";
+                bool nocheck = (Mkvp.Key == "SP")|| (Mkvp.Value.Logic);
                 bool[][] readpin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls aus dem netzwerk liest */
                 bool[][] writepin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls in das netzwerk schreibt */
                 bool[][] buspin = new bool[Mkvp.Value.Submodules.Count][]; /* gibt an ob der pin eines submoduls ein wired or bus pin ist */
@@ -1197,7 +1228,7 @@ namespace Library704
                             }
                             else
                             {
-                                if (S.To[i].Count == 0 && S.From[i].Count == 0 && M2.Signals[i] != "" && M2.SignalDirections[i] != Module.Direction.manualinput && M2.SignalDirections[i] != Module.Direction.testpoint && M2.SignalDirections[i] != Module.Direction.connect && M2.SignalDirections[i] != Module.Direction.notused)
+                                if (S.To[i].Count == 0 && S.From[i].Count == 0  && M2.Signals[i] != ""  && M2.SignalDirections[i] != Module.Direction.manualinput && M2.SignalDirections[i] != Module.Direction.testpoint && M2.SignalDirections[i] != Module.Direction.connect && M2.SignalDirections[i] != Module.Direction.notused)
                                 {
                                     if (!nocheck)
                                         Console.WriteLine("Module {0}: Signal \"{1}\" of Submodule {2} is not used", Mkvp.Key, M2.Signals[i], S.Name);

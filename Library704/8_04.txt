@@ -1,15 +1,94 @@
 ﻿.Module 8_04 // 8.04 Clock
 
-8_04_A[1-3] : 8_04
+8_04_A[1-3] 8_04_01_A[1-4] 8_04_02_A[1-4] 8_04_03_A[1-4] 8_04_CL 8_04_RES : 8_04
 
 .Signals
 O 8_04_A1 TALLY CTR DRIVE LINE
 O 8_04_A2 SHIFT CNTR DRIVE LINE
 I 8_04_A3 CLOCK RESET
+O 8_04_01_A1 MA0(D1)
+O 8_04_01_A2 MA1(D1)
+O 8_04_01_A4 MA2(D1)
+O 8_04_01_A3 MA3(D1)
+O 8_04_02_A1 MA4(D1)
+O 8_04_02_A2 MA5(D1)
+O 8_04_02_A3 MA6(D1)
+O 8_04_02_A4 MA7(D1)
+O 8_04_03_A1 MA8(D1)
+O 8_04_03_A2 MA9(D1)
+O 8_04_03_A3 MA10(D1)
+O 8_04_03_A4 MA11(D1)
 
-.Connect
-W -30V 8_04_A1 // TALLY CTR DRIVE LINE
-W -30V 8_04_A2 // SHIFT CNTR DRIVE LINE
-1MEG 8_04_A3 0V // CLOCK RESET
+I 8_04_CL Clock
+I 8_04_RES Reset
 
-.End
+.Logic
+
+reg R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11;
+
+always@(_8_04_A3,_8_04_RES)
+begin
+  if(_8_04_A3||_8_04_RES)
+    begin
+      assign R0=1;
+      assign R1=0;
+      assign R2=0;      
+      assign R3=0;
+      assign R4=0;
+      assign R5=0;      
+      assign R6=0;
+      assign R7=0;
+      assign R8=0;      
+      assign R9=0;
+      assign R10=0;
+      assign R11=0;      
+    end
+  else
+    begin
+      deassign R0;
+      deassign R1;
+      deassign R2;      
+      deassign R3;
+      deassign R4;
+      deassign R5;      
+      deassign R6;
+      deassign R7;
+      deassign R8;      
+      deassign R9;
+      deassign R10;
+      deassign R11;      
+    end
+end
+
+always@(negedge _8_04_CL)
+begin
+  R0<=R11;
+  R1<=R0;
+  R2<=R1;      
+  R3<=R2; 
+  R4<=R3;
+  R5<=R4;      
+  R6<=R5; 
+  R7<=R6;
+  R8<=R7;      
+  R9<=R8; 
+  R10<=R9;
+  R11<=R10;     
+end         
+  
+assign _8_04_01_A1=R0; // MA0(D1)
+assign _8_04_01_A2=R1; // MA1(D1)
+assign _8_04_01_A4=R2; // MA2(D1)
+assign _8_04_01_A3=R3; // MA3(D1)
+assign _8_04_02_A1=R4; // MA4(D1)
+assign _8_04_02_A2=R5; // MA5(D1)
+assign _8_04_02_A3=R6; // MA6(D1)
+assign _8_04_02_A4=R7; // MA7(D1)
+assign _8_04_03_A1=R8; // MA8(D1)
+assign _8_04_03_A2=R9; // MA9(D1)
+assign _8_04_03_A3=R10; // MA10(D1)
+assign _8_04_03_A4=R11; // MA11(D1)
+assign _8_04_A1=_8_04_CL; // TALLY CTR DRIVE LINE
+assign _8_04_A2=_8_04_CL; // SHIFT CNTR DRIVE LINE
+
+ .End
