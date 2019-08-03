@@ -47,7 +47,7 @@ W BO CI4
 
 |<G +10V CO
 
-// 08BI 08BO : PCF
+// 08BI 08BO : PCFOR
 W CO 08BI
 >|G -30V 08BO
 

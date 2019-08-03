@@ -1,10 +1,30 @@
 ﻿.Module 1_05_01 // 1.05.01 Use time
-1_05_01_A[1-2] : 1_05_01
+                // Source ibm709module4.pdf  PU1202
+1_05_01_A[1-5] : 1_05_01
+CI1 CI2 CO : OR2
+
 P 1
+
 .Signals
 O 1_05_01_A1 E TIME
 I 1_05_01_A2 M E TIME
+I 1_05_01_A3 M INST TIME
+O 1_05_01_A4 USE TIME
+O 1_05_01_A5 SELECT (MEM 1)
+
 .Connect
+// CI1 CI2 CO : OR2
+W 1_05_01_A2 CI1 // M E TIME
+W 1_05_01_A3 CI2 // M INST TIME
+W CO 1_05_01_A4 // USE TIME
+W CO 1_05_01_A5 //  SELECT (MEM 1)
+
+
+// P 1
 W 1_05_01_A2 P1 // M E TIME
 W P1 1_05_01_A1 // E TIME
+
+
+
+
 .End

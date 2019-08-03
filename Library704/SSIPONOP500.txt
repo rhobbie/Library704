@@ -8,7 +8,7 @@ I Clock64
 .Logic
 
 reg State;
-reg[2:0] Cnt;
+reg[3:0] Cnt;
 
 initial State=0;
 
@@ -17,7 +17,7 @@ begin
 if(State)
 begin
   Cnt++;
-  if(Cnt>=7)
+  if(Cnt>=8)
      State=0;
 end
 end
@@ -29,4 +29,5 @@ begin
 end
 
 assign OutputPos=State;
+assign OutputNeg=!State;
 .End

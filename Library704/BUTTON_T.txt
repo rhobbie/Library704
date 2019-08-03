@@ -4,5 +4,7 @@ OP NC NO : BUTTON_T
 I OP
 O NC
 O NO
-.Connect
+.Logic
+assign NC=OP;
+assign NO=0;
 .End

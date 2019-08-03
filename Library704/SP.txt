@@ -1,6 +1,18 @@
 ﻿.Module SP
-MF-SP[1-150] MF-SPR1 : SP
+MF-SP[1-150] MF-SPR1 MF-SP_RES : SP
 .Signals
+
+// 1.04.05
+
+
+// 1.05.02
+I MF-SP28 Read in Sample 
+
+I MF-SP53 RO Sample
+
+// 1.05.03
+I MF-SP30 Reset SAR & Buffer Reg
+I MF-SP51 SAR RI & Turn on Rd Bias Gate 
 
 // 1.06.02 ??
 O MF-SPR1 STG START / STOP CNTL
@@ -73,6 +85,119 @@ I MF-SP62 OPERATORS RESET LINE
 // 4.09 RESET CKTS #2
 I MF-SP60 RESET STORAGE TO ZEROS
 
+I MF-SP_RES Reset
 
-.Connect
+.Logic
+reg [12:0] SAR;
+reg [35:0] SBR;
+reg [35:0] Mem[8191:0];
+
+
+wire [12:0] Adress_Bus;
+assign Adress_Bus= {MF_SP80,MF_SP7,MF_SP16,MF_SP5,MF_SP14,MF_SP3,MF_SP19,MF_SP12,MF_SP1,MF_SP17,MF_SP10,MF_SP23,MF_SP32};
+
+wire [12:0] Set_SAR;
+assign Set_SAR=Adress_Bus&{13{MF_SP51}};  //  SAR RI & Turn on Rd Bias Gate 
+
+genvar i;
+
+for(i=0;i<13;i=i+1)
+  always @(MF_SP30,Set_SAR[i],MF_SP_RES) // Reset SAR & Buffer Reg
+    if(MF_SP30|MF_SP_RES) // Reset SAR & Buffer Reg
+      SAR[i]=0;
+   else if(Set_SAR[i])
+      SAR[i]=1;
+
+wire ReadCntl_0_2;
+wire ReadCntl_3_17;
+wire ReadCntl_18_20;
+wire ReadCntl_21_35;
+wire WriteCntl_0_2=0;
+wire WriteCntl_3_17=0;
+wire WriteCntl_18_20=0;
+wire WriteCntl_21_35=0;
+
+assign WriteCntl_0_2=0;
+assign WriteCntl_3_17=0;
+assign WriteCntl_18_20=0;
+assign WriteCntl_21_35=0;
+assign ReadCntl_0_2=!WriteCntl_0_2;
+assign ReadCntl_3_17=!WriteCntl_3_17;
+assign ReadCntl_18_20=!WriteCntl_18_20;
+assign ReadCntl_21_35=!WriteCntl_21_35;
+
+wire [35:0] ReadCntl;
+assign ReadCntl={ {3{ReadCntl_0_2}},
+                 {15{ReadCntl_3_17}},
+                  {3{ReadCntl_18_20}},
+                 {15{ReadCntl_21_35}}
+                } & {36{MF_SP53}}; // RO Sample
+                
+wire [35:0] WriteCntl;
+assign WriteCntl={ {3{WriteCntl_0_2}},
+                   {15{WriteCntl_3_17}},
+                   {3{WriteCntl_18_20}},
+                   {15{WriteCntl_21_35}}
+                 } &{36{MF_SP28}}; // Read in Sample 
+
+wire [35:0] SetSbr;
+
+wire [35:0] Storage_Bus;
+
+assign Storage_Bus={MF_SP69,MF_SP85,MF_SP101,MF_SP117,MF_SP133,MF_SP149,MF_SP78,MF_SP94,MF_SP110,MF_SP126,MF_SP142,MF_SP119,MF_SP67,MF_SP83,MF_SP99,MF_SP115,MF_SP131,MF_SP147,MF_SP76,MF_SP92,MF_SP108,MF_SP124,MF_SP140,MF_SP128,MF_SP65,MF_SP81,MF_SP97,MF_SP113,MF_SP129,MF_SP144,MF_SP74,MF_SP90,MF_SP106,MF_SP122,MF_SP138,MF_SP135};
+
+assign SetSbr= (ReadCntl&Mem[SAR])|(WriteCntl&Storage_Bus);
+
+
+for(i=0;i<36;i=i+1)
+  always @(MF_SP30,SetSbr[i],MF_SP_RES)    // Reset SAR & Buffer Reg
+    if(MF_SP30|MF_SP_RES) // Reset SAR & Buffer Reg
+      SBR[i]=0;   
+    else if(SetSbr[i])
+      SBR[i]=1;
+
+assign Storage_Bus=SBR;
+
+always @(negedge MF_SP28) // Read in Sample 
+   Mem[SAR]=SBR;
+
+assign MF_SP69  =SBR[35]; // STG BUS (S)
+assign MF_SP85  =SBR[34]; // STG BUS (1)
+assign MF_SP101 =SBR[33]; // STG BUS (2)
+assign MF_SP117 =SBR[32]; // STG BUS (3)
+assign MF_SP133 =SBR[31]; // STG BUS (4)
+assign MF_SP149 =SBR[30]; // STG BUS (5)
+assign MF_SP78  =SBR[29]; // STG BUS (6)
+assign MF_SP94  =SBR[28]; // STG BUS (7)
+assign MF_SP110 =SBR[27]; // STG BUS (8)
+assign MF_SP126 =SBR[26]; // STG BUS (9)
+assign MF_SP142 =SBR[25]; // STG BUS (10)
+assign MF_SP119 =SBR[24]; // STG BUS (11)
+assign MF_SP67  =SBR[23]; // STG BUS (12)
+assign MF_SP83  =SBR[22]; // STG BUS (13)
+assign MF_SP99  =SBR[21]; // STG BUS (14)
+assign MF_SP115 =SBR[20]; // STG BUS (15)
+assign MF_SP131 =SBR[19]; // STG BUS (16)
+assign MF_SP147 =SBR[18]; // STG BUS (17)
+assign MF_SP76  =SBR[17]; // STG BUS (18)
+assign MF_SP92  =SBR[16]; // STG BUS (19)
+assign MF_SP108 =SBR[15]; // STG BUS (20)
+assign MF_SP124 =SBR[14]; // STG BUS (21)
+assign MF_SP140 =SBR[13]; // STG BUS (22)
+assign MF_SP128 =SBR[12]; // STG BUS (23)
+assign MF_SP65  =SBR[11]; // STG BUS (24)
+assign MF_SP81  =SBR[10]; // STG BUS (25)
+assign MF_SP97  =SBR[ 9]; // STG BUS (26)
+assign MF_SP113 =SBR[ 8]; // STG BUS (27)
+assign MF_SP129 =SBR[ 7]; // STG BUS (28)
+assign MF_SP144 =SBR[ 6]; // STG BUS (29)
+assign MF_SP74  =SBR[ 5]; // STG BUS (30)
+assign MF_SP90  =SBR[ 4]; // STG BUS (31)
+assign MF_SP106 =SBR[ 3]; // STG BUS (32)
+assign MF_SP122 =SBR[ 2]; // STG BUS (33)
+assign MF_SP138 =SBR[ 1]; // STG BUS (34)
+assign MF_SP135 =SBR[ 0]; // STG BUS (35)
+
+assign MF_SPR1=0; // STG START / STOP CNTL
+
 .End

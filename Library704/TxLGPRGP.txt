@@ -13,9 +13,9 @@ initial State=0;
 
 always @(LH_GridPos,RH_GridPos,Reset)
 begin
-    if(LH_GridPos||Reset)
-        State=1;    
-    else if(RH_GridPos) 
+    if(RH_GridPos||Reset)
+        State=0;    
+    else if(LH_GridPos) 
         State=1;
 end
 

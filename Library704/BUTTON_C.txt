@@ -3,5 +3,6 @@ OP NC : BUTTON_C
 .Signals
 I OP
 O NC
-.Connect
+.Logic
+assign NC=OP;
 .End

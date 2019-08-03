@@ -708,6 +708,7 @@ namespace Library704
         {
             States state = States.before_Module;
             Module M = null;
+            bool[][] Written = null;
             fo.WriteLine("`default_nettype none");
             while (state != States.after_End)
             {
@@ -735,7 +736,7 @@ namespace Library704
                 /* split line in parts seperated by space or tab */
                 string[] s = rl.Trim().Split(new char[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-
+                
                 switch (state) /* in what part of the file are we? */
                 {
                     case States.before_Module: /* before .Module Keyword ? */
@@ -748,6 +749,12 @@ namespace Library704
                             }
                             fo.WriteLine();
                             M = Modules[s[1]];
+                            Written = new bool[M.Submodules.Count][];
+                            for(int i=0;i<M.Submodules.Count;i++)
+                            {
+                                Written[i] = new bool[M.Submodules[i].numpins];
+                            }
+
                             /* search for last signal*/
                             int lastsignal = -1;
                             for (lastsignal = M.NumPins - 1; lastsignal >= 0; lastsignal--)
@@ -1033,6 +1040,12 @@ namespace Library704
                                     Console.WriteLine("{0} {1} {2}", s[0], s[1], s[2]);
                                     Console.WriteLine("{0}:{1} - {2}:{3}",M.Submodules[P1.SubIndex].Name, d1, M.Submodules[P2.SubIndex].Name,d2);
                                     Error("Wrong signal direction");
+                                }
+                                if(d2 == Module.Direction.input || d2 == Module.Direction.testpoint)
+                                {
+                                    if(Written[P2.SubIndex][P2.PinIndex])
+                                        Error(String.Format("Input {0} multiple written",  s[2]));
+                                    Written[P2.SubIndex][P2.PinIndex] = true;
                                 }
                                 /* check direction*/
                                 if (d2 != Module.Direction.testpoint

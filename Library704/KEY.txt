@@ -3,5 +3,6 @@ OP NO : KEY
 .Signals
 I OP
 O NO
-.Connect
+.Logic
+assign NO=0;
 .End

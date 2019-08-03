@@ -4,5 +4,7 @@ OP NO NC : KEY3
 I OP
 O NO
 O NC
-.Connect
+.Logic
+assign NO=0;
+assign NC=OP;
 .End
