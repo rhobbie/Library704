@@ -1,0 +1,35 @@
+﻿.Module SSINONOP150M // Single shot , negative and positive pulse
+InputNeg OutputNeg OutputPos  Clock16384 Res : SSINONOP150M
+.Signals
+I InputNeg
+O OutputNeg
+O OutputPos
+I Clock16384
+I Res
+.Logic
+reg State;
+reg[3:0] Cnt;
+
+initial State=0;
+
+always @(posedge Clock16384)
+begin
+if(State)
+begin
+  Cnt++;
+  if(Cnt>9)
+     State=0;
+end
+end
+
+always @(negedge InputNeg)  
+if(!Res)
+  begin
+    Cnt=0;
+    State=1;  
+  end
+
+
+assign OutputPos=State;
+assign OutputNeg=!State;
+.End

@@ -180,7 +180,7 @@
     <Content Include="SSIPOP100M.txt" />
     <Content Include="SSIPOP1M.txt" />
     <Content Include="SSINON50M.txt" />
-    <Content Include="SSINONOP100M.txt" />
+    <Content Include="SSINONOP150M.txt" />
     <Content Include="SSIPONOP500.txt" />
     <Content Include="IAND.txt" />
     <Content Include="IC.txt" />

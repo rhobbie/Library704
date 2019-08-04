@@ -1,10 +1,10 @@
 ﻿.Module SSINOP215M // Single shot
-InputNeg OutputPos Clock32768 : SSINOP215M
+InputNeg OutputPos Clock32768 Res : SSINOP215M
 .Signals
 I InputNeg
 O OutputPos
 I Clock32768
-
+I Res
 .Logic
 
 reg State;
@@ -17,16 +17,18 @@ begin
 if(State)
 begin
   Cnt++;
-  if(Cnt>=6)
+  if(Cnt>6)
      State=0;
 end
 end
 
-always @(posedge InputNeg)
-begin
-  Cnt=0;
-  State=1;  
-end
+always @(negedge InputNeg)
+if(!Res)
+  begin
+    Cnt=0;
+    State=1;  
+  end
+
 
 assign OutputPos=State;
 .End

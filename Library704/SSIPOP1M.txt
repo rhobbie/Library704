@@ -1,9 +1,10 @@
 ﻿.Module SSIPOP1M // Single shot 1ms duration, 128µs clock input
-InputPos OutputPos Clock128 : SSIPOP1M
+InputPos OutputPos Clock128 Res : SSIPOP1M
 .Signals
 I InputPos
 O OutputPos
 I Clock128 
+I Res
 .Logic
 
 reg State;
@@ -22,10 +23,12 @@ end
 end
 
 always @(posedge InputPos)
-begin
-  Cnt=0;
-  State=1;  
-end
+  if(!Res)
+  begin
+    Cnt=0;
+    State=1;  
+  end
+
 
 assign OutputPos=State;
 .End

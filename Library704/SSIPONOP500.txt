@@ -1,10 +1,11 @@
 ﻿.Module SSIPONOP500 // Single shot , negative and positive pulse
-InputPos OutputNeg OutputPos  Clock64 : SSIPONOP500
+InputPos OutputNeg OutputPos  Clock64 Res : SSIPONOP500
 .Signals
 I InputPos
 O OutputNeg
 O OutputPos
 I Clock64
+I Res
 .Logic
 
 reg State;
@@ -23,10 +24,12 @@ end
 end
 
 always @(posedge InputPos)
-begin
-  Cnt=0;
+  if(!Res)
+    begin
+    Cnt=0;
   State=1;  
-end
+  end
+
 
 assign OutputPos=State;
 assign OutputNeg=!State;

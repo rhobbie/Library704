@@ -1,9 +1,10 @@
 ﻿.Module  SSINON50M // Single shot Negative pulse
-InputNeg OutputNeg Clock8192 : SSINON50M
+InputNeg OutputNeg Clock8192 Res : SSINON50M
 .Signals
 I InputNeg
 O OutputNeg
 I Clock8192
+I Res
 
 .Logic
 reg State;
@@ -22,10 +23,11 @@ end
 end
 
 always @(negedge InputNeg)
-begin
-  Cnt=0;
-  State=1;  
-end
+  if(!Res)
+  begin
+    Cnt=0;
+    State=1;  
+  end
 
 assign OutputNeg=!State;
 .End
