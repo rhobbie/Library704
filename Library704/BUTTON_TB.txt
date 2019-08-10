@@ -3,8 +3,9 @@ OP NC NO : BUTTON_TB
 .Signals
 I OP
 O NC
-B NO
+BW NO
 .Logic
-assign NC=OP;
-assign NO=0;
+reg State=0;
+assign NC=OP&&!State;
+assign NO=OP&&State;
 .End

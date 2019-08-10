@@ -9,7 +9,7 @@ O R7_3OP
 I R7_3NO 
 I R7_3NC
 I R7_4NO 
-B R7_4OP
+BW R7_4OP
 .Logic
 wire State;
 assign State=R7_P1 && !R7_P2;

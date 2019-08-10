@@ -2,7 +2,8 @@
 OP NO : BUTTON_B
 .Signals
 I OP
-B NO
+BW NO
 .Logic
-assign NO=0;
+reg State=0;
+assign NO=OP&&State;
 .End

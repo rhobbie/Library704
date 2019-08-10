@@ -3,5 +3,7 @@ NA NB : NE51
 .Signals
 I NA
 I NB
-.Connect
+.Logic
+wire State;
+assign State=NA && !NB;
 .End

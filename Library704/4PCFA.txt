@@ -2,7 +2,7 @@
 Input Output : 4PCFA
 .Signals
 I Input
-A Output
+AW Output
 .Logic
 assign Output = Input;
 .End

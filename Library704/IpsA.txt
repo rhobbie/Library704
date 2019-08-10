@@ -2,7 +2,7 @@
 Input Output : IpsA
 .Signals
 I Input
-A Output
+AW Output
 .Logic
 assign Output = !Input;
 .End

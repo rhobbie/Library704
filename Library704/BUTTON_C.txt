@@ -4,5 +4,6 @@ OP NC : BUTTON_C
 I OP
 O NC
 .Logic
-assign NC=OP;
+reg State=0;
+assign NC=OP&&!State;
 .End

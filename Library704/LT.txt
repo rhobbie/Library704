@@ -3,5 +3,7 @@ LT_A LT_B : LT
 .Signals
 I LT_A 
 I LT_B 
-.Connect
+.Logic
+wire State;
+assign State=LT_A && !LT_B;
 .End

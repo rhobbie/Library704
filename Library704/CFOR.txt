@@ -2,7 +2,7 @@
 Input Output : CFOR
 .Signals
 I Input
-B Output
+BW Output
 .Logic
 assign Output = Input;
 .End
