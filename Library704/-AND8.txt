@@ -11,5 +11,5 @@ I A7
 I A8
 O A9
 .Logic
-assign A9 = A1 || A2 || A3 || A4 || A5 || A6 || A7 || A8;
+assign A9 = A1 | A2 | A3 | A4 | A5 | A6 | A7 | A8;
 .End

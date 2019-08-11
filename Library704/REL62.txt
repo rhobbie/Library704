@@ -8,11 +8,11 @@ O R62ANC
 O R62ANO 
 .Logic
 wire State;
-assign State=R62PUA && !R62PUB;
+assign State=R62PUA & ~R62PUB;
 
  
-assign R62ANC = R62AOP && !State;
-assign R62ANO = R62AOP && State;
+assign R62ANC = R62AOP & ~State;
+assign R62ANO = R62AOP & State;
 
 
 .End

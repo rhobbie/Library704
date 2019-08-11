@@ -10,22 +10,20 @@ I Reset
 O RH_Divider_Junction
 .Logic
 
-reg State;
+reg State=0;
 
-initial State=0;
 
-always @(LH_GridPos,RH_GridPos,Reset)
+always @*
 begin
-    if(LH_GridPos||Reset)
-        assign State=0;    
-    else if(RH_GridPos) 
-        assign State=1;
-    else
-        deassign State;
+    if(RH_GridPos |Reset)
+        State=0;    
+    else if(LH_GridPos) 
+        State=1;
 end
 
 always @(negedge LH_GridNegEdge) 
-    State=0;
+   if(~RH_GridPos&~Reset&~LH_GridPos)
+      State<=0;
 
 assign RH_Divider_Junction=State;
 .End

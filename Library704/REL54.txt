@@ -10,8 +10,8 @@ O R54BNO
 O R54BNC 
 .Logic
 wire State;
-assign State=R54PUA && !R54PUB;
-assign R54AOP=R54ANO && State;
-assign R54BNO=R54BOP && State;
-assign R54BNC=R54BOP && !State;
+assign State=R54PUA & ~R54PUB;
+assign R54AOP=R54ANO & State;
+assign R54BNO=R54BOP & State;
+assign R54BNC=R54BOP & ~State;
 .End

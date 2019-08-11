@@ -5,5 +5,5 @@ I A1
 I A2
 BW A3
 .Logic
-assign A3 = A1 && A2;
+assign A3 = A1 & A2;
 .End

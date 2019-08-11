@@ -808,7 +808,7 @@ namespace Library704
                                 {
                                     Module.Submodule S = M.Submodules[i];
                                     string instance = getcommonPrefix(S.PinNames, 0);
-                                    if (instance[instance.Length - 1] == '-')
+                                    if (instance[instance.Length - 1] == '-'|| instance[instance.Length - 1] == '_')
                                         instance = instance.Substring(0, instance.Length - 1);
                                     Module N = Modules[S.Name];
 

@@ -6,5 +6,5 @@ I A2
 I A3
 O A4
 .Logic
-assign A4 = A1 || A2 || A3 ;
+assign A4 = A1 | A2 | A3 ;
 .End

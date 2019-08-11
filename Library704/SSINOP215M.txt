@@ -7,10 +7,8 @@ I Clock32768
 I Res
 .Logic
 
-reg State;
-reg[2:0] Cnt;
-
-initial State=0;
+reg State=0;
+reg[2:0] Cnt=0;
 
 always @(posedge Clock32768)
 begin
@@ -23,7 +21,7 @@ end
 end
 
 always @(negedge InputNeg)
-if(!Res)
+if(~Res)
   begin
     Cnt=0;
     State=1;  

@@ -12,8 +12,8 @@ I R7_4NO
 BW R7_4OP
 .Logic
 wire State;
-assign State=R7_P1 && !R7_P2;
-assign R7_2OP=R7_2NC&&!State;
-assign R7_3OP=(R7_3NO&&State)||(R7_3NC&&!State);
-assign R7_4OP=R7_4NO&&State;
+assign State=R7_P1 & ~R7_P2;
+assign R7_2OP=R7_2NC&~State;
+assign R7_3OP=(R7_3NO&State)|(R7_3NC&~State);
+assign R7_4OP=R7_4NO&State;
 .End

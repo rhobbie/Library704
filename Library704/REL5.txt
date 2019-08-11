@@ -10,8 +10,8 @@ I R5_2NO
 O R5_2OP 
 .Logic
 wire State;
-assign State=R5_P1 && !R5_P2;
-assign R5_1NO=R5_1OP && State;
-assign R5_1NC=R5_1OP && !State;
-assign R5_2OP=R5_2NO && State;
+assign State=R5_P1 & ~R5_P2;
+assign R5_1NO=R5_1OP & State;
+assign R5_1NC=R5_1OP & ~State;
+assign R5_2OP=R5_2NO & State;
 .End

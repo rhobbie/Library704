@@ -53,7 +53,7 @@ MF3-[01-35][a-r] MF3-[A-R][a-h] MF3_[R-V][1-9] MF3_CL MF3_RES : MF3
 7_02_01_[A-B][1-9] : 7_02_01  // 7.02.01 Drum Counter
 7_02_02_A[1-4] : 7_02_02 // 7.02.02 Drum Interlace Counter
 
-DLI DL_CL DLO : DLdot05
+DLI DLO DL_CL DL_RES : DLdot05
 
 .Signals
 // 1.05.02
@@ -1146,4 +1146,5 @@ W MF3_RES J28_RES // Reset
 W MF3_RES J29_RES // Reset
 
 W MF3_CL DL_CL // Clock
+W MF3_RES DL_RES // Reset
 .End

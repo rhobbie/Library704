@@ -7,16 +7,13 @@ M Manual_On
 M Manual_Off
 O LH_Divider_Junction
 .Logic
-reg State;
+reg State=0;
 
-initial State=0;
-
-always @(LH_GridPos or RH_GridPos)
-begin
+always @*
     if(RH_GridPos)
         State=0;    
     else if(LH_GridPos) 
         State=1;
-end
-assign LH_Divider_Junction=!State;
+
+assign LH_Divider_Junction=~State;
 .End

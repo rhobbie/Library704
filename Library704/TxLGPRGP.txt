@@ -7,19 +7,16 @@ I Reset
 O LH_Divider_Junction
 O RH_Divider_Junction
 .Logic
-reg State;
+reg State=1;
 
-initial State=0;
 
-always @(LH_GridPos,RH_GridPos,Reset)
-begin
-    if(RH_GridPos||Reset)
-        State=0;    
-    else if(LH_GridPos) 
+always @*
+   if(LH_GridPos|Reset)
         State=1;
-end
+    else if(RH_GridPos)
+	   State=0;
 
 assign RH_Divider_Junction=State;
-assign LH_Divider_Junction=!State;
+assign LH_Divider_Junction=~State;
 
 .End

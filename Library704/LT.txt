@@ -5,5 +5,5 @@ I LT_A
 I LT_B 
 .Logic
 wire State;
-assign State=LT_A && !LT_B;
+assign State= ~LT_A & LT_B;
 .End

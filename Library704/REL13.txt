@@ -19,26 +19,23 @@ I R13_6OP
 O R13_6NO
 
 .Logic
-reg State;
+reg State=0;
 wire PU,H;
 
-initial State=0;
 
-assign PU=R13_P1 && !R13_P2;
-assign H=R13_H1 && !R13_H2;
+assign PU=R13_P1 & ~R13_P2;
+assign H=R13_H1 & ~R13_H2;
 
-always @(PU,H) 
-begin
+always @*
 if(PU)
   State=1;
-else if(!H)
+else if(~H)
   State=0;
-end
 
-assign R13_1NO=R13_1OP && State;
-assign R13_2NC=R13_2OP && !State;
-assign R13_3OP=R13_3NC && !State;
-assign R13_4NO=R13_4OP && State;
-assign R13_5NO=R13_5OP && State;
-assign R13_6NO=R13_6OP && State;
+assign R13_1NO=R13_1OP & State;
+assign R13_2NC=R13_2OP & ~State;
+assign R13_3OP=R13_3NC & ~State;
+assign R13_4NO=R13_4OP & State;
+assign R13_5NO=R13_5OP & State;
+assign R13_6NO=R13_6OP & State;
 .End

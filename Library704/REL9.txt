@@ -8,8 +8,8 @@ O R9_2NC
 O R9_2NO 
 .Logic
 wire State;
-assign State=R9_P1 && !R9_P2;
-assign R9_2NC = R9_2OP&&!State;
-assign R9_2NO=R9_2OP&&State; 
+assign State=R9_P1 & ~R9_P2;
+assign R9_2NC = R9_2OP&~State;
+assign R9_2NO=R9_2OP&State; 
 
 .End

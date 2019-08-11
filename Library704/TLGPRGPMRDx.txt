@@ -8,13 +8,11 @@ M Manual_Off
 I Reset
 O RH_Divider_Junction
 .Logic
-reg State;
+reg State=0;
 
-initial State=0;
-
-always @(LH_GridPos, RH_GridPos, Reset)
+always @*
 begin
-    if(RH_GridPos||Reset)
+    if(RH_GridPos|Reset)
         State=0;    
     else if(LH_GridPos) 
         State=1;

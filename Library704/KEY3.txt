@@ -6,6 +6,6 @@ O NO
 O NC
 .Logic
 reg State=0;
-assign NO=OP&&State;
-assign NC=OP&&!State;
+assign NO=OP&State;
+assign NC=OP&~State;
 .End

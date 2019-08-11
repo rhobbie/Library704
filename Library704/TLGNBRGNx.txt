@@ -9,24 +9,20 @@ O LH_Divider_Junction
 O RH_Divider_Junction
 .Logic
 
-reg State;
+reg State=0;
 
-initial State=0;
 
-always @(LH_GridNeg,RH_GridNeg,Reset)
-begin
-    if(Reset||LH_GridNeg) 
-        assign State=0;    
-    else if(RH_GridNeg)
-        assign State=1;    
-    else
-        deassign State;
-end
+always @*
+    if(Reset|~LH_GridNeg) 
+        State=0;    
+    else if(~RH_GridNeg)
+        State=1;    
 
 always @(negedge Binary) 
-    State=!State;
+    if(~Reset&LH_GridNeg&RH_GridNeg) 
+		State<=~State;
 
 assign RH_Divider_Junction=State;
-assign LH_Divider_Junction=!State;
+assign LH_Divider_Junction=~State;
 
 .End

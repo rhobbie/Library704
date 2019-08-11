@@ -4,5 +4,5 @@ Input Output : Ild
 I Input
 AW Output
 .Logic
-assign Output = !Input;
+assign Output = ~Input;
 .End

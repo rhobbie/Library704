@@ -24,56 +24,44 @@ I 8_04_RES Reset
 
 .Logic
 
-reg R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11;
+reg R0=1,R1=0,R2=0,R3=0,R4=0,R5=0,R6=0,R7=0,R8=0,R9=0,R10=0,R11=0;
 
-always@(_8_04_A3,_8_04_RES)
+always @*
 begin
-  if(_8_04_A3||_8_04_RES)
+  if(_8_04_A3|_8_04_RES)
     begin
-      assign R0=1;
-      assign R1=0;
-      assign R2=0;      
-      assign R3=0;
-      assign R4=0;
-      assign R5=0;      
-      assign R6=0;
-      assign R7=0;
-      assign R8=0;      
-      assign R9=0;
-      assign R10=0;
-      assign R11=0;      
-    end
-  else
-    begin
-      deassign R0;
-      deassign R1;
-      deassign R2;      
-      deassign R3;
-      deassign R4;
-      deassign R5;      
-      deassign R6;
-      deassign R7;
-      deassign R8;      
-      deassign R9;
-      deassign R10;
-      deassign R11;      
+      R0=1;
+      R1=0;
+      R2=0;      
+      R3=0;
+      R4=0;
+      R5=0;      
+      R6=0;
+      R7=0;
+      R8=0;      
+      R9=0;
+      R10=0;
+      R11=0;      
     end
 end
 
 always@(negedge _8_04_CL)
 begin
-  R0<=R11;
-  R1<=R0;
-  R2<=R1;      
-  R3<=R2; 
-  R4<=R3;
-  R5<=R4;      
-  R6<=R5; 
-  R7<=R6;
-  R8<=R7;      
-  R9<=R8; 
-  R10<=R9;
-  R11<=R10;     
+  if(~_8_04_A3&~_8_04_RES)
+  begin
+	R0<=R11;
+	R1<=R0;
+	R2<=R1;      
+	R3<=R2; 
+	R4<=R3;
+	R5<=R4;      
+	R6<=R5; 
+	R7<=R6;
+	R8<=R7;      
+	R9<=R8; 
+	R10<=R9;
+	R11<=R10;     
+  end
 end         
   
 assign _8_04_01_A1=R0; // MA0(D1)

@@ -5,5 +5,5 @@ I OP
 BW NO
 .Logic
 reg State=0;
-assign NO=OP&&State;
+assign NO=OP&State;
 .End

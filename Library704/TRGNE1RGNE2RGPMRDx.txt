@@ -9,20 +9,21 @@ M Manual_Off
 I Reset
 O RH_Divider_Junction
 .Logic
-reg State;
+reg State=0;
 
-initial State=0;
 
-always @(RH_GridPos,Reset)
-begin
-  if(RH_GridPos||Reset)
-   assign State=0;
-  else
-   deassign State;
-end
+always @*
+  if(RH_GridPos|Reset)
+   State=0;
 
-always @(negedge RH_GridNegEdge1 or negedge RH_GridNegEdge2) 
-   State=1;
+
+always @(negedge RH_GridNegEdge1)
+ if(~RH_GridPos&~Reset)
+     State<=1; 
+
+always @(negedge RH_GridNegEdge2)
+  if(~RH_GridPos&~Reset)
+     State<=1;
    
 assign RH_Divider_Junction=State;
 .End

@@ -1,109 +1,109 @@
 ﻿.Module SP
-MF-SP[1-150] MF-SPR1 MF-SP_RES : SP
+SP[1-150] SPR1 SP_RES : SP
 .Signals
 
 // 1.04.05
 
 
 // 1.05.02
-I MF-SP28 Read in Sample 
+I SP28 Read in Sample 
 
-I MF-SP53 RO Sample
+I SP53 RO Sample
 
 // 1.05.03
-I MF-SP30 Reset SAR & Buffer Reg
-I MF-SP51 SAR RI & Turn on Rd Bias Gate 
+I SP30 Reset SAR & Buffer Reg
+I SP51 SAR RI & Turn on Rd Bias Gate 
 
 // 1.06.02 ??
-O MF-SPR1 STG START / STOP CNTL
+O SPR1 STG START / STOP CNTL
 
 // 2.05.01 STORAGE BUS SWITCHING COLUMN S
-B MF-SP69 STG BUS (S)
+B SP69 STG BUS (S)
 
 // 2.05.02 STORAGE BUS SWITCHING COLUMNS (1,2,18,19,20)
-B MF-SP85  STG BUS (1)
-B MF-SP101 STG BUS (2)
-B MF-SP76  STG BUS (18)
-B MF-SP92  STG BUS (19)
-B MF-SP108 STG BUS (20)
+B SP85  STG BUS (1)
+B SP101 STG BUS (2)
+B SP76  STG BUS (18)
+B SP92  STG BUS (19)
+B SP108 STG BUS (20)
 
 // 2.05.03 STORAGE BUS SWITCHING COLUMNS (21-35),(3-17)
-B MF-SP117 STG BUS (3)
-B MF-SP133 STG BUS (4)
-B MF-SP149 STG BUS (5)
-B MF-SP78  STG BUS (6)
-B MF-SP94  STG BUS (7)
-B MF-SP110 STG BUS (8)
-B MF-SP126 STG BUS (9)
-B MF-SP142 STG BUS (10)
-B MF-SP119 STG BUS (11)
-B MF-SP67  STG BUS (12)
-B MF-SP83  STG BUS (13)
-B MF-SP99  STG BUS (14)
-B MF-SP115 STG BUS (15)
-B MF-SP131 STG BUS (16)
-B MF-SP147 STG BUS (17)
-B MF-SP124 STG BUS (21)
-B MF-SP140 STG BUS (22)
-B MF-SP128 STG BUS (23)
-B MF-SP65  STG BUS (24)
-B MF-SP81  STG BUS (25)
-B MF-SP97  STG BUS (26)
-B MF-SP113 STG BUS (27)
-B MF-SP129 STG BUS (28)
-B MF-SP144 STG BUS (29)
-B MF-SP74  STG BUS (30)
-B MF-SP90  STG BUS (31)
-B MF-SP106 STG BUS (32)
-B MF-SP122 STG BUS (33)
-B MF-SP138 STG BUS (34)
-B MF-SP135 STG BUS (35)
+B SP117 STG BUS (3)
+B SP133 STG BUS (4)
+B SP149 STG BUS (5)
+B SP78  STG BUS (6)
+B SP94  STG BUS (7)
+B SP110 STG BUS (8)
+B SP126 STG BUS (9)
+B SP142 STG BUS (10)
+B SP119 STG BUS (11)
+B SP67  STG BUS (12)
+B SP83  STG BUS (13)
+B SP99  STG BUS (14)
+B SP115 STG BUS (15)
+B SP131 STG BUS (16)
+B SP147 STG BUS (17)
+B SP124 STG BUS (21)
+B SP140 STG BUS (22)
+B SP128 STG BUS (23)
+B SP65  STG BUS (24)
+B SP81  STG BUS (25)
+B SP97  STG BUS (26)
+B SP113 STG BUS (27)
+B SP129 STG BUS (28)
+B SP144 STG BUS (29)
+B SP74  STG BUS (30)
+B SP90  STG BUS (31)
+B SP106 STG BUS (32)
+B SP122 STG BUS (33)
+B SP138 STG BUS (34)
+B SP135 STG BUS (35)
 
 // 2.07.23 OR TO STORAGE EXEC CNTL
-I MF-SP64 OR TO STORAGE CNTL 
+I SP64 OR TO STORAGE CNTL 
 
 // 3.42 ADDRESSS REGISTER
 
-I MF-SP87 MINUS ON ADR LINE 5
-I MF-SP80 ADR LINE 5
-I MF-SP7 ADR LINE 6
-I MF-SP16 ADR LINE 7
-I MF-SP5 ADR LINE 8
-I MF-SP14 ADR LINE 9
-I MF-SP3 ADR LINE 10
-I MF-SP19 ADR LINE 11
-I MF-SP12 ADR LINE 12
-I MF-SP1 ADR LINE 13
-I MF-SP17 ADR LINE 14
-I MF-SP10 ADR LINE 15
-I MF-SP23 ADR LINE 16
-I MF-SP32 ADR LINE 17
+I SP87 MINUS ON ADR LINE 5
+I SP80 ADR LINE 5
+I SP7 ADR LINE 6
+I SP16 ADR LINE 7
+I SP5 ADR LINE 8
+I SP14 ADR LINE 9
+I SP3 ADR LINE 10
+I SP19 ADR LINE 11
+I SP12 ADR LINE 12
+I SP1 ADR LINE 13
+I SP17 ADR LINE 14
+I SP10 ADR LINE 15
+I SP23 ADR LINE 16
+I SP32 ADR LINE 17
 
 // 4.08 RESET CKTS #1
-I MF-SP62 OPERATORS RESET LINE
+I SP62 OPERATORS RESET LINE
 
 // 4.09 RESET CKTS #2
-I MF-SP60 RESET STORAGE TO ZEROS
+I SP60 RESET STORAGE TO ZEROS
 
-I MF-SP_RES Reset
+I SP_RES Reset
 
 .Logic
-reg [12:0] SAR;
-reg [35:0] SBR;
+reg [12:0] SAR=0;
+reg [35:0] SBR=0;
 reg [35:0] Mem[8191:0];
 
 
 wire [12:0] Adress_Bus;
-assign Adress_Bus= {MF_SP80,MF_SP7,MF_SP16,MF_SP5,MF_SP14,MF_SP3,MF_SP19,MF_SP12,MF_SP1,MF_SP17,MF_SP10,MF_SP23,MF_SP32};
+assign Adress_Bus= {SP80,SP7,SP16,SP5,SP14,SP3,SP19,SP12,SP1,SP17,SP10,SP23,SP32};
 
 wire [12:0] Set_SAR;
-assign Set_SAR=Adress_Bus&{13{MF_SP51}};  //  SAR RI & Turn on Rd Bias Gate 
+assign Set_SAR=Adress_Bus&{13{SP51}};  //  SAR RI & Turn on Rd Bias Gate 
 
 genvar i;
 
 for(i=0;i<13;i=i+1)
-  always @(MF_SP30,Set_SAR[i],MF_SP_RES) // Reset SAR & Buffer Reg
-    if(MF_SP30||MF_SP_RES) // Reset SAR & Buffer Reg
+  always @*   // Reset SAR & Buffer Reg
+    if(SP30|SP_RES) // Reset SAR & Buffer Reg
       SAR[i]=0;
    else if(Set_SAR[i])
       SAR[i]=1;
@@ -121,51 +121,51 @@ assign WriteCntl_0_2=0;
 assign WriteCntl_3_17=0;
 assign WriteCntl_18_20=0;
 assign WriteCntl_21_35=0;
-assign ReadCntl_0_2=!WriteCntl_0_2;
-assign ReadCntl_3_17=!WriteCntl_3_17;
-assign ReadCntl_18_20=!WriteCntl_18_20;
-assign ReadCntl_21_35=!WriteCntl_21_35;
+assign ReadCntl_0_2=~WriteCntl_0_2;
+assign ReadCntl_3_17=~WriteCntl_3_17;
+assign ReadCntl_18_20=~WriteCntl_18_20;
+assign ReadCntl_21_35=~WriteCntl_21_35;
 
 wire [35:0] ReadCntl;
 assign ReadCntl={ {3{ReadCntl_0_2}},
                  {15{ReadCntl_3_17}},
                   {3{ReadCntl_18_20}},
                  {15{ReadCntl_21_35}}
-                } & {36{MF_SP53}}; // RO Sample
+                } & {36{SP53}}; // RO Sample
                 
 wire [35:0] WriteCntl;
 assign WriteCntl={ {3{WriteCntl_0_2}},
                    {15{WriteCntl_3_17}},
                    {3{WriteCntl_18_20}},
                    {15{WriteCntl_21_35}}
-                 } &{36{MF_SP28}}; // Read in Sample 
+                 } &{36{SP28}}; // Read in Sample 
 
 wire [35:0] SetSbr;
 
 wire [35:0] Storage_Bus_i;
 
-assign Storage_Bus_i={MF_SP69_i,MF_SP85_i,MF_SP101_i,MF_SP117_i,MF_SP133_i,MF_SP149_i,MF_SP78_i,MF_SP94_i,MF_SP110_i,MF_SP126_i,MF_SP142_i,MF_SP119_i,
-                    MF_SP67_i,MF_SP83_i,MF_SP99_i,MF_SP115_i,MF_SP131_i,MF_SP147_i,MF_SP76_i,MF_SP92_i,MF_SP108_i,MF_SP124_i,MF_SP140_i,MF_SP128_i,
-					MF_SP65_i,MF_SP81_i,MF_SP97_i,MF_SP113_i,MF_SP129_i,MF_SP144_i,MF_SP74_i,MF_SP90_i,MF_SP106_i,MF_SP122_i,MF_SP138_i,MF_SP135_i};
+assign Storage_Bus_i={SP69_i,SP85_i,SP101_i,SP117_i,SP133_i,SP149_i,SP78_i,SP94_i,SP110_i,SP126_i,SP142_i,SP119_i,
+                    SP67_i,SP83_i,SP99_i,SP115_i,SP131_i,SP147_i,SP76_i,SP92_i,SP108_i,SP124_i,SP140_i,SP128_i,
+					SP65_i,SP81_i,SP97_i,SP113_i,SP129_i,SP144_i,SP74_i,SP90_i,SP106_i,SP122_i,SP138_i,SP135_i};
 
 assign SetSbr= (ReadCntl&Mem[SAR])|(WriteCntl&Storage_Bus_i);
 
 
 for(i=0;i<36;i=i+1)
-  always @(MF_SP30,SetSbr[i],MF_SP_RES)    // Reset SAR & Buffer Reg
-    if(MF_SP30||MF_SP_RES) // Reset SAR & Buffer Reg
+  always @*      
+    if(SP30|SP_RES) // Reset SAR & Buffer Reg
       SBR[i]=0;   
     else if(SetSbr[i])
       SBR[i]=1;
 
-always @(negedge MF_SP28) // Read in Sample 
-   Mem[SAR]=SBR;
+always @(negedge SP28) // Read in Sample 
+   Mem[SAR]<=SBR;
 
-assign {MF_SP69_o,MF_SP85_o,MF_SP101_o,MF_SP117_o,MF_SP133_o,MF_SP149_o,MF_SP78_o,MF_SP94_o,MF_SP110_o,MF_SP126_o,MF_SP142_o,MF_SP119_o,
-        MF_SP67_o,MF_SP83_o,MF_SP99_o,MF_SP115_o,MF_SP131_o,MF_SP147_o,MF_SP76_o,MF_SP92_o,MF_SP108_o,MF_SP124_o,MF_SP140_o,MF_SP128_o,
-		MF_SP65_o,MF_SP81_o,MF_SP97_o,MF_SP113_o,MF_SP129_o,MF_SP144_o,MF_SP74_o,MF_SP90_o,MF_SP106_o,MF_SP122_o,MF_SP138_o,MF_SP135_o}=SBR;
+assign {SP69_o,SP85_o,SP101_o,SP117_o,SP133_o,SP149_o,SP78_o,SP94_o,SP110_o,SP126_o,SP142_o,SP119_o,
+        SP67_o,SP83_o,SP99_o,SP115_o,SP131_o,SP147_o,SP76_o,SP92_o,SP108_o,SP124_o,SP140_o,SP128_o,
+		SP65_o,SP81_o,SP97_o,SP113_o,SP129_o,SP144_o,SP74_o,SP90_o,SP106_o,SP122_o,SP138_o,SP135_o}=SBR;
 
 
-assign MF_SPR1=0; // STG START / STOP CNTL
+assign SPR1=0; // STG START / STOP CNTL
 
 .End

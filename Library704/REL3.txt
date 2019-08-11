@@ -17,24 +17,22 @@ O R3_6OP
 I R3_7NO 
 O R3_7OP
 .Logic
-reg State;
+reg State=0;
 wire PU,H;
 
-initial State=0;
 
-assign PU=R3_PU1A && !R3_PU1B;
-assign H=R3_HA && !R3_HB;
+assign PU=R3_PU1A & ~R3_PU1B;
+assign H=R3_HA & ~R3_HB;
 
-always @(PU,H) 
-begin
+always @*
 if(PU)
   State=1;
-else if(!H)
+else if(~H)
   State=0;
-end
 
-assign R3_4OP = (R3_4NO&&State)||(R3_4NC&&!State) ;
-assign R3_5OP = (R3_5NO&&State)||(R3_5NC&&!State) ;
-assign R3_6OP = (R3_6NO&&State)||(R3_6NC&&!State) ;
-assign R3_7OP = R3_7NO&&State;
+
+assign R3_4OP = (R3_4NO&State)|(R3_4NC&~State) ;
+assign R3_5OP = (R3_5NO&State)|(R3_5NC&~State) ;
+assign R3_6OP = (R3_6NO&State)|(R3_6NC&~State) ;
+assign R3_7OP = R3_7NO&State;
 .End

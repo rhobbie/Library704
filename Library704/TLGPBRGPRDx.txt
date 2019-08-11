@@ -8,22 +8,19 @@ I Reset
 O RH_Divider_Junction
 .Logic
 
-reg State;
+reg State=0;
 
-initial State=0;
-
-always @(Reset, LH_GridPos, RH_GridPos)
+always @*
 begin
-    if(Reset||RH_GridPos)
-        assign State=0;    
+    if(Reset|RH_GridPos)
+        State=0;    
     else if(LH_GridPos) 
-        assign State=1;
-    else
-        deassign State;
+        State=1;
 end
 
 always @(negedge Binary) 
-    State=!State;
+  if(~Reset&~RH_GridPos&~LH_GridPos)
+      State<=~State;
 
 assign RH_Divider_Junction=State;
 

@@ -4,5 +4,5 @@ Input Output : Is
 I Input
 O Output
 .Logic
-assign Output = !Input;
+assign Output = ~Input;
 .End

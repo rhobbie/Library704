@@ -1,12 +1,24 @@
 ﻿.Module DLdot05
-Input Clock Output : DLdot05
+Input Output Clock Reset : DLdot05
 .Signals
 I Input
-I Clock
 O Output
+I Clock
+I Reset
+
 .Logic
-reg State;
-always @(posedge Clock, negedge Clock)
-	State=Input;
+reg State=0;
+always @*
+   if(Reset)
+      State=0;
+
+always @(posedge Clock)
+if(!Reset)
+	State<=Input;
+
+always @(negedge Clock)
+if(~Reset)
+	State<=Input;
+
 assign Output=State;
 .End

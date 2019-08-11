@@ -15,24 +15,22 @@ I R1_4OP
 O R1_4NO 
 
 .Logic
-reg State;
+reg State=0;
 wire PU,H;
 
-initial State=0;
 
-assign PU=R1_PU1A && !R1_PU1B;
-assign H=R1_HA && !R1_HB;
+assign PU=R1_PU1A & ~R1_PU1B;
+assign H=R1_HA & ~R1_HB;
 
-always @(PU,H) 
-begin
+always @*
 if(PU)
   State=1;
-else if(!H)
+else if(~H)
   State=0;
-end
 
-assign R1_1OP=(R1_1NO&&State)||(R1_1NC&&!State);
-assign R1_2NO=R1_2OP&&State;
-assign R1_4NO=R1_4OP&&State;
+
+assign R1_1OP=(R1_1NO&State)|(R1_1NC&~State);
+assign R1_2NO=R1_2OP&State;
+assign R1_4NO=R1_4OP&State;
 
 .End

@@ -9,5 +9,5 @@ I A5
 I A6
 O A7
 .Logic
-assign A7 = A1 && A2 && A3 && A4 && A5 && A6;
+assign A7 = A1 & A2 & A3 & A4 & A5 & A6;
 .End

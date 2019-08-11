@@ -5,5 +5,5 @@ I OP
 O NC
 .Logic
 reg State=0;
-assign NC=OP&&!State;
+assign NC=OP&~State;
 .End

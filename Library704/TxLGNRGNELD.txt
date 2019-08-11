@@ -7,14 +7,16 @@ I Reset
 O LH_Divider_Junction
 .Logic
 reg State=1;
-always @(LH_GridNeg,Reset)
-if(Reset)
-   assign State=1;
-else if(!LH_GridNeg)
-   assign State=0;
-else
-   deassign State;
+
+always @*
+  if(Reset)
+     State=1;
+  else if(~LH_GridNeg)
+     State=0;
+   
 always @(negedge RH_GridNegEdge)
-   State=1;
-assign LH_Divider_Junction=!State;
+   if(~Reset&LH_GridNeg)
+      State<=1;
+
+assign LH_Divider_Junction=~State;
 .End

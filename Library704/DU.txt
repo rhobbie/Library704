@@ -1,14 +1,22 @@
 .Module DU	
-Input Output Unpowered_Output Clock : DU		
+Input Output Unpowered_Output Clock Reset : DU		
 .Signals
 I Input
 O Unpowered_Output
 O Output
 I Clock
+I Reset
 .Logic
-reg State;
-initial State=0;
-always @(posedge Clock) State=Input;
+reg State=0;
+
+always @*
+   if(Reset)
+      State=0;
+
+always @(posedge Clock) 
+    if(~Reset)
+	    State<=Input;
+    
 assign Output=State;
 assign Unpowered_Output=State;
 .End

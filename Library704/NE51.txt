@@ -5,5 +5,5 @@ I NA
 I NB
 .Logic
 wire State;
-assign State=NA && !NB;
+assign State=~NA & NB;
 .End
