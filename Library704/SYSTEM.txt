@@ -4,7 +4,7 @@ MF1-[01-35][a-r] MF1-[A-R][a-h] MF1_[R-V][1-9] MF1_CL MF1_RES : MF1
 MF2-[01-40][a-r] MF2-[A-R][a-h] MF2_[R-T][1-9] MF2_CL MF2_RES : MF2
 MF3-[01-35][a-r] MF3-[A-R][a-h] MF3_[R-V][1-9] MF3_CL MF3_RES : MF3
 MF4-[01-40][a-r] MF4-[A-R][a-h] MF4_[R-S][1-9] MF4_CL MF4_RES : MF4
-SP[1-150] SPR1  SP_RES : SP
+SP[1-150] SPR[1-5] SP_RES : SP
 OP-[01-34][a-h] : OP
 CE[01-04][a-e] : CE
 NIP-[01-28][a-h] : NIP
@@ -33,6 +33,11 @@ I SYSTEM_CL Clock
 I SYSTEM_RES Reset
 
 .Connect
+// 1.04.05 Store Control in Storage
+W MF3_V6 SPR2 // WriteCntl_0_2 
+W MF3_V7 SPR3 // WriteCntl_3_17
+W MF3_V8 SPR4 // WriteCntl_18_20
+W MF3_V9 SPR5 // WriteCntl_21_35
 
 // 1.05.02
 W MF3-31d SP28 // Read in Sample

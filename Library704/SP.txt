@@ -1,8 +1,14 @@
 ﻿.Module SP
-SP[1-150] SPR1 SP_RES : SP
+SP[1-150] SPR[1-5] SP_RES : SP
 .Signals
 
-// 1.04.05
+
+// 1.04.05 Store Control in Storage
+
+I SPR2 // WriteCntl_0_2 
+I SPR3 // WriteCntl_3_17
+I SPR4 // WriteCntl_18_20
+I SPR5 // WriteCntl_21_35
 
 
 // 1.05.02
@@ -112,15 +118,17 @@ wire ReadCntl_0_2;
 wire ReadCntl_3_17;
 wire ReadCntl_18_20;
 wire ReadCntl_21_35;
-wire WriteCntl_0_2=0;
-wire WriteCntl_3_17=0;
-wire WriteCntl_18_20=0;
-wire WriteCntl_21_35=0;
 
-assign WriteCntl_0_2=0;
-assign WriteCntl_3_17=0;
-assign WriteCntl_18_20=0;
-assign WriteCntl_21_35=0;
+wire WriteCntl_0_2;
+wire WriteCntl_3_17;
+wire WriteCntl_18_20;
+wire WriteCntl_21_35;
+
+assign WriteCntl_0_2=SPR2;
+assign WriteCntl_3_17=SPR3;
+assign WriteCntl_18_20=SPR4;
+assign WriteCntl_21_35=SPR5;
+
 assign ReadCntl_0_2=~WriteCntl_0_2;
 assign ReadCntl_3_17=~WriteCntl_3_17;
 assign ReadCntl_18_20=~WriteCntl_18_20;

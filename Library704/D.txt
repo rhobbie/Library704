@@ -7,14 +7,23 @@ I Clock
 I Reset
 .Logic
 reg State=0;
+reg preState=0;
+
 
 always @*
    if(Reset)
+   begin
       State=0;
+	  preState=0;
+   end
 
-always @(posedge Clock) 
+always @(negedge Clock) 
     if(~Reset)
-		State<=Input;
+	    preState<=Input;
+always @(posedge Clock)
+    if(~Reset)
+        State<=preState;
     
 assign Output=State;
+
 .End

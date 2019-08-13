@@ -56,6 +56,13 @@ MF3-[01-35][a-r] MF3-[A-R][a-h] MF3_[R-V][1-9] MF3_CL MF3_RES : MF3
 DLI DLO DL_CL DL_RES : DLdot05
 
 .Signals
+
+// 1.04.05 Store Control in Storage
+O MF3_V6 WriteCntl_0_2 
+O MF3_V7 WriteCntl_3_17
+O MF3_V8 WriteCntl_18_20
+O MF3_V9 WriteCntl_21_35
+
 // 1.05.02
 O MF3-31d Read in Sample
 O MF3-30h RO Sample
@@ -455,12 +462,18 @@ I MF3_RES Reset
 
 // 1.04.05 Store Control in Storage
 W 1_04_05_B3 1_05_02_A8 // MINUS ON RESET TO ZEROS
+W 1_04_05_B4 MF3_V6 // WriteCntl_0_2 
+W 1_04_05_B5 MF3_V7 // WriteCntl_3_17
+W 1_04_05_B6 MF3_V8 // WriteCntl_18_20
+W 1_04_05_B7 MF3_V9 // WriteCntl_21_35
+
 
 // 1.05.01 Use time
 W 1_05_01_A1 D21-3 // E TIME
 W 1_05_01_A4 1_05_02_A4 // USE TIME
 W 1_05_01_A4 1_05_03_A9 // USE TIME
 W 1_05_01_A5 1_05_02_A7 //  SELECT (MEM 1)
+W 1_05_01_A1 1_04_05_B8  // E TIME
 
 // 1.05.02 RI/RO Sample
 W 1_05_02_A1 C29-1 // A3(D1)
