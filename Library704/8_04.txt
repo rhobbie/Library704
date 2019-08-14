@@ -23,7 +23,7 @@ I 8_04_CL Clock
 I 8_04_RES Reset
 
 .Logic
-
+reg ICL=0;
 reg R0=1,R1=0,R2=0,R3=0,R4=0,R5=0,R6=0,R7=0,R8=0,R9=0,R10=0,R11=0;
 
 always @*
@@ -42,6 +42,7 @@ begin
       R9=0;
       R10=0;
       R11=0;      
+	  ICL=0;
     end
 end
 
@@ -60,10 +61,14 @@ begin
 	R8<=R7;      
 	R9<=R8; 
 	R10<=R9;
-	R11<=R10;     
+	R11<=R10;
+	ICL<=0;
   end
-end         
-  
+end 
+
+always@(posedge _8_04_CL)  
+	ICL<=1;
+
 assign _8_04_01_A1=R0; // MA0(D1)
 assign _8_04_01_A2=R1; // MA1(D1)
 assign _8_04_01_A4=R2; // MA2(D1)
@@ -76,7 +81,7 @@ assign _8_04_03_A1=R8; // MA8(D1)
 assign _8_04_03_A2=R9; // MA9(D1)
 assign _8_04_03_A3=R10; // MA10(D1)
 assign _8_04_03_A4=R11; // MA11(D1)
-assign _8_04_A1=_8_04_CL; // TALLY CTR DRIVE LINE
-assign _8_04_A2=_8_04_CL; // SHIFT CNTR DRIVE LINE
+assign _8_04_A1=ICL; // TALLY CTR DRIVE LINE
+assign _8_04_A2=ICL; // SHIFT CNTR DRIVE LINE
 
  .End
