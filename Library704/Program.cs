@@ -1016,15 +1016,15 @@ namespace Library704
                                             else
                                             { 
                                                 if (B.isor)
-                                                    w.Append("||");
+                                                    w.Append(" | ");
                                                 else
-                                                    w.Append("&&");
+                                                    w.Append(" & ");
                                             }
                                             w.Append(sconv(S));
                                         }
                                         if (B.interfacewrite != null)
                                         {
-                                            fo.WriteLine("assign {0}={1};", sconv(B.interfacewrite), w.ToString());
+                                            fo.WriteLine("assign {0} = {1};", sconv(B.interfacewrite), w.ToString());
                                             w.Clear();
                                             if (B.interfaceread != null)
                                                 w.Append(sconv(B.interfaceread));
@@ -1040,11 +1040,11 @@ namespace Library704
                                                 if (firstx == null)
                                                 {
                                                     firstx = sconv(x);
-                                                    fo.WriteLine("assign {0}={1};", firstx, w.ToString());
+                                                    fo.WriteLine("assign {0} = {1};", firstx, w.ToString());
                                                 }
                                                 else
                                                 {
-                                                    fo.WriteLine("assign {0}={1};", sconv(x), firstx);
+                                                    fo.WriteLine("assign {0} = {1};", sconv(x), firstx);
                                                 }
                                             }
                                         }
