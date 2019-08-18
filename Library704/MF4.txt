@@ -1,5 +1,5 @@
 ﻿.Module MF4
-MF4-[01-40][a-r] MF4-[A-R][a-h] MF4_[R-S][1-9] MF4_CL MF4_RES : MF4
+MF4-[01-40][a-r] MF4-[A-R][a-h] MF4_[R-T][1-9] MF4_CL MF4_RES : MF4
 [A-H]01-[1-8] : PU9014 // 2.08.48 INDEXING OPERATION & STG REG 24-35 -> ADDERS (6-17) // 2.08.49 INDEX REGISTER -> ADDER // 2.08.50 XR ENTRY CNTL CARRY 1 -> ADDER 16 CARRY 1 -> ADDER 17 // 2.08.51 INDEXING CONTROLS // 2.08.53 ADDER -> INDEX REG
 [A-H]06-[1-8] A06_RES : PU9015 // 2.06.04 ADDER 6 CARRY TRIGGER // 2.07.02 COND TR EXEC CNTL // 2.08.51 INDEXING CONTROLS // 2.08.53 ADDER -> INDEX REG
 [A-H]07-[1-8] A07_CL A07_RES : PU9018 // 2.12.01 INDEX REGISTER
@@ -33,6 +33,7 @@ MF4-[01-40][a-r] MF4-[A-R][a-h] MF4_[R-S][1-9] MF4_CL MF4_RES : MF4
 [A-H]35-[1-8] : PU9183 // 4.21 DISPLAY EFFECTIVE ADDRESS & DISPLAY XRS A-B-C
 [A-H]36-[1-8] A36_CL  A36_RES : PU9194  // 2.12.01 INDEX REGISTER // 2.12.04 INDEX REGISTER MIXING
 
+5_01_06_A[1-5] : 5_01_06 // 5.01.06 Card Machine Selector
 5_05_03_A[1-6] : 5_05_03 // 5.05.03 Op Panel Sense
 5_05_04_A[1-7] : 5_05_04  // 5.05.04 Sense Skip Control
 5_12_01_A[1-6] : 5_12_01 // 5.12.01 Distributor
@@ -395,8 +396,19 @@ O MF4-18m A10(D2)
 // 5.01.02 Unit Select Matrix
 I MF4_R7 UNIT ADR 12
 
+// 5.01.03 Class Selector
+I MF4_S7 CR Read Sel
+I MF4_S8 CP Write Sel
+I MF4_S9 PR Write Sel
+I MF4_T1 PR Read Sel
+
+
 // 5.01.04 I/O Selection Intlk
 I MF4_S4 IO INTERLOCK
+
+// 5.01.05 Unit Selector 
+I MF4_T2 I/O Sel #1
+
 
 // 5.04 LDA
 I MF4_R6 LDA
@@ -980,8 +992,17 @@ W E18-7 E17-7 // A7(D1)
 // 5.01.02 Unit Select Matrix
 W MF4_R7 G18-3 // UNIT ADR 12
 
+// 5.01.03 Class Selector
+W MF4_S7 5_01_06_A1 // CR Read Sel
+W MF4_S8 5_01_06_A2 // CP Write Sel
+W MF4_S9 5_01_06_A3 // PR Write Sel
+W MF4_T1 5_01_06_A4 // PR Read Sel
+
 // 5.01.04 I/O Selection Intlk
 W MF4_S4 G30-4 // IO INTERLOCK
+
+// 5.01.05 Unit Selector 
+W MF4_T2 5_01_06_A5 // I/O Sel #1
 
 
 // 5.04 LDA

@@ -1,5 +1,5 @@
 ﻿.Module MF3
-MF3-[01-35][a-r] MF3-[A-R][a-h] MF3_[R-V][1-9] MF3_CL MF3_RES : MF3
+MF3-[01-35][a-r] MF3-[A-R][a-h] MF3_[R-W][1-9] MF3_CL MF3_RES : MF3
 [A-H]05-[1-8] A05_RES : PU9044 // 2.10.01 FLOATING POINT TALLY COUNTER
 [A-H]13-[1-8] : PU9076 // 3.08 F.P. ENTRY TO SHIFT CTR(10-17)
 [A-H]16-[1-8] A16_RES : PU9108 // 3.02 INSTRUCTION REGISTER (S) TGR // 3.03 INSTRUCTION REGISTER (1-5) (PRIMARY OPERATION PART)
@@ -38,9 +38,9 @@ MF3-[01-35][a-r] MF3-[A-R][a-h] MF3_[R-V][1-9] MF3_CL MF3_RES : MF3
 1_05_03_[A-B][1-9] : 1_05_03 // 1.05.03 Pulse Gen II
 5_01_01_[A-B][1-9] : 5_01_01 // 5.01.01 Class Decoder
 5_01_02_[A-B][1-9] : 5_01_02 // 5.01.02 Unit Select Matrix
-5_01_03_A[1-8] : 5_01_03 // 5.01.03 Class Selector
-5_01_04_A1 : 5_01_04  // 5.01.04 I/O Selection Intlk
-5_01_05_A1 : 5_01_05 // 5.01.05 Unit Selector
+5_01_03_[A-C][1-9] 5_01_03_RES : 5_01_03 // 5.01.03 Class Selector
+5_01_04_A[1-5] : 5_01_04  // 5.01.04 I/O Selection Intlk
+5_01_05_A[1-7]  5_01_05_RES : 5_01_05 // 5.01.05 Unit Selector
 5_04_MF3_A[1-3] : 5_04_MF3 // 5.04 LDA
 5_09_01_A[1-3] : 5_09_01 // 5.09.01 EOR/EOF Interlock
 6_01_A1 : 6_01 // 6.01 Tape Sync Sel
@@ -399,9 +399,21 @@ O MF3_U3 UNIT ADR 03
 O MF3_U4 UNIT ADR 06
 O MF3_U5 UNIT ADR 10
 
+// 5.01.03 Class Selector
+O MF3_W1 CR Read Sel
+O MF3_W2 CP Write Sel
+O MF3_W3 PR Write Sel
+O MF3_W4 PR Read Sel
+
 // 5.01.04 I/O Selection Intlk
 O MF3_U9 IO INTERLOCK
 
+// 5.01.05 Unit Selector 
+O MF3_W5 I/O Sel #1
+
+// 5.02 Read/Write Exec Timer
+I MF3_W6 Set I/O Intlk
+I MF3_W7 Reset I/O Intlk
 
 // 5.08.01 Clock Pulse Ckts
 I MF3_T7 A11(D1)
@@ -1075,6 +1087,9 @@ W MF3-16j M22-3 // A10(D2)
 
 // 5.01.01 Class Decoder
 W 5_01_01_A9 MF3_T9 // CLASS ADR 00
+W 5_01_01_B2 5_01_03_A9 // CLASS ADR 32
+W 5_01_01_B3 5_01_03_B6 // CLASS ADR 34
+W 5_01_01_B4 5_01_03_B7 // CLASS ADR 36
 
 // 5.01.02 Unit Select Matrix
 W 5_01_02_A1 MF3_S9 // UNIT ADR 12
@@ -1084,10 +1099,31 @@ W 5_01_02_B4 MF3_U2 // UNIT ADR 02
 W 5_01_02_B5 MF3_U3 // UNIT ADR 03
 W 5_01_02_B6 MF3_U4 // UNIT ADR 06
 W 5_01_02_B7 MF3_U5 // UNIT ADR 10
+W 5_01_02_B8 5_01_05_A2 // UNIT ADR 01 
+
+// 5.01.03 Class Selector
+W 5_01_03_B3 MF3_W1 // CR Read Sel
+W 5_01_03_B8 MF3_W2 // CP Write Sel
+W 5_01_03_B9 MF3_W3 // PR Write Sel
+W 5_01_03_C1 MF3_W4 // PR Read Sel
+
+W 5_01_03_B3 5_01_04_A2 // CR Read Sel
+W 5_01_03_B8 5_01_04_A3 // CP Write Sel
+W 5_01_03_B9 5_01_04_A4 // PR Write Sel
+W 5_01_03_C1 5_01_04_A5 // PR Read Sel
+
 
 // 5.01.04 I/O Selection Intlk
 W 5_01_04_A1 MF3_U9 // IO INTERLOCK
 
+// 5.01.05 Unit Selector 
+W 5_01_05_A5 MF3_W5 // I/O Sel #1
+
+// 5.02 Read/Write Exec Timer
+W MF3_W6 5_01_05_A3 // Set I/O Intlk
+W MF3_W7 5_01_05_A4 // Reset I/O Intlk
+W MF3_W6 5_01_03_B1 // Set I/O Intlk
+W MF3_W7 5_01_03_B2 // Reset I/O Intlk
 
 // 5.08.01 Clock Pulse Ckts
 W MF3_T7 N18-2 // A11(D1)
@@ -1157,7 +1193,8 @@ W MF3_RES J26_RES // Reset
 W MF3_RES J27_RES // Reset
 W MF3_RES J28_RES // Reset
 W MF3_RES J29_RES // Reset
-
+W MF3_RES 5_01_03_RES // Reset
+W MF3_RES 5_01_05_RES // Reset
 W MF3_CL DL_CL // Clock
 W MF3_RES DL_RES // Reset
 .End

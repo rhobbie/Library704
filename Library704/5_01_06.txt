@@ -1,0 +1,18 @@
+﻿.Module 5_01_06 // 5.01.06 Card Machine Selector
+5_01_06_A[1-5] : 5_01_06 
+.Signals
+
+I 5_01_06_A1 CR Read Sel
+I 5_01_06_A2 CP Write Sel
+I 5_01_06_A3 PR Write Sel
+I 5_01_06_A4 PR Read Sel
+I 5_01_06_A5 I/O Sel #1
+
+.Connect
+1MEG 5_01_06_A1 0V // CR Read Sel
+1MEG 5_01_06_A2 0V // CP Write Sel
+1MEG 5_01_06_A3 0V // PR Write Sel
+1MEG 5_01_06_A4 0V // PR Read Sel
+1MEG 5_01_06_A5 0V // I/O Sel #1
+
+.End
