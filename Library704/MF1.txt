@@ -1,5 +1,5 @@
 ﻿.Module MF1
-MF1-[01-35][a-r] MF1-[A-R][a-h] MF1_[R-V][1-9]  MF1_CL MF1_RES : MF1
+MF1-[01-35][a-r] MF1-[A-R][a-h] MF1_[R-W][1-9]  MF1_CL MF1_RES : MF1
 
 [A-H]03-[1-8] : PU9046 // 2.07.10 F.P. ADD/SUB EXEC CNTLS  // 2.07.11 F.P. MPY EXEC CNTLS // 2.07.12 F.P. DIVIDE EXEC CNTLS
 [A-H]06-[1-8] A06_RES : PU9152 // 2.09 PULSE AND GATE GENERATOR // 3.20 ADVANCE INST COUNTER
@@ -73,7 +73,7 @@ F2I F2O : Filter
 
 5_08_04_A[1-6] 5_08_04_RES  : 5_08_04 // 5.08.04 Clock Pulse Ckts
 5_10_A[1-3] : 5_10 // 5.10 MQ Read In and Reset Ckts
-5_11_03_A1 : 5_11_03 // 5.11.03 Read-Write Disconnect Gate
+5_11_03_A[1-5] : 5_11_03 // 5.11.03 Read-Write Disconnect Gate
 
 
 8_03_[A-B][1-9] : 8_03 // 8.03 Cycle Timer Mixing Ckts
@@ -515,12 +515,20 @@ B MF1_U1 SENSE SKIP CNTL
 
 // 5.05.06 Test Sense
 O MF1_U5 REDUNDANCY TAPE TEST
+I MF1-Ed Pr Sense Entry (was MF4-Ep)
+O MF1-Jb Pr Sense
 
 // 5.08.01 Clock Pulse Ckts
 O MF1_T2 A11(D1)	
 
 // 5.08.03 Clock Pulse Power and Mixing
 O MF1_S5 A6(D1)
+
+// 5.11.03 Read-Write Disconnect Gate
+O MF1_V9 Read Left
+O MF1_W1 Read Right
+O MF1_W2 Write Left
+O MF1_W3 Write Right
 
 // 6.03.03 Tape Redn Ctr
 I MF1_S2 TAPE -> MQ
@@ -1750,7 +1758,8 @@ W MF1_U1 N08-8 // SENSE SKIP CNTL
 W 5_05_06_A8 N08-5 // ETT SKIP ONE
 W 5_05_06_A9 MF1_U1 // SENSE SKIP CNTL
 W 5_05_06_B1 MF1_U5 // REDUNDANCY TAPE TEST
-
+W MF1-Ed 5_05_06_B2 // Pr Sense Entry (was MF4-Ep)
+W 5_05_06_B3 MF1-Jb // Pr Sense
 
 // 5.06 End Op
 W 5_06_A1 N27-2 // END OPN I/O CNTL (CF OR CKT)
@@ -1780,6 +1789,12 @@ W 5_08_04_A2 G06-7 // MINUS ON A10(D5)
 // 5.10 MQ Read In and Reset Ckts
 W 5_10_A1 P09-3 // CLEAR MQ REG
 W 5_10_A2 L29-8 // I/O BUS (S-35) -> MQ 2.08.21 2.08.22
+
+// 5.11.03 Read-Write Disconnect Gate
+W 5_11_03_A2 MF1_V9 // Read Left
+W 5_11_03_A3 MF1_W1 // Read Right
+W 5_11_03_A4 MF1_W2 // Write Left
+W 5_11_03_A5 MF1_W3 // Write Right
 
 // 6.03.03 Tape Redn Ctr
 W MF1_S2 K29-7 // TAPE -> MQ

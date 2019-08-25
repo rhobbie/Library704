@@ -1,0 +1,10 @@
+﻿.Module 5_11_01 // 5.11.01 Card Ctrl Pulse Gen
+5_11_01_A[1-2] : 5_11_01 
+.Signals
+I 5_11_01_A1 CB Signal Set
+I 5_11_01_A2 Tgr Reset
+.Connect
+1MEG 5_11_01_A1 0V // CB Signal Set
+1MEG 5_11_01_A2 0V // Tgr Reset
+
+.End

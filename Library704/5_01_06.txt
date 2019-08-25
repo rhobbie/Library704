@@ -1,5 +1,10 @@
 ﻿.Module 5_01_06 // 5.01.06 Card Machine Selector
-5_01_06_A[1-5] : 5_01_06 
+5_01_06_[A-B][1-9] : 5_01_06 
+01P 01GU 01GL 01C : THY
+02P 02GU 02GL 02C : THY
+03P 03GU 03GL 03C : THY
+04P 04GU 04GL 04C : THY
+AI1 AI2 AO : OR2
 .Signals
 
 I 5_01_06_A1 CR Read Sel
@@ -7,12 +12,55 @@ I 5_01_06_A2 CP Write Sel
 I 5_01_06_A3 PR Write Sel
 I 5_01_06_A4 PR Read Sel
 I 5_01_06_A5 I/O Sel #1
+I 5_01_06_A6 Pr Select
+O 5_01_06_A7 Pr Rd Sel
+O 5_01_06_A8 Pr Wr Sel
+I 5_01_06_A9 Cr Sel 1
+O 5_01_06_B1 Cr Sel 2
+I 5_01_06_B2 Pn Sel 1
+O 5_01_06_B3 Pn Sel 2
+I 5_01_06_B4 Pr Disc 1
+O 5_01_06_B5 Pr Disc 2
+I 5_01_06_B6 Pn Disc 1
+O 5_01_06_B7 Pn Disc 2
+I 5_01_06_B8 Cr Disc 1
+O 5_01_06_B9 Cr Disc 2
 
 .Connect
-1MEG 5_01_06_A1 0V // CR Read Sel
-1MEG 5_01_06_A2 0V // CP Write Sel
-1MEG 5_01_06_A3 0V // PR Write Sel
-1MEG 5_01_06_A4 0V // PR Read Sel
-1MEG 5_01_06_A5 0V // I/O Sel #1
+// 01P 01GU 01GL 01C : THY
+W 5_01_06_A6 01P // Pr Select
+W 5_01_06_A4 01GU // PR Read Sel
+W 5_01_06_A5 01GL // I/O Sel #1
+W 01C 5_01_06_A7 // Pr Rd Sel
+
+// AI1 AI2 AO : OR2
+W 5_01_06_A4 AI1 // PR Read Sel
+W 5_01_06_A3 AI2 // PR Write Sel
+
+// 02P 02GU 02GL 02C : THY
+W 5_01_06_A6 02P // Pr Select
+W AO 02GU
+W 5_01_06_A5 02GL // I/O Sel #1
+W 02C 5_01_06_A8 // Pr Wr Sel
+
+// 03P 03GU 03GL 03C : THY
+W 5_01_06_B2 03P // Pn Sel 1
+W 5_01_06_A2 03GU // CP Write Sel
+W 5_01_06_A5 03GL // I/O Sel #1
+W 03C 5_01_06_B3 // Pn Sel 2
+
+// 04P 04GU 04GL 04C : THY
+W 5_01_06_A9 04P // Cr Sel 1
+W 5_01_06_A1 04GU // CR Read Sel
+W 5_01_06_A5 04GL // I/O Sel #1
+W 04C 5_01_06_B1 // Cr Sel 2
+
+1MEG 5_01_06_B4 0V // Pr Disc 1
+W -30V 5_01_06_B5 // Pr Disc 2
+1MEG 5_01_06_B6 0V // Pn Disc 1
+W -30V 5_01_06_B7 // Pn Disc 2
+1MEG 5_01_06_B8 0V // Cr Disc 1
+W -30V 5_01_06_B9 // Cr Disc 2
+
 
 .End

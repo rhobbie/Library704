@@ -1,0 +1,254 @@
+﻿.Module CardPunch 
+PN_[A-K][1-9] CL4096 RES : CardPunch 
+.Signals
+I PN_A1 Col (S) Lt Exit
+I PN_A2 Col (S) Rt Exit
+I PN_A3 Col (1) Lt Exit
+I PN_A4 Col (1) Rt Exit
+I PN_A5 Col (2) Lt Exit
+I PN_A6 Col (2) Rt Exit
+I PN_A7 Col (3) Lt Exit
+I PN_A8 Col (3) Rt Exit
+I PN_A9 Col (4) Lt Exit
+I PN_B1 Col (4) Rt Exit
+I PN_B2 Col (5) Lt Exit
+I PN_B3 Col (5) Rt Exit
+I PN_B4 Col (6) Lt Exit
+I PN_B5 Col (6) Rt Exit
+I PN_B6 Col (7) Lt Exit
+I PN_B7 Col (7) Rt Exit
+I PN_B8 Col (8) Lt Exit
+I PN_B9 Col (8) Rt Exit
+I PN_C1 Col (9) Lt Exit
+I PN_C2 Col (9) Rt Exit
+I PN_C3 Col (10) Lt Exit
+I PN_C4 Col (10) Rt Exit
+I PN_C5 Col (11) Lt Exit
+I PN_C6 Col (11) Rt Exit
+I PN_C7 Col (12) Lt Exit
+I PN_C8 Col (12) Rt Exit
+I PN_C9 Col (13) Lt Exit
+I PN_D1 Col (13) Rt Exit
+I PN_D2 Col (14) Lt Exit
+I PN_D3 Col (14) Rt Exit
+I PN_D4 Col (15) Lt Exit
+I PN_D5 Col (15) Rt Exit
+I PN_D6 Col (16) Lt Exit
+I PN_D7 Col (16) Rt Exit
+I PN_D8 Col (17) Lt Exit
+I PN_D9 Col (17) Rt Exit
+I PN_E1 Col (18) Lt Exit
+I PN_E2 Col (18) Rt Exit
+I PN_E3 Col (19) Lt Exit
+I PN_E4 Col (19) Rt Exit
+I PN_E5 Col (20) Lt Exit
+I PN_E6 Col (20) Rt Exit
+I PN_E7 Col (21) Lt Exit
+I PN_E8 Col (21) Rt Exit
+I PN_E9 Col (22) Lt Exit
+I PN_F1 Col (22) Rt Exit
+I PN_F2 Col (23) Lt Exit
+I PN_F3 Col (23) Rt Exit
+I PN_F4 Col (24) Lt Exit
+I PN_F5 Col (24) Rt Exit
+I PN_F6 Col (25) Lt Exit
+I PN_F7 Col (25) Rt Exit
+I PN_F8 Col (26) Lt Exit
+I PN_F9 Col (26) Rt Exit
+I PN_G1 Col (27) Lt Exit
+I PN_G2 Col (27) Rt Exit
+I PN_G3 Col (28) Lt Exit
+I PN_G4 Col (28) Rt Exit
+I PN_G5 Col (29) Lt Exit
+I PN_G6 Col (29) Rt Exit
+I PN_G7 Col (30) Lt Exit
+I PN_G8 Col (30) Rt Exit
+I PN_G9 Col (31) Lt Exit
+I PN_H1 Col (31) Rt Exit
+I PN_H2 Col (32) Lt Exit
+I PN_H3 Col (32) Rt Exit
+I PN_H4 Col (33) Lt Exit
+I PN_H5 Col (33) Rt Exit
+I PN_H6 Col (34) Lt Exit
+I PN_H7 Col (34) Rt Exit
+I PN_H8 Col (35) Lt Exit
+I PN_H9 Col (35) Rt Exit
+
+O PN_J1 Pn Thy Plate Lt
+O PN_J2 Pn Thy Plate Rt
+
+O PN_J3 Pn Sel 1
+I PN_J4 Pn Sel 2
+O PN_J5 Pn Disc 1
+I PN_J6 Pn Disc 2
+
+BW PN_J7 Tgr Reset
+BW PN_J8 CB Signal Set
+
+O PN_J9 Pn Sense Thy Plate
+I PN_K1 Pn Sense (1)
+
+I CL4096 Clock4096
+I RES Reset
+
+.Logic
+reg rotate;
+reg [3:0]Sub_Cnt;
+reg [3:0]Unit_Cnt;
+reg [3:0]Cycle_Cnt;
+reg active;
+reg CB_Signal_Set;		
+reg CB_reset;
+reg Write_Pick_magnet;
+reg ready;
+reg request_pending;
+reg [6:0] delay;
+reg restart_possible;
+reg err;
+integer cbnfile;
+reg [7:0] i;
+integer f;
+reg [7:0] trecord[159:0];
+reg [3:0] bit;
+reg byte;
+
+wire [71:0] punch_data={PN_A1,PN_A3,PN_A5,PN_A7,PN_A9,PN_B2,PN_B4,PN_B6,PN_B8,PN_C1,PN_C3,PN_C5,PN_C7,PN_C9,PN_D2,PN_D4,PN_D6,PN_D8,PN_E1,PN_E3,PN_E5,PN_E7,PN_E9,PN_F2,PN_F4,PN_F6,PN_F8,PN_G1,PN_G3,PN_G5,PN_G7,PN_G9,PN_H2,PN_H4,PN_H6,PN_H8,PN_A2,PN_A4,PN_A6,PN_A8,PN_B1,PN_B3,PN_B5,PN_B7,PN_B9,PN_C2,PN_C4,PN_C6,PN_C8,PN_D1,PN_D3,PN_D5,PN_D7,PN_D9,PN_E2,PN_E4,PN_E6,PN_E8,PN_F1,PN_F3,PN_F5,PN_F7,PN_F9,PN_G2,PN_G4,PN_G6,PN_G8,PN_H1,PN_H3,PN_H5,PN_H7,PN_H9};
+
+assign PN_J1 = Write_Pick_magnet; //  Pn Thy Plate Lt
+assign PN_J2 = Write_Pick_magnet; // Pn Thy Plate Rt
+assign PN_J3 = ready; // Pn Sel 1
+assign PN_J5 = active; // Pn Disc 1 
+assign PN_J7 = CB_reset; // Tgr Reset
+assign PN_J8 = CB_Signal_Set; // CB Signal Set
+assign PN_J9 = 0; // Pn Sense Thy Plate
+
+always @*
+  if(RES)
+  begin
+     rotate=0; 
+	 Sub_Cnt=0;
+	 Cycle_Cnt=12;
+	 Unit_Cnt=1;
+	 active=0;
+	 CB_Signal_Set=0;
+	 Write_Pick_magnet=0;
+     CB_reset=0;
+
+	 ready=1;	 
+     request_pending=0;
+     restart_possible=0;
+     delay=0;
+	 err=0;
+	 bit=0;
+	 byte=0;
+	 cbnfile=0;
+         i=0;
+  end
+
+
+always@(negedge CL4096)
+  if(!rotate)
+  begin
+    if(PN_J4) //  Pn Sel 2
+	begin
+	  rotate=1;	 // start movement
+	  delay=74;  // number of sub cycles delay to start motion
+	end
+  end
+  else
+  begin
+	if(delay)
+	begin
+	  delay--; // delay until motion starts
+	  if(delay==0)
+		ready=0;  // inform cpu that rds has been performed
+	end
+	else
+	begin
+	  Unit_Cnt++;
+	  if(Unit_Cnt==10)
+	  begin
+	    Unit_Cnt=0;
+	    Cycle_Cnt++;
+	    if(Cycle_Cnt==14)
+	      Cycle_Cnt=0;
+		if(active)
+		begin
+		  bit++;
+		  if(bit==6)
+		  begin
+		    bit=0;
+		    byte=0;
+		  end
+		end
+	  end
+	  if(Cycle_Cnt==13&&Unit_Cnt==5)  // start CB cycles
+      begin
+	    active=1;
+        bit=0;
+        byte=1;
+      end
+      if(Cycle_Cnt==11&&Unit_Cnt==6) // next rds possible
+	  begin
+	    if(cbnfile==0)
+        begin
+          cbnfile = $fopen("CPN.cbn", "wb");
+	      if(cbnfile==0)
+	        err=1;
+        end
+		for(i=0;i<160;i++)
+		begin
+		  trecord[i][6]=trecord[i][0]^trecord[i][1]^trecord[i][2]^trecord[i][3]^trecord[i][4]^trecord[i][5];		  
+		  if(i==0)
+			trecord[i][7]=0;
+		  else
+		    trecord[i][7]=1;
+		  f=$fputc(trecord[i],cbnfile);
+		  if(i!=0)
+		   err=1;
+        end
+	    ready=1;
+		restart_possible=1;
+	  end
+	  if(Cycle_Cnt==11&&Unit_Cnt==7) // end of hatched time
+	    restart_possible=0;
+	  if(restart_possible&&PN_J4) //  Pn Sel 2
+	  begin	  
+		ready=0;	 
+		request_pending=1;
+                restart_possible=0;
+	  end
+	  if (Cycle_Cnt==12&&Unit_Cnt==1) // Stop position
+	  begin
+	    if(!request_pending)
+		  rotate=0;           // stop movement
+		else
+		  request_pending=0; // no stop because new rds was given
+	  end	  
+	  if(active)
+	  begin
+		if(Unit_Cnt==5)
+		begin		
+		  CB_reset=1;
+		  Write_Pick_magnet=0;
+		end
+	    else if(Unit_Cnt==7)
+		begin
+		  CB_reset=0;
+		  if(Cycle_Cnt==11||PN_J6) // Pn Disc 2
+			active=0;
+	    end
+        else if(Unit_Cnt==0)
+		begin
+		  CB_Signal_Set=1;
+	      Write_Pick_magnet=1;
+		end
+		else if(Unit_Cnt==2) 		
+		  CB_Signal_Set=0;
+		else if(Unit_Cnt==4)
+ 	      for(i=0;i<72;i++)
+		    trecord[(i<<1)|byte][bit]=punch_data[71-i];
+	  end
+	end
+  end
+.End

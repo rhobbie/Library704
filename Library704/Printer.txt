@@ -1,0 +1,462 @@
+﻿.Module Printer
+PT_[A-U][1-9] CL128 RES : Printer
+.Signals
+I PT_A1 Col (S) Lt Exit
+I PT_A2 Col (S) Rt Exit
+I PT_A3 Col (1) Lt Exit
+I PT_A4 Col (1) Rt Exit
+I PT_A5 Col (2) Lt Exit
+I PT_A6 Col (2) Rt Exit
+I PT_A7 Col (3) Lt Exit
+I PT_A8 Col (3) Rt Exit
+I PT_A9 Col (4) Lt Exit
+I PT_B1 Col (4) Rt Exit
+I PT_B2 Col (5) Lt Exit
+I PT_B3 Col (5) Rt Exit
+I PT_B4 Col (6) Lt Exit
+I PT_B5 Col (6) Rt Exit
+I PT_B6 Col (7) Lt Exit
+I PT_B7 Col (7) Rt Exit
+I PT_B8 Col (8) Lt Exit
+I PT_B9 Col (8) Rt Exit
+I PT_C1 Col (9) Lt Exit
+I PT_C2 Col (9) Rt Exit
+I PT_C3 Col (10) Lt Exit
+I PT_C4 Col (10) Rt Exit
+I PT_C5 Col (11) Lt Exit
+I PT_C6 Col (11) Rt Exit
+I PT_C7 Col (12) Lt Exit
+I PT_C8 Col (12) Rt Exit
+I PT_C9 Col (13) Lt Exit
+I PT_D1 Col (13) Rt Exit
+I PT_D2 Col (14) Lt Exit
+I PT_D3 Col (14) Rt Exit
+I PT_D4 Col (15) Lt Exit
+I PT_D5 Col (15) Rt Exit
+I PT_D6 Col (16) Lt Exit
+I PT_D7 Col (16) Rt Exit
+I PT_D8 Col (17) Lt Exit
+I PT_D9 Col (17) Rt Exit
+I PT_E1 Col (18) Lt Exit
+I PT_E2 Col (18) Rt Exit
+I PT_E3 Col (19) Lt Exit
+I PT_E4 Col (19) Rt Exit
+I PT_E5 Col (20) Lt Exit
+I PT_E6 Col (20) Rt Exit
+I PT_E7 Col (21) Lt Exit
+I PT_E8 Col (21) Rt Exit
+I PT_E9 Col (22) Lt Exit
+I PT_F1 Col (22) Rt Exit
+I PT_F2 Col (23) Lt Exit
+I PT_F3 Col (23) Rt Exit
+I PT_F4 Col (24) Lt Exit
+I PT_F5 Col (24) Rt Exit
+I PT_F6 Col (25) Lt Exit
+I PT_F7 Col (25) Rt Exit
+I PT_F8 Col (26) Lt Exit
+I PT_F9 Col (26) Rt Exit
+I PT_G1 Col (27) Lt Exit
+I PT_G2 Col (27) Rt Exit
+I PT_G3 Col (28) Lt Exit
+I PT_G4 Col (28) Rt Exit
+I PT_G5 Col (29) Lt Exit
+I PT_G6 Col (29) Rt Exit
+I PT_G7 Col (30) Lt Exit
+I PT_G8 Col (30) Rt Exit
+I PT_G9 Col (31) Lt Exit
+I PT_H1 Col (31) Rt Exit
+I PT_H2 Col (32) Lt Exit
+I PT_H3 Col (32) Rt Exit
+I PT_H4 Col (33) Lt Exit
+I PT_H5 Col (33) Rt Exit
+I PT_H6 Col (34) Lt Exit
+I PT_H7 Col (34) Rt Exit
+I PT_H8 Col (35) Lt Exit
+I PT_H9 Col (35) Rt Exit
+BW PT_J1 Col (S) Lt Entry
+BW PT_J2 Col (S) Rt Entry
+BW PT_J3 Col (1) Lt Entry
+BW PT_J4 Col (1) Rt Entry
+BW PT_J5 Col (2) Lt Entry
+BW PT_J6 Col (2) Rt Entry
+BW PT_J7 Col (3) Lt Entry
+BW PT_J8 Col (3) Rt Entry
+BW PT_J9 Col (4) Lt Entry
+BW PT_K1 Col (4) Rt Entry
+BW PT_K2 Col (5) Lt Entry
+BW PT_K3 Col (5) Rt Entry
+BW PT_K4 Col (6) Lt Entry
+BW PT_K5 Col (6) Rt Entry
+BW PT_K6 Col (7) Lt Entry
+BW PT_K7 Col (7) Rt Entry
+BW PT_K8 Col (8) Lt Entry
+BW PT_K9 Col (8) Rt Entry
+BW PT_L1 Col (9) Lt Entry
+BW PT_L2 Col (9) Rt Entry
+BW PT_L3 Col (10) Lt Entry
+BW PT_L4 Col (10) Rt Entry
+BW PT_L5 Col (11) Lt Entry
+BW PT_L6 Col (11) Rt Entry
+BW PT_L7 Col (12) Lt Entry
+BW PT_L8 Col (12) Rt Entry
+BW PT_L9 Col (13) Lt Entry
+BW PT_M1 Col (13) Rt Entry
+BW PT_M2 Col (14) Lt Entry
+BW PT_M3 Col (14) Rt Entry
+BW PT_M4 Col (15) Lt Entry
+BW PT_M5 Col (15) Rt Entry
+BW PT_M6 Col (16) Lt Entry
+BW PT_M7 Col (16) Rt Entry
+BW PT_M8 Col (17) Lt Entry
+BW PT_M9 Col (17) Rt Entry
+BW PT_N1 Col (18) Lt Entry
+BW PT_N2 Col (18) Rt Entry
+BW PT_N3 Col (19) Lt Entry
+BW PT_N4 Col (19) Rt Entry
+BW PT_N5 Col (20) Lt Entry
+BW PT_N6 Col (20) Rt Entry
+BW PT_N7 Col (21) Lt Entry
+BW PT_N8 Col (21) Rt Entry
+BW PT_N9 Col (22) Lt Entry
+BW PT_P1 Col (22) Rt Entry
+BW PT_P2 Col (23) Lt Entry
+BW PT_P3 Col (23) Rt Entry
+BW PT_P4 Col (24) Lt Entry
+BW PT_P5 Col (24) Rt Entry
+BW PT_P6 Col (25) Lt Entry
+BW PT_P7 Col (25) Rt Entry
+BW PT_P8 Col (26) Lt Entry
+BW PT_P9 Col (26) Rt Entry
+BW PT_Q1 Col (27) Lt Entry
+BW PT_Q2 Col (27) Rt Entry
+BW PT_Q3 Col (28) Lt Entry
+BW PT_Q4 Col (28) Rt Entry
+BW PT_Q5 Col (29) Lt Entry
+BW PT_Q6 Col (29) Rt Entry
+BW PT_Q7 Col (30) Lt Entry
+BW PT_Q8 Col (30) Rt Entry
+BW PT_Q9 Col (31) Lt Entry
+BW PT_R1 Col (31) Rt Entry
+BW PT_R2 Col (32) Lt Entry
+BW PT_R3 Col (32) Rt Entry
+BW PT_R4 Col (33) Lt Entry
+BW PT_R5 Col (33) Rt Entry
+BW PT_R6 Col (34) Lt Entry
+BW PT_R7 Col (34) Rt Entry
+BW PT_R8 Col (35) Lt Entry
+BW PT_R9 Col (35) Rt Entry
+
+O PT_S1 Pr Thy Plate Lt
+O PT_S2 Pr Thy Plate Rt
+
+O PT_S3  Pr Select
+I PT_S4  Pr Rd Sel
+I PT_S5  Pr Wr Sel
+O PT_S6  Pr Disc 1
+I PT_S7  Pr Disc 2
+
+BW PT_S8 Tgr Reset
+BW PT_S9 CB Signal Set
+
+O PT_T1 Pr Sense Thy Plates
+I PT_T2 Pr Sense (1)
+I PT_T3 Pr Sense (2)
+I PT_T4 Pr Sense (3)
+I PT_T5 Pr Sense (4)
+I PT_T6 Pr Sense (5)
+I PT_T7 Pr Sense (6)
+I PT_T8 Pr Sense (7)
+I PT_T9 Pr Sense (8)
+I PT_U1 Pr Sense (9)
+I PT_U2 Pr Sense (10)
+O PT_U3 Pr Sense Entry
+I PT_U4 Pr Sense
+
+
+I CL128 Clock128
+I RES Reset
+.Logic
+
+reg rotate;
+reg [3:0]Sub_Cnt;
+reg [3:0]Unit_Cnt;
+reg [4:0]Cycle_Cnt;
+reg active;
+reg CB_Signal_Set;		
+reg [71:0] Set_Tk;
+reg CB_reset;
+reg Write_Pick_magnet;
+reg ready;
+reg request_pending;
+reg [7:0] delay;
+reg restart_possible;
+integer txtfile;
+integer f;
+reg [7:0] ascii_value;
+reg [6:0] i;
+reg [3:0] low_pos;
+reg [3:0] high_pos;
+reg [3:0] echo_pos;
+reg [3:0] print_line_low[71:0];
+reg [3:0] print_line_high[71:0];
+reg print_active;
+reg echo_active;
+reg with_echo;
+reg err;
+
+wire [71:0] print_data={PT_A1,PT_A3,PT_A5,PT_A7,PT_A9,PT_B2,PT_B4,PT_B6,PT_B8,PT_C1,PT_C3,PT_C5,PT_C7,PT_C9,PT_D2,PT_D4,PT_D6,PT_D8,PT_E1,PT_E3,PT_E5,PT_E7,PT_E9,PT_F2,PT_F4,PT_F6,PT_F8,PT_G1,PT_G3,PT_G5,PT_G7,PT_G9,PT_H2,PT_H4,PT_H6,PT_H8,PT_A2,PT_A4,PT_A6,PT_A8,PT_B1,PT_B3,PT_B5,PT_B7,PT_B9,PT_C2,PT_C4,PT_C6,PT_C8,PT_D1,PT_D3,PT_D5,PT_D7,PT_D9,PT_E2,PT_E4,PT_E6,PT_E8,PT_F1,PT_F3,PT_F5,PT_F7,PT_F9,PT_G2,PT_G4,PT_G6,PT_G8,PT_H1,PT_H3,PT_H5,PT_H7,PT_H9};
+assign PT_S1 = Write_Pick_magnet; //  Pr Thy Plate Lt
+assign PT_S2 = Write_Pick_magnet; // Pr Thy Plate Rt
+assign PT_S3 = ready; // Pr Sel 1
+assign PT_S6 = active; // Pr Disc 1
+assign PT_S8 = CB_reset; // Tgr Reset
+assign PT_S9 = CB_Signal_Set; // CB Signal Set
+assign PT_T1 = 0; // Pr Sense Thy Plates
+assign PT_U3 = 0; // Pr Sense Entry
+assign {PT_J1,PT_J3,PT_J5,PT_J7,PT_J9,PT_K2,PT_K4,PT_K6,PT_K8,PT_L1,PT_L3,PT_L5,PT_L7,PT_L9,PT_M2,PT_M4,PT_M6,PT_M8,PT_N1,PT_N3,PT_N5,PT_N7,PT_N9,PT_P2,PT_P4,PT_P6,PT_P8,PT_Q1,PT_Q3,PT_Q5,PT_Q7,PT_Q9,PT_R2,PT_R4,PT_R6,PT_R8,PT_J2,PT_J4,PT_J6,PT_J8,PT_K1,PT_K3,PT_K5,PT_K7,PT_K9,PT_L2,PT_L4,PT_L6,PT_L8,PT_M1,PT_M3,PT_M5,PT_M7,PT_M9,PT_N2,PT_N4,PT_N6,PT_N8,PT_P1,PT_P3,PT_P5,PT_P7,PT_P9,PT_Q2,PT_Q4,PT_Q6,PT_Q8,PT_R1,PT_R3,PT_R5,PT_R7,PT_R9}=Set_Tk;
+
+always @*
+  if(RES)
+  begin
+     rotate=0;
+	 Sub_Cnt=0;
+	 Cycle_Cnt=20;
+	 Unit_Cnt=7;
+	 active=0;	 
+	 CB_Signal_Set=0;
+     Set_Tk=0;
+	 Write_Pick_magnet=0;
+     CB_reset=0;
+	 ready=1;
+     request_pending=0;
+     restart_possible=0;
+     delay=0;
+     i=0;
+	 low_pos=0;
+	 print_active=0;
+	 echo_active=0;
+	 with_echo=0;
+	 err=0;
+	 ascii_value=0;
+	 txtfile=0;
+  end
+
+always@(posedge CL128)
+begin
+  Sub_Cnt++;    
+  if(Sub_Cnt==9)
+    Sub_Cnt=0;
+end
+wire CL1152=Sub_Cnt[3];
+
+always @(negedge CL1152)
+if(!rotate)
+  begin
+    if(PT_S4||PT_S5)   // Pr Rd Sel ||  Pr Wr Sel 
+	begin
+	  rotate=1;	 // start movement
+	  delay=192;  // number of sub cycles delay to start motion
+	  with_echo=PT_S4;  // Pr Rd Sel
+	end
+  end
+  else
+  begin  
+    if(delay)
+	begin
+	  delay--; // delay until motion starts
+	  if(delay==0)
+		ready=0;  // inform cpu that rds has been performed
+	end
+	else
+	begin	    
+	  Unit_Cnt++;	  	  
+	  if(Unit_Cnt==15)
+	  begin
+	    Unit_Cnt=0;
+	    Cycle_Cnt++;		
+	    if(Cycle_Cnt==24)		
+	      Cycle_Cnt=0;
+	  end
+	  if(Cycle_Cnt==23&&Unit_Cnt==13)  // start CB cycles
+      begin
+	    active=1;
+        print_active=1;
+		low_pos=9;
+		high_pos=0;
+		for(i=0;i<72;i++)
+		begin
+		  print_line_low[i]=0;
+		  print_line_high[i]=0;
+		end
+      end
+	  if(Cycle_Cnt==(with_echo?19:12)&&Unit_Cnt==(with_echo?2:5)) // next rds possible
+	  begin	    	  
+	    if(txtfile==0&&!err)
+        begin
+          txtfile = $fopen("LPT.txt", "w");
+	      if(txtfile==0)
+	        err=1;
+        end
+		if(!err)
+		begin
+		  for(i=0;i<72;i++)
+		  begin
+		    case({print_line_high[71-i],print_line_low[71-i]})
+			  6'h00:ascii_value=" ";
+			  6'h01:ascii_value="1";
+		      6'h02:ascii_value="2";
+			  6'h03:ascii_value="3";
+			  6'h04:ascii_value="4";
+			  6'h05:ascii_value="5";
+			  6'h06:ascii_value="6";
+			  6'h07:ascii_value="7";
+			  6'h08:ascii_value="8";
+			  6'h09:ascii_value="9";
+			  6'h0A:ascii_value="="; // ("+")
+			  6'h0B:ascii_value="-";
+			  6'h10:ascii_value="0";
+			  6'h11:ascii_value="/";
+			  6'h12:ascii_value="S";
+			  6'h13:ascii_value="T";
+			  6'h14:ascii_value="U";
+			  6'h15:ascii_value="V";
+			  6'h16:ascii_value="W";
+			  6'h17:ascii_value="X";
+			  6'h18:ascii_value="Y";
+			  6'h19:ascii_value="Z";
+			  6'h1A:ascii_value=",";
+			  6'h1B:ascii_value="("; // ("%")
+			  6'h20:ascii_value="-";
+			  6'h21:ascii_value="J";
+			  6'h22:ascii_value="K";
+			  6'h23:ascii_value="L";
+			  6'h24:ascii_value="M";
+			  6'h25:ascii_value="N";
+			  6'h26:ascii_value="O";
+			  6'h27:ascii_value="P";
+			  6'h28:ascii_value="Q";
+			  6'h29:ascii_value="R";
+			  6'h2A:ascii_value="$";
+			  6'h2B:ascii_value="*";
+			  6'h30:ascii_value="+";
+			  6'h31:ascii_value="A";
+			  6'h32:ascii_value="B";
+			  6'h33:ascii_value="C";
+			  6'h34:ascii_value="D";
+			  6'h35:ascii_value="E";
+			  6'h36:ascii_value="F";
+			  6'h37:ascii_value="G";
+			  6'h38:ascii_value="H";
+			  6'h39:ascii_value="I";
+			  6'h3A:ascii_value=".";
+			  6'h3B:ascii_value=")"; // ("#")
+			  default:ascii_value=" ";
+			endcase
+			f=$fputc(ascii_value,txtfile);
+		  end		  
+		  f=$fputc(8'd13,txtfile);
+		end
+	    ready=1;
+		restart_possible=1;
+	  end
+	  if(Cycle_Cnt==19&&Unit_Cnt==3) // end of hatched time
+	    restart_possible=0;
+	  if(restart_possible&&(PT_S4||PT_S5))   // Pr Rd Sel ||  Pr Wr Sel 
+	  begin	  
+		ready=0;	 
+		request_pending=1;
+        restart_possible=0;
+		with_echo = PT_S4;  // Pr Rd Sel
+	  end
+	  if (Cycle_Cnt==20&&Unit_Cnt==7) // Stop position
+	  begin
+	    if(!request_pending)
+		  rotate=0;           // stop movement
+		else
+		  request_pending=0; // no stop because new rds/wds was given
+	  end
+	  if(active)
+	  begin
+		if(Unit_Cnt==13)
+		begin
+		  CB_reset=1;
+		  Write_Pick_magnet=0;
+		end
+	    else if(Unit_Cnt==2)
+		begin
+		  CB_reset=0;
+		  if(Cycle_Cnt==(with_echo?19:12)||PT_S7) // Pr Disc 2
+		  begin
+			print_active=0;
+			echo_active=0;
+			active=0;
+		  end
+		  else if(Cycle_Cnt==8&&with_echo)
+		  begin
+			echo_active=1;
+			echo_pos=11;
+		  end
+		  if(Cycle_Cnt==12)
+			print_active=0;
+        end  //  if(Unit_Cnt==2)
+        else if(Unit_Cnt==3)
+		begin
+		  if(echo_active)
+		  begin
+		    for(i=0;i<72;i++)
+			  if(print_line_low[i]==echo_pos)
+		         Set_Tk[i]=1;
+		    echo_pos--;
+		  end
+        end
+	    else if(Unit_Cnt==6)
+		begin
+		  CB_Signal_Set=1;
+		  if(print_active)
+			Write_Pick_magnet=1;
+		end
+		else if(Unit_Cnt==9) 
+		  // remove data from bus
+		  Set_Tk=0;
+		else if(Unit_Cnt==10) 
+		  CB_Signal_Set=0;
+		else if(Unit_Cnt==12&&print_active)
+		begin
+		  if(low_pos)
+		  begin
+		    for(i=0;i<72;i++)
+		      if(print_data[i])
+		      begin
+		        if(print_line_low[i]==0)			
+			      print_line_low[i]=low_pos;
+			    else if(print_line_low[i]==8)
+			    begin
+			      if(low_pos==3)
+			        print_line_low[i]=10;
+			      else if(low_pos==4)
+			        print_line_low[i]=11;
+			      else  
+			        print_line_low[i]=15; // Error marker
+			    end
+				else
+				  print_line_low[i]=15; // Error marker
+			  end
+            low_pos--;
+          end // if(low_pos)
+		  else
+		  begin
+		    high_pos+=3;
+		    for(i=0;i<72;i++)
+		      if(print_data[i])
+			  begin
+			    if(print_line_high[i]==0)
+			      print_line_high[i]=high_pos;
+				else
+				  print_line_low[i]=15; // Error marker
+			  end		    		  
+		  end // else of if(Unit_Cnt==12&&print_active)
+		end // if(Unit_Cnt==12)
+	  end // if(active)
+	end // else of if(delay)
+  end // else of if(!rotate)
+.End

@@ -83,6 +83,8 @@
     <Content Include="5_02.txt" />
     <Content Include="5_01_03.txt" />
     <Content Include="5_05_04.txt" />
+    <Content Include="5_05_05.txt" />
+    <Content Include="5_11_01.txt" />
     <Content Include="5_11_03.txt" />
     <Content Include="5_03_01.txt" />
     <Content Include="5_03_02.txt" />
@@ -141,9 +143,11 @@
     <Content Include="BUTTON.txt" />
     <Content Include="BUTTON_TB.txt" />
     <Content Include="BUTTON_T.txt" />
+    <Content Include="CardPunch.txt" />
     <Content Include="CFM.txt" />
     <Content Include="CFT.txt" />
     <Content Include="CE.txt" />
+    <Content Include="CardReader.txt" />
     <Content Include="DLdot05.txt" />
     <Content Include="Filter.txt" />
     <Content Include="IN.txt" />
@@ -154,6 +158,8 @@
     <Content Include="LT.txt" />
     <Content Include="NIP.txt" />
     <Content Include="PCFA.txt" />
+    <Content Include="PR.txt" />
+    <Content Include="Printer.txt" />
     <Content Include="PU5108.txt" />
     <Content Include="PU9032.txt" />
     <Content Include="PU9146.txt" />
@@ -351,6 +357,8 @@
     <Content Include="PU9014.txt" />
     <Content Include="TB.txt" />
     <Content Include="8_03.txt" />
+    <Content Include="THYOR.txt" />
+    <Content Include="THY.txt" />
     <Content Include="TkR.txt" />
     <Content Include="TkL.txt" />
     <Content Include="Tkx.txt" />

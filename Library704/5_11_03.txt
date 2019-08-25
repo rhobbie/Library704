@@ -1,7 +1,17 @@
 ﻿.Module 5_11_03 // 5.11.03 Read-Write Disconnect Gate
-5_11_03_A1 : 5_11_03 
+5_11_03_A[1-5] : 5_11_03 
 .Signals
 I 5_11_03_A1 PRI OPN [70] COPY(&SKIP)
+O 5_11_03_A2 Read Left
+O 5_11_03_A3 Read Right
+O 5_11_03_A4 Write Left
+O 5_11_03_A5 Write Right
+
 .Connect
 1MEG 5_11_03_A1 0V // PRI OPN [70] COPY(&SKIP)
+W -30V 5_11_03_A2 // Read Left
+W -30V 5_11_03_A3 // Read Right
+W -30V 5_11_03_A4 // Write Left
+W -30V 5_11_03_A5 // Write Right
+
 .End

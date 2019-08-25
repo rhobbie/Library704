@@ -17,7 +17,7 @@ begin
 if(State)
 begin
   Cnt++;
-  if(Cnt>=8)
+  if(Cnt==8)
      State=0;
 end
 end

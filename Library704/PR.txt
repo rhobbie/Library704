@@ -1,0 +1,572 @@
+﻿.Module PR
+PR[1-2]-[1-155] CL64 CL128 CL4096 RES : PR
+CR_[A-K][1-9] CR_CL64 CR_RES : CardReader
+PN_[A-K][1-9] PN_CL4096 PN_RES : CardPunch 
+PT_[A-U][1-9] PT_CL128 PT_RES : Printer
+.Signals
+
+// 4.05.03 TURN ON MSTR STOP TGR ON CHECK STOP
+O PR1-78  Fuse Blow
+
+// 5.01.06 Card Machine Selector/ Disconnect
+O PR1-7   Pr Select
+I PR1-23  Pr Rd Sel
+I PR1-30  Pr Wr Sel
+O PR1-101 Cr Sel 1
+I PR1-110 Cr Sel 2
+O PR2-101 Pn Sel 1
+I PR2-110 Pn Sel 2
+O PR1-37  Pr Disc 1
+I PR1-39  Pr Disc 2
+O PR2-103 Pn Disc 1
+I PR2-112 Pn Disc 2
+O PR1-103 Cr Disc 1
+I PR1-112 Cr Disc 2
+
+// 5.05.05 Pr Sense Outputs (1-10) Pnch Outputs (1-2) 
+O PR2-14 Pr Sense Thy Plates
+I PR2-29 Pr Sense (1)
+I PR2-30 Pr Sense (2)
+I PR2-31 Pr Sense (3)
+I PR2-32 Pr Sense (4)
+I PR2-37 Pr Sense (5)
+I PR2-38 Pr Sense (6)
+I PR2-39 Pr Sense (7)
+I PR2-40 Pr Sense (8)
+I PR2-45 Pr Sense (9)
+I PR2-46 Pr Sense (10)
+O PR2-125 Pn Sense Thy Plate
+I PR2-126 Pn Sense (1)
+
+// 5.05.06 Test Sense Inputs
+O PR1-117 Pr Sense Entry
+I PR2-127 Pr Sense
+
+// 5.09.01 EOR/EOF Interlock
+O PR1-62 CR-EOF 1
+I PR1-63 CR-EOF 2
+
+O PR1-69 CR-EOR 1
+I PR1-72 CR-EOR 2
+
+// 5.12.01,03,04 Distributor
+I PR1-1   Col (S) Lt Exit
+I PR1-130 Col (S) Rt Exit
+I PR1-9   Col (1) Lt Exit
+I PR1-138 Col (1) Rt Exit
+I PR1-17  Col (2) Lt Exit
+I PR1-146 Col (2) Rt Exit
+I PR1-25  Col (3) Lt Exit
+I PR1-154 Col (3) Rt Exit
+I PR1-33  Col (4) Lt Exit
+I PR1-3   Col (4) Rt Exit
+I PR1-41  Col (5) Lt Exit
+I PR1-11  Col (5) Rt Exit
+I PR1-49  Col (6) Lt Exit
+I PR1-19  Col (6) Rt Exit
+I PR1-57  Col (7) Lt Exit
+I PR1-27  Col (7) Rt Exit
+I PR1-65  Col (8) Lt Exit
+I PR1-35  Col (8) Rt Exit
+I PR1-73  Col (9) Lt Exit
+I PR1-43  Col (9) Rt Exit
+I PR1-81  Col (10) Lt Exit
+I PR1-51  Col (10) Rt Exit
+I PR1-89  Col (11) Lt Exit
+I PR1-59  Col (11) Rt Exit
+I PR1-97  Col (12) Lt Exit
+I PR1-67  Col (12) Rt Exit
+I PR1-105 Col (13) Lt Exit
+I PR1-75  Col (13) Rt Exit
+I PR1-113 Col (14) Lt Exit
+I PR1-83  Col (14) Rt Exit
+I PR1-121 Col (15) Lt Exit
+I PR1-91  Col (15) Rt Exit
+I PR1-129 Col (16) Lt Exit
+I PR1-99  Col (16) Rt Exit
+I PR1-137 Col (17) Lt Exit
+I PR1-107 Col (17) Rt Exit
+I PR1-145 Col (18) Lt Exit
+I PR1-115 Col (18) Rt Exit
+I PR1-153 Col (19) Lt Exit
+I PR1-123 Col (19) Rt Exit
+I PR1-2   Col (20) Lt Exit
+I PR1-131 Col (20) Rt Exit
+I PR1-10  Col (21) Lt Exit
+I PR1-139 Col (21) Rt Exit
+I PR1-18  Col (22) Lt Exit
+I PR1-147 Col (22) Rt Exit
+I PR1-26  Col (23) Lt Exit
+I PR1-155 Col (23) Rt Exit
+I PR1-34  Col (24) Lt Exit
+I PR1-4   Col (24) Rt Exit
+I PR1-42  Col (25) Lt Exit
+I PR1-12  Col (25) Rt Exit
+I PR1-50  Col (26) Lt Exit
+I PR1-20  Col (26) Rt Exit
+I PR1-58  Col (27) Lt Exit
+I PR1-28  Col (27) Rt Exit
+I PR1-66  Col (28) Lt Exit
+I PR1-36  Col (28) Rt Exit
+I PR1-74  Col (29) Lt Exit
+I PR1-44  Col (29) Rt Exit
+I PR1-82  Col (30) Lt Exit
+I PR1-52  Col (30) Rt Exit
+I PR1-90  Col (31) Lt Exit
+I PR1-60  Col (31) Rt Exit
+I PR1-98  Col (32) Lt Exit
+I PR1-68  Col (32) Rt Exit
+I PR1-106 Col (33) Lt Exit
+I PR1-76  Col (33) Rt Exit
+I PR1-114 Col (34) Lt Exit
+I PR1-84  Col (34) Rt Exit
+I PR1-122 Col (35) Lt Exit
+I PR1-92  Col (35) Rt Exit
+O PR2-1   Col (S) Lt Entry
+O PR2-130 Col (S) Rt Entry
+O PR2-9   Col (1) Lt Entry
+O PR2-138 Col (1) Rt Entry
+O PR2-17  Col (2) Lt Entry
+O PR2-146 Col (2) Rt Entry
+O PR2-25  Col (3) Lt Entry
+O PR2-154 Col (3) Rt Entry
+O PR2-33  Col (4) Lt Entry
+O PR2-3   Col (4) Rt Entry
+O PR2-41  Col (5) Lt Entry
+O PR2-11  Col (5) Rt Entry
+O PR2-49  Col (6) Lt Entry
+O PR2-19  Col (6) Rt Entry
+O PR2-57  Col (7) Lt Entry
+O PR2-27  Col (7) Rt Entry
+O PR2-65  Col (8) Lt Entry
+O PR2-35  Col (8) Rt Entry
+O PR2-73  Col (9) Lt Entry
+O PR2-43  Col (9) Rt Entry
+O PR2-81  Col (10) Lt Entry
+O PR2-51  Col (10) Rt Entry
+O PR2-89  Col (11) Lt Entry
+O PR2-59  Col (11) Rt Entry
+O PR2-97  Col (12) Lt Entry
+O PR2-67  Col (12) Rt Entry
+O PR2-105 Col (13) Lt Entry
+O PR2-75  Col (13) Rt Entry
+O PR2-113 Col (14) Lt Entry
+O PR2-83  Col (14) Rt Entry
+O PR2-121 Col (15) Lt Entry
+O PR2-91  Col (15) Rt Entry
+O PR2-129 Col (16) Lt Entry
+O PR2-99  Col (16) Rt Entry
+O PR2-137 Col (17) Lt Entry
+O PR2-107 Col (17) Rt Entry
+O PR2-145 Col (18) Lt Entry
+O PR2-115 Col (18) Rt Entry
+O PR2-153 Col (19) Lt Entry
+O PR2-123 Col (19) Rt Entry
+O PR2-2   Col (20) Lt Entry
+O PR2-131 Col (20) Rt Entry
+O PR2-10  Col (21) Lt Entry
+O PR2-139 Col (21) Rt Entry
+O PR2-18  Col (22) Lt Entry
+O PR2-147 Col (22) Rt Entry
+O PR2-26  Col (23) Lt Entry
+O PR2-155 Col (23) Rt Entry
+O PR2-34  Col (24) Lt Entry
+O PR2-4   Col (24) Rt Entry
+O PR2-42  Col (25) Lt Entry
+O PR2-12  Col (25) Rt Entry
+O PR2-50  Col (26) Lt Entry
+O PR2-20  Col (26) Rt Entry
+O PR2-58  Col (27) Lt Entry
+O PR2-28  Col (27) Rt Entry
+O PR2-66  Col (28) Lt Entry
+O PR2-36  Col (28) Rt Entry
+O PR2-74  Col (29) Lt Entry
+O PR2-44  Col (29) Rt Entry
+O PR2-82  Col (30) Lt Entry
+O PR2-52  Col (30) Rt Entry
+O PR2-90  Col (31) Lt Entry
+O PR2-60  Col (31) Rt Entry
+O PR2-98  Col (32) Lt Entry
+O PR2-68  Col (32) Rt Entry
+O PR2-106 Col (33) Lt Entry
+O PR2-76  Col (33) Rt Entry
+O PR2-114 Col (34) Lt Entry
+O PR2-84  Col (34) Rt Entry
+O PR2-122 Col (35) Lt Entry
+O PR2-92  Col (35) Rt Entry
+O PR1-53  Pn Thy Plate Lt
+O PR1-54  Pn Thy Plate Rt
+O PR1-55  Pr Thy Plate Lt
+O PR1-56  Pr Thy Plate Rt
+
+// 5.11.01 Card Ctrl Pulse Gen
+O PR2-47 Tgr Reset
+O PR1-46 CB Signal Set
+
+
+I CL64 Clock64
+I CL128 Clock128
+I CL4096 Clock4096
+I RES Reset 
+
+.Connect
+
+// 4.05.03 TURN ON MSTR STOP TGR ON CHECK STOP
+W CR_K2 PR1-78  // Fuse Blow
+
+// 5.01.06 Card Machine Selector/ Disconnect
+W PT_S3 PR1-7 // Pr Select
+W PR1-23 PT_S4 // Pr Rd Sel
+W PR1-30 PT_S5 // Pr Wr Sel
+W PT_S6 PR1-37 // Pr Disc 1
+W PR1-39 PT_S7 // Pr Disc 2
+W PN_J3 PR2-101 // Pn Sel 1
+W PR2-110 PN_J4 // Pn Sel 2
+W PN_J5 PR2-103 // Pn Disc 1
+W PR2-112 PN_J6 // Pn Disc 2
+W CR_J1 PR1-101 // Cr Sel 1
+W PR1-110 CR_J2 // Cr Sel 2
+W CR_J3 PR1-103 // Cr Disc 1
+W PR1-112 CR_J4 // Cr Disc 2
+
+// 5.05.05 Pr Sense Outputs (1-10) Pnch Outputs (1-2) 
+W PT_T1 PR2-14 // Pr Sense Thy Plates
+W PR2-29 PT_T2 // Pr Sense (1)
+W PR2-30 PT_T3 // Pr Sense (2)
+W PR2-31 PT_T4 // Pr Sense (3)
+W PR2-32 PT_T5 // Pr Sense (4)
+W PR2-37 PT_T6 // Pr Sense (5)
+W PR2-38 PT_T7 // Pr Sense (6)
+W PR2-39 PT_T8 // Pr Sense (7)
+W PR2-40 PT_T9 // Pr Sense (8)
+W PR2-45 PT_U1 // Pr Sense (9)
+W PR2-46 PT_U2 // Pr Sense (10)
+W PN_J9 PR2-125 // Pn Sense Thy Plate
+W PR2-126 PN_K1 // Pn Sense (1)
+
+// 5.05.06 Test Sense Inputs
+W PT_U3 PR1-117 // Pr Sense Entry
+W PR2-127 PT_U4 // Pr Sense
+
+
+// 5.09.01 EOR/EOF Interlock
+W CR_J7 PR1-62 // CR-EOF 1
+W PR1-63 CR_J8 // CR-EOF 2
+
+W CR_J9 PR1-69 // CR-EOR 1
+W PR1-72 CR_K1 // CR-EOR 2
+
+
+// 5.12.01,03,04 Distributor
+
+W PR1-1   PN_A1 // Col (S) Lt Exit
+W PR1-130 PN_A2 // Col (S) Rt Exit
+W PR1-9   PN_A3 // Col (1) Lt Exit
+W PR1-138 PN_A4 // Col (1) Rt Exit
+W PR1-17  PN_A5 // Col (2) Lt Exit
+W PR1-146 PN_A6 // Col (2) Rt Exit
+W PR1-25  PN_A7 // Col (3) Lt Exit
+W PR1-154 PN_A8 // Col (3) Rt Exit
+W PR1-33  PN_A9 // Col (4) Lt Exit
+W PR1-3   PN_B1 // Col (4) Rt Exit
+W PR1-41  PN_B2 // Col (5) Lt Exit
+W PR1-11  PN_B3 // Col (5) Rt Exit
+W PR1-49  PN_B4 // Col (6) Lt Exit
+W PR1-19  PN_B5 // Col (6) Rt Exit
+W PR1-57  PN_B6 // Col (7) Lt Exit
+W PR1-27  PN_B7 // Col (7) Rt Exit
+W PR1-65  PN_B8 // Col (8) Lt Exit
+W PR1-35  PN_B9 // Col (8) Rt Exit
+W PR1-73  PN_C1 // Col (9) Lt Exit
+W PR1-43  PN_C2 // Col (9) Rt Exit
+W PR1-81  PN_C3 // Col (10) Lt Exit
+W PR1-51  PN_C4 // Col (10) Rt Exit
+W PR1-89  PN_C5 // Col (11) Lt Exit
+W PR1-59  PN_C6 // Col (11) Rt Exit
+W PR1-97  PN_C7 // Col (12) Lt Exit
+W PR1-67  PN_C8 // Col (12) Rt Exit
+W PR1-105 PN_C9 // Col (13) Lt Exit
+W PR1-75  PN_D1 // Col (13) Rt Exit
+W PR1-113 PN_D2 // Col (14) Lt Exit
+W PR1-83  PN_D3 // Col (14) Rt Exit
+W PR1-121 PN_D4 // Col (15) Lt Exit
+W PR1-91  PN_D5 // Col (15) Rt Exit
+W PR1-129 PN_D6 // Col (16) Lt Exit
+W PR1-99  PN_D7 // Col (16) Rt Exit
+W PR1-137 PN_D8 // Col (17) Lt Exit
+W PR1-107 PN_D9 // Col (17) Rt Exit
+W PR1-145 PN_E1 // Col (18) Lt Exit
+W PR1-115 PN_E2 // Col (18) Rt Exit
+W PR1-153 PN_E3 // Col (19) Lt Exit
+W PR1-123 PN_E4 // Col (19) Rt Exit
+W PR1-2   PN_E5 // Col (20) Lt Exit
+W PR1-131 PN_E6 // Col (20) Rt Exit
+W PR1-10  PN_E7 // Col (21) Lt Exit
+W PR1-139 PN_E8 // Col (21) Rt Exit
+W PR1-18  PN_E9 // Col (22) Lt Exit
+W PR1-147 PN_F1 // Col (22) Rt Exit
+W PR1-26  PN_F2 // Col (23) Lt Exit
+W PR1-155 PN_F3 // Col (23) Rt Exit
+W PR1-34  PN_F4 // Col (24) Lt Exit
+W PR1-4   PN_F5 // Col (24) Rt Exit
+W PR1-42  PN_F6 // Col (25) Lt Exit
+W PR1-12  PN_F7 // Col (25) Rt Exit
+W PR1-50  PN_F8 // Col (26) Lt Exit
+W PR1-20  PN_F9 // Col (26) Rt Exit
+W PR1-58  PN_G1 // Col (27) Lt Exit
+W PR1-28  PN_G2 // Col (27) Rt Exit
+W PR1-66  PN_G3 // Col (28) Lt Exit
+W PR1-36  PN_G4 // Col (28) Rt Exit
+W PR1-74  PN_G5 // Col (29) Lt Exit
+W PR1-44  PN_G6 // Col (29) Rt Exit
+W PR1-82  PN_G7 // Col (30) Lt Exit
+W PR1-52  PN_G8 // Col (30) Rt Exit
+W PR1-90  PN_G9 // Col (31) Lt Exit
+W PR1-60  PN_H1 // Col (31) Rt Exit
+W PR1-98  PN_H2 // Col (32) Lt Exit
+W PR1-68  PN_H3 // Col (32) Rt Exit
+W PR1-106 PN_H4 // Col (33) Lt Exit
+W PR1-76  PN_H5 // Col (33) Rt Exit
+W PR1-114 PN_H6 // Col (34) Lt Exit
+W PR1-84  PN_H7 // Col (34) Rt Exit
+W PR1-122 PN_H8 // Col (35) Lt Exit
+W PR1-92  PN_H9 // Col (35) Rt Exit
+W PR1-1   PT_A1 // Col (S) Lt Exit
+W PR1-130 PT_A2 // Col (S) Rt Exit
+W PR1-9   PT_A3 // Col (1) Lt Exit
+W PR1-138 PT_A4 // Col (1) Rt Exit
+W PR1-17  PT_A5 // Col (2) Lt Exit
+W PR1-146 PT_A6 // Col (2) Rt Exit
+W PR1-25  PT_A7 // Col (3) Lt Exit
+W PR1-154 PT_A8 // Col (3) Rt Exit
+W PR1-33  PT_A9 // Col (4) Lt Exit
+W PR1-3   PT_B1 // Col (4) Rt Exit
+W PR1-41  PT_B2 // Col (5) Lt Exit
+W PR1-11  PT_B3 // Col (5) Rt Exit
+W PR1-49  PT_B4 // Col (6) Lt Exit
+W PR1-19  PT_B5 // Col (6) Rt Exit
+W PR1-57  PT_B6 // Col (7) Lt Exit
+W PR1-27  PT_B7 // Col (7) Rt Exit
+W PR1-65  PT_B8 // Col (8) Lt Exit
+W PR1-35  PT_B9 // Col (8) Rt Exit
+W PR1-73  PT_C1 // Col (9) Lt Exit
+W PR1-43  PT_C2 // Col (9) Rt Exit
+W PR1-81  PT_C3 // Col (10) Lt Exit
+W PR1-51  PT_C4 // Col (10) Rt Exit
+W PR1-89  PT_C5 // Col (11) Lt Exit
+W PR1-59  PT_C6 // Col (11) Rt Exit
+W PR1-97  PT_C7 // Col (12) Lt Exit
+W PR1-67  PT_C8 // Col (12) Rt Exit
+W PR1-105 PT_C9 // Col (13) Lt Exit
+W PR1-75  PT_D1 // Col (13) Rt Exit
+W PR1-113 PT_D2 // Col (14) Lt Exit
+W PR1-83  PT_D3 // Col (14) Rt Exit
+W PR1-121 PT_D4 // Col (15) Lt Exit
+W PR1-91  PT_D5 // Col (15) Rt Exit
+W PR1-129 PT_D6 // Col (16) Lt Exit
+W PR1-99  PT_D7 // Col (16) Rt Exit
+W PR1-137 PT_D8 // Col (17) Lt Exit
+W PR1-107 PT_D9 // Col (17) Rt Exit
+W PR1-145 PT_E1 // Col (18) Lt Exit
+W PR1-115 PT_E2 // Col (18) Rt Exit
+W PR1-153 PT_E3 // Col (19) Lt Exit
+W PR1-123 PT_E4 // Col (19) Rt Exit
+W PR1-2   PT_E5 // Col (20) Lt Exit
+W PR1-131 PT_E6 // Col (20) Rt Exit
+W PR1-10  PT_E7 // Col (21) Lt Exit
+W PR1-139 PT_E8 // Col (21) Rt Exit
+W PR1-18  PT_E9 // Col (22) Lt Exit
+W PR1-147 PT_F1 // Col (22) Rt Exit
+W PR1-26  PT_F2 // Col (23) Lt Exit
+W PR1-155 PT_F3 // Col (23) Rt Exit
+W PR1-34  PT_F4 // Col (24) Lt Exit
+W PR1-4   PT_F5 // Col (24) Rt Exit
+W PR1-42  PT_F6 // Col (25) Lt Exit
+W PR1-12  PT_F7 // Col (25) Rt Exit
+W PR1-50  PT_F8 // Col (26) Lt Exit
+W PR1-20  PT_F9 // Col (26) Rt Exit
+W PR1-58  PT_G1 // Col (27) Lt Exit
+W PR1-28  PT_G2 // Col (27) Rt Exit
+W PR1-66  PT_G3 // Col (28) Lt Exit
+W PR1-36  PT_G4 // Col (28) Rt Exit
+W PR1-74  PT_G5 // Col (29) Lt Exit
+W PR1-44  PT_G6 // Col (29) Rt Exit
+W PR1-82  PT_G7 // Col (30) Lt Exit
+W PR1-52  PT_G8 // Col (30) Rt Exit
+W PR1-90  PT_G9 // Col (31) Lt Exit
+W PR1-60  PT_H1 // Col (31) Rt Exit
+W PR1-98  PT_H2 // Col (32) Lt Exit
+W PR1-68  PT_H3 // Col (32) Rt Exit
+W PR1-106 PT_H4 // Col (33) Lt Exit
+W PR1-76  PT_H5 // Col (33) Rt Exit
+W PR1-114 PT_H6 // Col (34) Lt Exit
+W PR1-84  PT_H7 // Col (34) Rt Exit
+W PR1-122 PT_H8 // Col (35) Lt Exit
+W PR1-92  PT_H9 // Col (35) Rt Exit
+W PT_J1 PR2-1   // Col (S) Lt Entry
+W PT_J2 PR2-130 // Col (S) Rt Entry
+W PT_J3 PR2-9   // Col (1) Lt Entry
+W PT_J4 PR2-138 // Col (1) Rt Entry
+W PT_J5 PR2-17  // Col (2) Lt Entry
+W PT_J6 PR2-146 // Col (2) Rt Entry
+W PT_J7 PR2-25  // Col (3) Lt Entry
+W PT_J8 PR2-154 // Col (3) Rt Entry
+W PT_J9 PR2-33  // Col (4) Lt Entry
+W PT_K1 PR2-3   // Col (4) Rt Entry
+W PT_K2 PR2-41  // Col (5) Lt Entry
+W PT_K3 PR2-11  // Col (5) Rt Entry
+W PT_K4 PR2-49  // Col (6) Lt Entry
+W PT_K5 PR2-19  // Col (6) Rt Entry
+W PT_K6 PR2-57  // Col (7) Lt Entry
+W PT_K7 PR2-27  // Col (7) Rt Entry
+W PT_K8 PR2-65  // Col (8) Lt Entry
+W PT_K9 PR2-35  // Col (8) Rt Entry
+W PT_L1 PR2-73  // Col (9) Lt Entry
+W PT_L2 PR2-43  // Col (9) Rt Entry
+W PT_L3 PR2-81  // Col (10) Lt Entry
+W PT_L4 PR2-51  // Col (10) Rt Entry
+W PT_L5 PR2-89  // Col (11) Lt Entry
+W PT_L6 PR2-59  // Col (11) Rt Entry
+W PT_L7 PR2-97  // Col (12) Lt Entry
+W PT_L8 PR2-67  // Col (12) Rt Entry
+W PT_L9 PR2-105 // Col (13) Lt Entry
+W PT_M1 PR2-75  // Col (13) Rt Entry
+W PT_M2 PR2-113 // Col (14) Lt Entry
+W PT_M3 PR2-83  // Col (14) Rt Entry
+W PT_M4 PR2-121 // Col (15) Lt Entry
+W PT_M5 PR2-91  // Col (15) Rt Entry
+W PT_M6 PR2-129 // Col (16) Lt Entry
+W PT_M7 PR2-99  // Col (16) Rt Entry
+W PT_M8 PR2-137 // Col (17) Lt Entry
+W PT_M9 PR2-107 // Col (17) Rt Entry
+W PT_N1 PR2-145 // Col (18) Lt Entry
+W PT_N2 PR2-115 // Col (18) Rt Entry
+W PT_N3 PR2-153 // Col (19) Lt Entry
+W PT_N4 PR2-123 // Col (19) Rt Entry
+W PT_N5 PR2-2   // Col (20) Lt Entry
+W PT_N6 PR2-131 // Col (20) Rt Entry
+W PT_N7 PR2-10  // Col (21) Lt Entry
+W PT_N8 PR2-139 // Col (21) Rt Entry
+W PT_N9 PR2-18  // Col (22) Lt Entry
+W PT_P1 PR2-147 // Col (22) Rt Entry
+W PT_P2 PR2-26  // Col (23) Lt Entry
+W PT_P3 PR2-155 // Col (23) Rt Entry
+W PT_P4 PR2-34  // Col (24) Lt Entry
+W PT_P5 PR2-4   // Col (24) Rt Entry
+W PT_P6 PR2-42  // Col (25) Lt Entry
+W PT_P7 PR2-12  // Col (25) Rt Entry
+W PT_P8 PR2-50  // Col (26) Lt Entry
+W PT_P9 PR2-20  // Col (26) Rt Entry
+W PT_Q1 PR2-58  // Col (27) Lt Entry
+W PT_Q2 PR2-28  // Col (27) Rt Entry
+W PT_Q3 PR2-66  // Col (28) Lt Entry
+W PT_Q4 PR2-36  // Col (28) Rt Entry
+W PT_Q5 PR2-74  // Col (29) Lt Entry
+W PT_Q6 PR2-44  // Col (29) Rt Entry
+W PT_Q7 PR2-82  // Col (30) Lt Entry
+W PT_Q8 PR2-52  // Col (30) Rt Entry
+W PT_Q9 PR2-90  // Col (31) Lt Entry
+W PT_R1 PR2-60  // Col (31) Rt Entry
+W PT_R2 PR2-98  // Col (32) Lt Entry
+W PT_R3 PR2-68  // Col (32) Rt Entry
+W PT_R4 PR2-106 // Col (33) Lt Entry
+W PT_R5 PR2-76  // Col (33) Rt Entry
+W PT_R6 PR2-114 // Col (34) Lt Entry
+W PT_R7 PR2-84  // Col (34) Rt Entry
+W PT_R8 PR2-122 // Col (35) Lt Entry
+W PT_R9 PR2-92  // Col (35) Rt Entry
+W CR_A1 PR2-1   // Col (S) Lt Entry
+W CR_A2 PR2-130 // Col (S) Rt Entry
+W CR_A3 PR2-9   // Col (1) Lt Entry
+W CR_A4 PR2-138 // Col (1) Rt Entry
+W CR_A5 PR2-17  // Col (2) Lt Entry
+W CR_A6 PR2-146 // Col (2) Rt Entry
+W CR_A7 PR2-25  // Col (3) Lt Entry
+W CR_A8 PR2-154 // Col (3) Rt Entry
+W CR_A9 PR2-33  // Col (4) Lt Entry
+W CR_B1 PR2-3   // Col (4) Rt Entry
+W CR_B2 PR2-41  // Col (5) Lt Entry
+W CR_B3 PR2-11  // Col (5) Rt Entry
+W CR_B4 PR2-49  // Col (6) Lt Entry
+W CR_B5 PR2-19  // Col (6) Rt Entry
+W CR_B6 PR2-57  // Col (7) Lt Entry
+W CR_B7 PR2-27  // Col (7) Rt Entry
+W CR_B8 PR2-65  // Col (8) Lt Entry
+W CR_B9 PR2-35  // Col (8) Rt Entry
+W CR_C1 PR2-73  // Col (9) Lt Entry
+W CR_C2 PR2-43  // Col (9) Rt Entry
+W CR_C3 PR2-81  // Col (10) Lt Entry
+W CR_C4 PR2-51  // Col (10) Rt Entry
+W CR_C5 PR2-89  // Col (11) Lt Entry
+W CR_C6 PR2-59  // Col (11) Rt Entry
+W CR_C7 PR2-97  // Col (12) Lt Entry
+W CR_C8 PR2-67  // Col (12) Rt Entry
+W CR_C9 PR2-105 // Col (13) Lt Entry
+W CR_D1 PR2-75  // Col (13) Rt Entry
+W CR_D2 PR2-113 // Col (14) Lt Entry
+W CR_D3 PR2-83  // Col (14) Rt Entry
+W CR_D4 PR2-121 // Col (15) Lt Entry
+W CR_D5 PR2-91  // Col (15) Rt Entry
+W CR_D6 PR2-129 // Col (16) Lt Entry
+W CR_D7 PR2-99  // Col (16) Rt Entry
+W CR_D8 PR2-137 // Col (17) Lt Entry
+W CR_D9 PR2-107 // Col (17) Rt Entry
+W CR_E1 PR2-145 // Col (18) Lt Entry
+W CR_E2 PR2-115 // Col (18) Rt Entry
+W CR_E3 PR2-153 // Col (19) Lt Entry
+W CR_E4 PR2-123 // Col (19) Rt Entry
+W CR_E5 PR2-2   // Col (20) Lt Entry
+W CR_E6 PR2-131 // Col (20) Rt Entry
+W CR_E7 PR2-10  // Col (21) Lt Entry
+W CR_E8 PR2-139 // Col (21) Rt Entry
+W CR_E9 PR2-18  // Col (22) Lt Entry
+W CR_F1 PR2-147 // Col (22) Rt Entry
+W CR_F2 PR2-26  // Col (23) Lt Entry
+W CR_F3 PR2-155 // Col (23) Rt Entry
+W CR_F4 PR2-34  // Col (24) Lt Entry
+W CR_F5 PR2-4   // Col (24) Rt Entry
+W CR_F6 PR2-42  // Col (25) Lt Entry
+W CR_F7 PR2-12  // Col (25) Rt Entry
+W CR_F8 PR2-50  // Col (26) Lt Entry
+W CR_F9 PR2-20  // Col (26) Rt Entry
+W CR_G1 PR2-58  // Col (27) Lt Entry
+W CR_G2 PR2-28  // Col (27) Rt Entry
+W CR_G3 PR2-66  // Col (28) Lt Entry
+W CR_G4 PR2-36  // Col (28) Rt Entry
+W CR_G5 PR2-74  // Col (29) Lt Entry
+W CR_G6 PR2-44  // Col (29) Rt Entry
+W CR_G7 PR2-82  // Col (30) Lt Entry
+W CR_G8 PR2-52  // Col (30) Rt Entry
+W CR_G9 PR2-90  // Col (31) Lt Entry
+W CR_H1 PR2-60  // Col (31) Rt Entry
+W CR_H2 PR2-98  // Col (32) Lt Entry
+W CR_H3 PR2-68  // Col (32) Rt Entry
+W CR_H4 PR2-106 // Col (33) Lt Entry
+W CR_H5 PR2-76  // Col (33) Rt Entry
+W CR_H6 PR2-114 // Col (34) Lt Entry
+W CR_H7 PR2-84  // Col (34) Rt Entry
+W CR_H8 PR2-122 // Col (35) Lt Entry
+W CR_H9 PR2-92  // Col (35) Rt Entry
+W PN_J1 PR1-53 // Pn Thy Plate Lt
+W PN_J2 PR1-54 // Pn Thy Plate Rt
+W PT_S1 PR1-55  // Pr Thy Plate Lt
+W PT_S2 PR1-56  // Pr Thy Plate Rt
+
+
+// 5.11.01 Card Ctrl Pulse Gen
+W PR2-47 PN_J7 // Tgr Reset
+W PR1-46 PN_J8 // CB Signal Set
+W PR2-47 PT_S8 // Tgr Reset
+W PR1-46 PT_S9 // CB Signal Set
+W PR2-47 CR_J5 // Tgr Reset
+W PR1-46 CR_J6 // CB Signal Set
+
+
+W RES CR_RES // Reset
+W RES PN_RES // Reset
+W RES PT_RES // Reset
+W CL64 CR_CL64 //  Clock64
+W CL128 PT_CL128 //  Clock128
+W CL4096 PN_CL4096 //  Clock4096
+
+.End

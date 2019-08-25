@@ -1,5 +1,5 @@
 ﻿.Module MF4
-MF4-[01-40][a-r] MF4-[A-R][a-h] MF4_[R-T][1-9] MF4_CL MF4_RES : MF4
+MF4-[01-40][a-r] MF4-[A-R][a-h] MF4_[R-T][1-9] MF4_CL MF4_CL64 MF4_CL128 MF4_CL4096 MF4_RES  : MF4
 [A-H]01-[1-8] : PU9014 // 2.08.48 INDEXING OPERATION & STG REG 24-35 -> ADDERS (6-17) // 2.08.49 INDEX REGISTER -> ADDER // 2.08.50 XR ENTRY CNTL CARRY 1 -> ADDER 16 CARRY 1 -> ADDER 17 // 2.08.51 INDEXING CONTROLS // 2.08.53 ADDER -> INDEX REG
 [A-H]06-[1-8] A06_RES : PU9015 // 2.06.04 ADDER 6 CARRY TRIGGER // 2.07.02 COND TR EXEC CNTL // 2.08.51 INDEXING CONTROLS // 2.08.53 ADDER -> INDEX REG
 [A-H]07-[1-8] A07_CL A07_RES : PU9018 // 2.12.01 INDEX REGISTER
@@ -33,18 +33,55 @@ MF4-[01-40][a-r] MF4-[A-R][a-h] MF4_[R-T][1-9] MF4_CL MF4_RES : MF4
 [A-H]35-[1-8] : PU9183 // 4.21 DISPLAY EFFECTIVE ADDRESS & DISPLAY XRS A-B-C
 [A-H]36-[1-8] A36_CL  A36_RES : PU9194  // 2.12.01 INDEX REGISTER // 2.12.04 INDEX REGISTER MIXING
 
-5_01_06_A[1-5] : 5_01_06 // 5.01.06 Card Machine Selector
+5_01_06_[A-B][1-9]  : 5_01_06 // 5.01.06 Card Machine Selector
 5_05_03_A[1-6] : 5_05_03 // 5.05.03 Op Panel Sense
 5_05_04_A[1-7] : 5_05_04  // 5.05.04 Sense Skip Control
-5_12_01_A[1-6] : 5_12_01 // 5.12.01 Distributor
-5_12_03_[A-C][1-9] : 5_12_03 // 5.12.03 Distributor
-5_12_04_A[1-6] : 5_12_04 // 5.12.04 Distributor
+5_05_05_[A-B][1-9] : 5_05_05 // 5.05.05 Pr Sense Outputs (1-10) Pnch Outputs (1-2) 
+5_11_01_A[1-2] : 5_11_01 // 5.11.01 Card Ctrl Pulse Gen
+DIS_[A-B][1-9] : 5_12_01 // 5.12.01 Distributor
+DI1_[A-B][1-9] : 5_12_01 // 5.12.01 Distributor
+DI2_[A-B][1-9] : 5_12_01 // 5.12.01 Distributor
+DI3_[A-B][1-9] : 5_12_01 // 5.12.01 Distributor
+DI4_[A-B][1-9] : 5_12_01 // 5.12.01 Distributor
+DI5_[A-B][1-9] : 5_12_01 // 5.12.01 Distributor
+DI6_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI7_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI8_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI9_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI10_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI11_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI12_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI13_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI14_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI15_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI16_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI17_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI18_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI19_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI20_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI21_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI22_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI23_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI24_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI25_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI26_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI27_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI28_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI29_[A-B][1-9] : 5_12_03 // 5.12.03 Distributor
+DI30_[A-B][1-9] : 5_12_04 // 5.12.04 Distributor
+DI31_[A-B][1-9] : 5_12_04 // 5.12.04 Distributor
+DI32_[A-B][1-9] : 5_12_04 // 5.12.04 Distributor
+DI33_[A-B][1-9] : 5_12_04 // 5.12.04 Distributor
+DI34_[A-B][1-9] : 5_12_04 // 5.12.04 Distributor
+DI35_[A-B][1-9] : 5_12_04 // 5.12.04 Distributor
+
+
 2_07_56_I[1-4] 2_07_56_O[1-2] : 2_07_56 // 2.07.56 INDEXING EXEC CTRL
 
 DLI DLO DL_CL DL_RES  : DLdot05
 
 
-SS_CL SS_CL64 SS_CL128 SS_CL8192 SS_CL16384 SS_CL32768 : SSCL
+SS_CL SS_CL64 SS_CL128 SS_CL4096 SS_CL8192 SS_CL16384 SS_CL32768 : SSCL
 
 .Signals
 // 2.01.02 STG REG COLS (1-17) 
@@ -317,8 +354,8 @@ I MF4-Gf MANUAL SWITCH A
 I MF4-Ge PLUS 10 ON AUTOMATIC (TO START KEY CIRCUIT)
 
 // 4.07 MACH CYCLE, SINGLE & MULT STEP
-I MF4-08h SINGLE OR MULT STEP
-I MF4-08g MINUS ON SINGLE OR MULT STEP
+I MF4-03h SINGLE OR MULT STEP
+I MF4-03g MINUS ON SINGLE OR MULT STEP
 I MF4-Fh  MULT STEP
 I MF4-Ff  MACH CYCLE HAND KEY
 O MF4-22d MACH CYCLE GATE
@@ -409,6 +446,21 @@ I MF4_S4 IO INTERLOCK
 // 5.01.05 Unit Selector 
 I MF4_T2 I/O Sel #1
 
+// 5.01.06 Card Machine Selector
+I MF4-Lb Pr Select
+O MF4-Lc Pr Rd Sel
+O MF4-Lf Pr Wr Sel
+I MF4-Ma Cr Sel 1
+O MF4-Mb Cr Sel 2
+I MF4-Mc Pn Sel 1
+O MF4-Md Pn Sel 2
+I MF4-Jd Pr Disc 1
+O MF4-Ka Pr Disc 2
+I MF4-Kb Pn Disc 1
+O MF4-Kc Pn Disc 2
+I MF4-Kd Cr Disc 1
+O MF4-La Cr Disc 2
+
 
 // 5.04 LDA
 I MF4_R6 LDA
@@ -416,13 +468,190 @@ I MF4_R6 LDA
 // 5.05.04 Sense Skip Control
 BW MF4_S2 SENSE SKIP CNTL
 
+// 5.05.05 Pr Sense Outputs (1-10) Pnch Outputs (1-2) 
+I MF4-Fd Pr Sense Thy Plates
+O MF4-Ja Pr Sense (1)
+O MF4-Jc Pr Sense (2)
+O MF4-Fb Pr Sense (3)
+O MF4-Fc Pr Sense (4)
+O MF4-Ga Pr Sense (5)
+O MF4-Gb Pr Sense (6)
+O MF4-Gc Pr Sense (7)
+O MF4-Gd Pr Sense (8)
+O MF4-Ha Pr Sense (9)
+O MF4-Hb Pr Sense (10)
+I MF4-Hc Pn Sense Thy Plate
+O MF4-Hd Pn Sense (1)
+
 // 5.05.06 Test Sense
 I MF4_S3 REDUNDANCY TAPE TEST
 
 // 5.08.03 Clock Pulse Power and Mixing
 I MF4_S1 A6(D1)
 
-		
+// 5.11.01 Card Ctrl Pulse Gen
+I MF4-01f CB Signal Set
+I MF4-01g Tgr Reset
+
+// 5.11.03 Read-Write Disconnect Gate
+I MF4_T3 Read Left
+I MF4_T4 Read Right
+I MF4_T5 Write Left
+I MF4_T6 Write Right
+
+// 5.12.01 Distributor
+O MF4-03e Col (S) Lt Exit
+O MF4-03f Col (S) Rt Exit
+O MF4-04g Col (1) Lt Exit
+O MF4-04h Col (1) Rt Exit
+O MF4-05e Col (2) Lt Exit
+O MF4-05f Col (2) Rt Exit
+O MF4-06g Col (3) Lt Exit
+O MF4-06h Col (3) Rt Exit
+O MF4-07e Col (4) Lt Exit
+O MF4-07f Col (4) Rt Exit
+O MF4-08g Col (5) Lt Exit
+O MF4-08h Col (5) Rt Exit
+I MF4-03b Col (S) Lt Entry
+I MF4-03c Col (S) Rt Entry
+I MF4-04b Col (1) Lt Entry
+I MF4-04c Col (1) Rt Entry
+I MF4-05b Col (2) Lt Entry
+I MF4-05c Col (2) Rt Entry
+I MF4-06b Col (3) Lt Entry
+I MF4-06c Col (3) Rt Entry
+I MF4-07b Col (4) Lt Entry
+I MF4-07c Col (4) Rt Entry
+I MF4-08b Col (5) Lt Entry
+I MF4-08c Col (5) Rt Entry
+I MF4-Qa Pn Thy Plate Lt
+I MF4-Ra Pn Thy Plate Rt
+I MF4-Qe Pr Thy Plate Lt
+I MF4-Re Pr Thy Plate Rt
+
+// 5.12.03 Distributor
+O MF4-09e Col (6) Lt Exit
+O MF4-09f Col (6) Rt Exit
+O MF4-10g Col (7) Lt Exit
+O MF4-10h Col (7) Rt Exit
+O MF4-11e Col (8) Lt Exit
+O MF4-11f Col (8) Rt Exit
+O MF4-12g Col (9) Lt Exit
+O MF4-12h Col (9) Rt Exit
+O MF4-13e Col (10) Lt Exit
+O MF4-13f Col (10) Rt Exit
+O MF4-14g Col (11) Lt Exit
+O MF4-14h Col (11) Rt Exit
+O MF4-15e Col (12) Lt Exit
+O MF4-15f Col (12) Rt Exit
+O MF4-16g Col (13) Lt Exit
+O MF4-16h Col (13) Rt Exit
+O MF4-17e Col (14) Lt Exit
+O MF4-17f Col (14) Rt Exit
+O MF4-18g Col (15) Lt Exit
+O MF4-18h Col (15) Rt Exit
+O MF4-19e Col (16) Lt Exit
+O MF4-19f Col (16) Rt Exit
+O MF4-20g Col (17) Lt Exit
+O MF4-20h Col (17) Rt Exit
+O MF4-21e Col (18) Lt Exit
+O MF4-21f Col (18) Rt Exit
+O MF4-22g Col (19) Lt Exit
+O MF4-22h Col (19) Rt Exit
+O MF4-23e Col (20) Lt Exit
+O MF4-23f Col (20) Rt Exit
+O MF4-24g Col (21) Lt Exit
+O MF4-25h Col (21) Rt Exit
+O MF4-25e Col (22) Lt Exit
+O MF4-25f Col (22) Rt Exit
+O MF4-26g Col (23) Lt Exit
+O MF4-26h Col (23) Rt Exit
+O MF4-27e Col (24) Lt Exit
+O MF4-27f Col (24) Rt Exit
+O MF4-28g Col (25) Lt Exit
+O MF4-28h Col (25) Rt Exit
+O MF4-29e Col (26) Lt Exit
+O MF4-29f Col (26) Rt Exit
+O MF4-30g Col (27) Lt Exit
+O MF4-30h Col (27) Rt Exit
+O MF4-31e Col (28) Lt Exit
+O MF4-31f Col (28) Rt Exit
+O MF4-32g Col (29) Lt Exit
+O MF4-32h Col (29) Rt Exit
+I MF4-09b Col (6) Lt Entry
+I MF4-09c Col (6) Rt Entry
+I MF4-10b Col (7) Lt Entry
+I MF4-10c Col (7) Rt Entry
+I MF4-11b Col (8) Lt Entry
+I MF4-11c Col (8) Rt Entry
+I MF4-12b Col (9) Lt Entry
+I MF4-12c Col (9) Rt Entry
+I MF4-13b Col (10) Lt Entry
+I MF4-13c Col (10) Rt Entry
+I MF4-14b Col (11) Lt Entry
+I MF4-14c Col (11) Rt Entry
+I MF4-15b Col (12) Lt Entry
+I MF4-15c Col (12) Rt Entry
+I MF4-16b Col (13) Lt Entry
+I MF4-16c Col (13) Rt Entry
+I MF4-17b Col (14) Lt Entry
+I MF4-17c Col (14) Rt Entry
+I MF4-18b Col (15) Lt Entry
+I MF4-18c Col (15) Rt Entry
+I MF4-19b Col (16) Lt Entry
+I MF4-19c Col (16) Rt Entry
+I MF4-20b Col (17) Lt Entry
+I MF4-20c Col (17) Rt Entry
+I MF4-21b Col (18) Lt Entry
+I MF4-21c Col (18) Rt Entry
+I MF4-22b Col (19) Lt Entry
+I MF4-22c Col (19) Rt Entry
+I MF4-23b Col (20) Lt Entry
+I MF4-23c Col (20) Rt Entry
+I MF4-24b Col (21) Lt Entry
+I MF4-24c Col (21) Rt Entry
+I MF4-25b Col (22) Lt Entry
+I MF4-25c Col (22) Rt Entry
+I MF4-26b Col (23) Lt Entry
+I MF4-26c Col (23) Rt Entry
+I MF4-27b Col (24) Lt Entry
+I MF4-27c Col (24) Rt Entry
+I MF4-28b Col (25) Lt Entry
+I MF4-28c Col (25) Rt Entry
+I MF4-29b Col (26) Lt Entry
+I MF4-29c Col (26) Rt Entry
+I MF4-30b Col (27) Lt Entry
+I MF4-30c Col (27) Rt Entry
+I MF4-31b Col (28) Lt Entry
+I MF4-31c Col (28) Rt Entry
+I MF4-32b Col (29) Lt Entry
+I MF4-32c Col (29) Rt Entry
+
+// 5.12.04 Distributor
+O MF4-33e Col (30) Lt Exit
+O MF4-33f Col (30) Rt Exit
+O MF4-34g Col (31) Lt Exit
+O MF4-34h Col (31) Rt Exit
+O MF4-35e Col (32) Lt Exit
+O MF4-35f Col (32) Rt Exit
+O MF4-36g Col (33) Lt Exit
+O MF4-36h Col (33) Rt Exit
+O MF4-37e Col (34) Lt Exit
+O MF4-37f Col (34) Rt Exit
+O MF4-38g Col (35) Lt Exit
+O MF4-38h Col (35) Rt Exit
+I MF4-33b Col (30) Lt Entry
+I MF4-33c Col (30) Rt Entry
+I MF4-34b Col (31) Lt Entry
+I MF4-34c Col (31) Rt Entry
+I MF4-35b Col (32) Lt Entry
+I MF4-35c Col (32) Rt Entry
+I MF4-36b Col (33) Lt Entry
+I MF4-36c Col (33) Rt Entry
+I MF4-37b Col (34) Lt Entry
+I MF4-37c Col (34) Rt Entry
+I MF4-38b Col (35) Lt Entry
+I MF4-38c Col (35) Rt Entry
 
 // 6.03.02 Ring Shift Ctrl
 I MF4_R8 E TIME
@@ -451,7 +680,9 @@ I MF4-18k MA11(D1)
 I MF4-16k M INST TIME
 
 I MF4_CL Clock
-
+O MF4_CL64 Clock64
+O MF4_CL128 Clock128
+O MF4_CL4096 Clock4096
 I MF4_RES Reset
 
 .Connect
@@ -519,52 +750,53 @@ W MF4-19l D11-4 // ADDER (16) SUM OUTPUT (PWR)
 W MF4-19l D15-4 // ADDER (16) SUM OUTPUT (PWR)
 
 // 2.04.01 MQ REG COLOUMN (S)
-W MF4-03a 5_12_01_A1 // MQ REG (S) I/O BUS
+W MF4-03a DIS_A1  // MQ REG (S) I/O BUS
 
 // 2.04.02 MQ REG COLOUMN (1)
-W MF4-04a 5_12_01_A2 // MQ REG (1) I/O BUS
+W MF4-04a DI1_A1  // MQ REG (1) I/O BUS
 
 // 2.04.03 MQ REGISTER COLOUMNS (2-5)
-W MF4-05a 5_12_01_A3 // MQ REG (2) I/O BUS
-W MF4-06a 5_12_01_A4 // MQ REG (3) I/O BUS
-W MF4-07a 5_12_01_A5 // MQ REG (4) I/O BUS
-W MF4-08a 5_12_01_A6 // MQ REG (5) I/O BUS
+W MF4-05a DI2_A1  // MQ REG (2) I/O BUS
+W MF4-06a DI3_A1  // MQ REG (3) I/O BUS
+W MF4-07a DI4_A1  // MQ REG (4) I/O BUS
+W MF4-08a DI5_A1  // MQ REG (5) I/O BUS
 
 // 2.04.04 MQ REGISTER COLOUMNS (6-8)
-W MF4-09a 5_12_03_A1 // MQ REG (6) I/O BUS
-W MF4-10a 5_12_03_A2 // MQ REG (7) I/O BUS
-W MF4-11a 5_12_03_A3 // MQ REG (8) I/O BUS
+W MF4-09a DI6_A1  // MQ REG (6) I/O BUS
+W MF4-10a DI7_A1  // MQ REG (7) I/O BUS
+W MF4-11a DI8_A1  // MQ REG (8) I/O BUS
 
 // 2.04.05 MQ REGISTER COL (9-34)
-W MF4-12a 5_12_03_A4 // MQ REG (9) I/O BUS
-W MF4-13a 5_12_03_A5 // MQ REG (10) I/O BUS
-W MF4-14a 5_12_03_A6 // MQ REG (11) I/O BUS
-W MF4-15a 5_12_03_A7 // MQ REG (12) I/O BUS
-W MF4-16a 5_12_03_A8 // MQ REG (13) I/O BUS
-W MF4-17a 5_12_03_A9 // MQ REG (14) I/O BUS
-W MF4-18a 5_12_03_B1 // MQ REG (15) I/O BUS
-W MF4-19a 5_12_03_B2 // MQ REG (16) I/O BUS
-W MF4-20a 5_12_03_B3 // MQ REG (17) I/O BUS
-W MF4-21a 5_12_03_B4 // MQ REG (18) I/O BUS
-W MF4-22a 5_12_03_B5 // MQ REG (19) I/O BUS
-W MF4-23a 5_12_03_B6 // MQ REG (20) I/O BUS
-W MF4-24a 5_12_03_B7 // MQ REG (21) I/O BUS
-W MF4-25a 5_12_03_B8 // MQ REG (22) I/O BUS
-W MF4-26a 5_12_03_B9 // MQ REG (23) I/O BUS
-W MF4-27a 5_12_03_C1 // MQ REG (24) I/O BUS
-W MF4-28a 5_12_03_C2 // MQ REG (25) I/O BUS
-W MF4-29a 5_12_03_C3 // MQ REG (26) I/O BUS
-W MF4-30a 5_12_03_C4 // MQ REG (27) I/O BUS
-W MF4-31a 5_12_03_C5 // MQ REG (28) I/O BUS
-W MF4-32a 5_12_03_C6 // MQ REG (29) I/O BUS
-W MF4-33a 5_12_04_A1 // MQ REG (30) I/O BUS
-W MF4-34a 5_12_04_A2 // MQ REG (31) I/O BUS
-W MF4-35a 5_12_04_A3 // MQ REG (32) I/O BUS
-W MF4-36a 5_12_04_A4 // MQ REG (33) I/O BUS
-W MF4-37a 5_12_04_A5 // MQ REG (34) I/O BUS
+W MF4-12a DI9_A1  // MQ REG (9) I/O BUS
+W MF4-13a DI10_A1 // MQ REG (10) I/O BUS
+W MF4-14a DI11_A1 // MQ REG (11) I/O BUS
+W MF4-15a DI12_A1 // MQ REG (12) I/O BUS
+W MF4-16a DI13_A1 // MQ REG (13) I/O BUS
+W MF4-17a DI14_A1 // MQ REG (14) I/O BUS
+W MF4-18a DI15_A1 // MQ REG (15) I/O BUS
+W MF4-19a DI16_A1 // MQ REG (16) I/O BUS
+W MF4-20a DI17_A1 // MQ REG (17) I/O BUS
+W MF4-21a DI18_A1 // MQ REG (18) I/O BUS
+W MF4-22a DI19_A1 // MQ REG (19) I/O BUS
+W MF4-23a DI20_A1 // MQ REG (20) I/O BUS
+W MF4-24a DI21_A1 // MQ REG (21) I/O BUS
+W MF4-25a DI22_A1 // MQ REG (22) I/O BUS
+W MF4-26a DI23_A1 // MQ REG (23) I/O BUS
+W MF4-27a DI24_A1 // MQ REG (24) I/O BUS
+W MF4-28a DI25_A1 // MQ REG (25) I/O BUS
+W MF4-29a DI26_A1 // MQ REG (26) I/O BUS
+W MF4-30a DI27_A1 // MQ REG (27) I/O BUS
+W MF4-31a DI28_A1 // MQ REG (28) I/O BUS
+W MF4-32a DI29_A1 // MQ REG (29) I/O BUS
+W MF4-33a DI30_A1 // MQ REG (30) I/O BUS
+W MF4-34a DI31_A1 // MQ REG (31) I/O BUS
+W MF4-35a DI32_A1 // MQ REG (32) I/O BUS
+W MF4-36a DI33_A1 // MQ REG (33) I/O BUS
+W MF4-37a DI34_A1 // MQ REG (34) I/O BUS
+
 
 // 2.04.06 MQ REGISTER COL (35)
-W MF4-38a 5_12_04_A6 // MQ REG (35) I/O BUS
+W MF4-38a DI35_A1 // MQ REG (35) I/O BUS
 
 // 2.06.01 COL (Q) CARRY AND OVERFLOW TGRS
 W MF4-30j A30-4 // OV TGR ON 
@@ -894,8 +1126,8 @@ W D30-5 F21-7 // PLUS 10 ON MANUAL & I/O OFF(ELECT)
 W D23-7 D25-7 // MACH CYCLE GATE 4.05.02
 W D23-7 D22-6 // MACH CYCLE GATE 4.05.01
 W D23-7 MF4-22d // MACH CYCLE GATE
-W MF4-08g A21-4 // MINUS ON SINGLE OR MULT STEP
-W MF4-08h A21-8 // SINGLE OR MULT STEP
+W MF4-03g A21-4 // MINUS ON SINGLE OR MULT STEP
+W MF4-03h A21-8 // SINGLE OR MULT STEP
 W G21-4 E28-1 // TURN OFF MSTR STOP TGR ON SIGNLE OR MULTIPLE STEP
 W MF4-Fh F21-6 //  MULT STEP
 W MF4-Ff H23-1 // MACH CYCLE HAND KEY
@@ -1004,6 +1236,21 @@ W MF4_S4 G30-4 // IO INTERLOCK
 // 5.01.05 Unit Selector 
 W MF4_T2 5_01_06_A5 // I/O Sel #1
 
+// 5.01.06 Card Machine Selector
+W MF4-Lb 5_01_06_A6 // Pr Select
+W 5_01_06_A7 MF4-Lc // Pr Rd Sel
+W 5_01_06_A8 MF4-Lf // Pr Wr Sel
+W MF4-Ma 5_01_06_A9 // Cr Sel 1
+W 5_01_06_B1 MF4-Mb // Cr Sel 2
+W MF4-Mc 5_01_06_B2 // Pn Sel 1
+W 5_01_06_B3 MF4-Md // Pn Sel 2
+W MF4-Jd 5_01_06_B4 // Pr Disc 1
+W 5_01_06_B5 MF4-Ka // Pr Disc 2
+W MF4-Kb 5_01_06_B6 // Pn Disc 1
+W 5_01_06_B7 MF4-Kc // Pn Disc 2
+W MF4-Kd 5_01_06_B8 // Cr Disc 1
+W 5_01_06_B9 MF4-La // Cr Disc 2
+
 
 // 5.04 LDA
 W MF4_R6 D06-5 // LDA
@@ -1018,13 +1265,511 @@ W 5_05_03_A6 MF4-02a // OP SENSE LITE 4
 // 5.05.04 Sense Skip Control
 W 5_05_04_A1 MF4_S2 // SENSE SKIP CNTL
 
+// 5.05.05 Pr Sense Outputs (1-10) Pnch Outputs (1-2) 
+W MF4-Fd 5_05_05_A1 // Pr Sense Thy Plates
+W 5_05_05_A2 MF4-Ja // Pr Sense (1)
+W 5_05_05_A3 MF4-Jc // Pr Sense (2)
+W 5_05_05_A4 MF4-Fb // Pr Sense (3)
+W 5_05_05_A5 MF4-Fc // Pr Sense (4)
+W 5_05_05_A6 MF4-Ga // Pr Sense (5)
+W 5_05_05_A7 MF4-Gb // Pr Sense (6)
+W 5_05_05_A8 MF4-Gc // Pr Sense (7)
+W 5_05_05_A9 MF4-Gd // Pr Sense (8)
+W 5_05_05_B1 MF4-Ha // Pr Sense (9)
+W 5_05_05_B2 MF4-Hb // Pr Sense (10)
+W MF4-Hc 5_05_05_B3 // Pn Sense Thy Plate
+W 5_05_05_B4 MF4-Hd // Pn Sense (1)
+
 // 5.05.06 Test Sense
 W MF4_S3 G24-1 // REDUNDANCY TAPE TEST
 
 // 5.08.03 Clock Pulse Power and Mixing
 W MF4_S1 H06-5 // A6(D1)
 
+// 5.11.01 Card Ctrl Pulse Gen
+W MF4-01f 5_11_01_A1 // CB Signal Set
+W MF4-01g 5_11_01_A2 // Tgr Reset
+W MF4-01g DIS_A8  // Tgr Reset
+W MF4-01g DI1_A8  // Tgr Reset
+W MF4-01g DI2_A8  // Tgr Reset
+W MF4-01g DI3_A8  // Tgr Reset
+W MF4-01g DI4_A8  // Tgr Reset
+W MF4-01g DI5_A8  // Tgr Reset
+W MF4-01g DI6_A8  // Tgr Reset
+W MF4-01g DI7_A8  // Tgr Reset
+W MF4-01g DI8_A8  // Tgr Reset
+W MF4-01g DI9_A8  // Tgr Reset
+W MF4-01g DI10_A8 // Tgr Reset
+W MF4-01g DI11_A8 // Tgr Reset
+W MF4-01g DI12_A8 // Tgr Reset
+W MF4-01g DI13_A8 // Tgr Reset
+W MF4-01g DI14_A8 // Tgr Reset
+W MF4-01g DI15_A8 // Tgr Reset
+W MF4-01g DI16_A8 // Tgr Reset
+W MF4-01g DI17_A8 // Tgr Reset
+W MF4-01g DI18_A8 // Tgr Reset
+W MF4-01g DI19_A8 // Tgr Reset
+W MF4-01g DI20_A8 // Tgr Reset
+W MF4-01g DI21_A8 // Tgr Reset
+W MF4-01g DI22_A8 // Tgr Reset
+W MF4-01g DI23_A8 // Tgr Reset
+W MF4-01g DI24_A8 // Tgr Reset
+W MF4-01g DI25_A8 // Tgr Reset
+W MF4-01g DI26_A8 // Tgr Reset
+W MF4-01g DI27_A8 // Tgr Reset
+W MF4-01g DI28_A8 // Tgr Reset
+W MF4-01g DI29_A8 // Tgr Reset
+W MF4-01g DI30_A8 // Tgr Reset
+W MF4-01g DI31_A8 // Tgr Reset
+W MF4-01g DI32_A8 // Tgr Reset
+W MF4-01g DI33_A8 // Tgr Reset
+W MF4-01g DI34_A8 // Tgr Reset
+W MF4-01g DI35_A8 // Tgr Reset
 
+
+// 5.11.03 Read-Write Disconnect Gate
+W MF4_T3 DIS_A6  // Read Left
+W MF4_T3 DI1_A6  // Read Left
+W MF4_T3 DI2_A6  // Read Left
+W MF4_T3 DI3_A6  // Read Left
+W MF4_T3 DI4_A6  // Read Left
+W MF4_T3 DI5_A6  // Read Left
+W MF4_T3 DI6_A6  // Read Left
+W MF4_T3 DI7_A6  // Read Left
+W MF4_T3 DI8_A6  // Read Left
+W MF4_T3 DI9_A6  // Read Left
+W MF4_T3 DI10_A6 // Read Left
+W MF4_T3 DI11_A6 // Read Left
+W MF4_T3 DI12_A6 // Read Left
+W MF4_T3 DI13_A6 // Read Left
+W MF4_T3 DI14_A6 // Read Left
+W MF4_T3 DI15_A6 // Read Left
+W MF4_T3 DI16_A6 // Read Left
+W MF4_T3 DI17_A6 // Read Left
+W MF4_T3 DI18_A6 // Read Left
+W MF4_T3 DI19_A6 // Read Left
+W MF4_T3 DI20_A6 // Read Left
+W MF4_T3 DI21_A6 // Read Left
+W MF4_T3 DI22_A6 // Read Left
+W MF4_T3 DI23_A6 // Read Left
+W MF4_T3 DI24_A6 // Read Left
+W MF4_T3 DI25_A6 // Read Left
+W MF4_T3 DI26_A6 // Read Left
+W MF4_T3 DI27_A6 // Read Left
+W MF4_T3 DI28_A6 // Read Left
+W MF4_T3 DI29_A6 // Read Left
+W MF4_T3 DI30_A6 // Read Left
+W MF4_T3 DI31_A6 // Read Left
+W MF4_T3 DI32_A6 // Read Left
+W MF4_T3 DI33_A6 // Read Left
+W MF4_T3 DI34_A6 // Read Left
+W MF4_T3 DI35_A6 // Read Left
+
+W MF4_T4 DIS_A7  // Read Right
+W MF4_T4 DI1_A7  // Read Right
+W MF4_T4 DI2_A7  // Read Right
+W MF4_T4 DI3_A7  // Read Right
+W MF4_T4 DI4_A7  // Read Right
+W MF4_T4 DI5_A7  // Read Right
+W MF4_T4 DI6_A7  // Read Right
+W MF4_T4 DI7_A7  // Read Right
+W MF4_T4 DI8_A7  // Read Right
+W MF4_T4 DI9_A7  // Read Right
+W MF4_T4 DI10_A7 // Read Right
+W MF4_T4 DI11_A7 // Read Right
+W MF4_T4 DI12_A7 // Read Right
+W MF4_T4 DI13_A7 // Read Right
+W MF4_T4 DI14_A7 // Read Right
+W MF4_T4 DI15_A7 // Read Right
+W MF4_T4 DI16_A7 // Read Right
+W MF4_T4 DI17_A7 // Read Right
+W MF4_T4 DI18_A7 // Read Right
+W MF4_T4 DI19_A7 // Read Right
+W MF4_T4 DI20_A7 // Read Right
+W MF4_T4 DI21_A7 // Read Right
+W MF4_T4 DI22_A7 // Read Right
+W MF4_T4 DI23_A7 // Read Right
+W MF4_T4 DI24_A7 // Read Right
+W MF4_T4 DI25_A7 // Read Right
+W MF4_T4 DI26_A7 // Read Right
+W MF4_T4 DI27_A7 // Read Right
+W MF4_T4 DI28_A7 // Read Right
+W MF4_T4 DI29_A7 // Read Right
+W MF4_T4 DI30_A7 // Read Right
+W MF4_T4 DI31_A7 // Read Right
+W MF4_T4 DI32_A7 // Read Right
+W MF4_T4 DI33_A7 // Read Right
+W MF4_T4 DI34_A7 // Read Right
+W MF4_T4 DI35_A7 // Read Right
+
+W MF4_T5 DIS_A9  // Write Left
+W MF4_T5 DI1_A9  // Write Left
+W MF4_T5 DI2_A9  // Write Left
+W MF4_T5 DI3_A9  // Write Left
+W MF4_T5 DI4_A9  // Write Left
+W MF4_T5 DI5_A9  // Write Left
+W MF4_T5 DI6_A9  // Write Left
+W MF4_T5 DI7_A9  // Write Left
+W MF4_T5 DI8_A9  // Write Left
+W MF4_T5 DI9_A9  // Write Left
+W MF4_T5 DI10_A9 // Write Left
+W MF4_T5 DI11_A9 // Write Left
+W MF4_T5 DI12_A9 // Write Left
+W MF4_T5 DI13_A9 // Write Left
+W MF4_T5 DI14_A9 // Write Left
+W MF4_T5 DI15_A9 // Write Left
+W MF4_T5 DI16_A9 // Write Left
+W MF4_T5 DI17_A9 // Write Left
+W MF4_T5 DI18_A9 // Write Left
+W MF4_T5 DI19_A9 // Write Left
+W MF4_T5 DI20_A9 // Write Left
+W MF4_T5 DI21_A9 // Write Left
+W MF4_T5 DI22_A9 // Write Left
+W MF4_T5 DI23_A9 // Write Left
+W MF4_T5 DI24_A9 // Write Left
+W MF4_T5 DI25_A9 // Write Left
+W MF4_T5 DI26_A9 // Write Left
+W MF4_T5 DI27_A9 // Write Left
+W MF4_T5 DI28_A9 // Write Left
+W MF4_T5 DI29_A9 // Write Left
+W MF4_T5 DI30_A9 // Write Left
+W MF4_T5 DI31_A9 // Write Left
+W MF4_T5 DI32_A9 // Write Left
+W MF4_T5 DI33_A9 // Write Left
+W MF4_T5 DI34_A9 // Write Left
+W MF4_T5 DI35_A9 // Write Left
+
+W MF4_T6 DIS_B1  // Write Right
+W MF4_T6 DI1_B1  // Write Right
+W MF4_T6 DI2_B1  // Write Right
+W MF4_T6 DI3_B1  // Write Right
+W MF4_T6 DI4_B1  // Write Right
+W MF4_T6 DI5_B1  // Write Right
+W MF4_T6 DI6_B1  // Write Right
+W MF4_T6 DI7_B1  // Write Right
+W MF4_T6 DI8_B1  // Write Right
+W MF4_T6 DI9_B1  // Write Right
+W MF4_T6 DI10_B1 // Write Right
+W MF4_T6 DI11_B1 // Write Right
+W MF4_T6 DI12_B1 // Write Right
+W MF4_T6 DI13_B1 // Write Right
+W MF4_T6 DI14_B1 // Write Right
+W MF4_T6 DI15_B1 // Write Right
+W MF4_T6 DI16_B1 // Write Right
+W MF4_T6 DI17_B1 // Write Right
+W MF4_T6 DI18_B1 // Write Right
+W MF4_T6 DI19_B1 // Write Right
+W MF4_T6 DI20_B1 // Write Right
+W MF4_T6 DI21_B1 // Write Right
+W MF4_T6 DI22_B1 // Write Right
+W MF4_T6 DI23_B1 // Write Right
+W MF4_T6 DI24_B1 // Write Right
+W MF4_T6 DI25_B1 // Write Right
+W MF4_T6 DI26_B1 // Write Right
+W MF4_T6 DI27_B1 // Write Right
+W MF4_T6 DI28_B1 // Write Right
+W MF4_T6 DI29_B1 // Write Right
+W MF4_T6 DI30_B1 // Write Right
+W MF4_T6 DI31_B1 // Write Right
+W MF4_T6 DI32_B1 // Write Right
+W MF4_T6 DI33_B1 // Write Right
+W MF4_T6 DI34_B1 // Write Right
+W MF4_T6 DI35_B1 // Write Right
+
+
+// 5.12.01 Distributor
+W DIS_A2  MF4-03e // Col (S) Lt Exit
+W DI1_A2  MF4-04g // Col (1) Lt Exit
+W DI2_A2  MF4-05e // Col (2) Lt Exit
+W DI3_A2  MF4-06g // Col (3) Lt Exit
+W DI4_A2  MF4-07e // Col (4) Lt Exit
+W DI5_A2  MF4-08g // Col (5) Lt Exit
+W DIS_A3  MF4-03f // Col (S) Rt Exit
+W DI1_A3  MF4-04h // Col (1) Rt Exit
+W DI2_A3  MF4-05f // Col (2) Rt Exit
+W DI3_A3  MF4-06h // Col (3) Rt Exit
+W DI4_A3  MF4-07f // Col (4) Rt Exit
+W DI5_A3  MF4-08h // Col (5) Rt Exit
+W MF4-03b DIS_A4  // Col (S) Lt Entry
+W MF4-04b DI1_A4  // Col (1) Lt Entry
+W MF4-05b DI2_A4  // Col (2) Lt Entry
+W MF4-06b DI3_A4  // Col (3) Lt Entry
+W MF4-07b DI4_A4  // Col (4) Lt Entry
+W MF4-08b DI5_A4  // Col (5) Lt Entry
+W MF4-03c DIS_A5  // Col (S) Rt Entry
+W MF4-04c DI1_A5  // Col (1) Rt Entry
+W MF4-05c DI2_A5  // Col (2) Rt Entry
+W MF4-06c DI3_A5  // Col (3) Rt Entry
+W MF4-07c DI4_A5  // Col (4) Rt Entry
+W MF4-08c DI5_A5  // Col (5) Rt Entry
+W MF4-Qa DIS_B2  // Pn Thy Plate Lt
+W MF4-Qa DI1_B2  // Pn Thy Plate Lt
+W MF4-Qa DI2_B2  // Pn Thy Plate Lt
+W MF4-Qa DI3_B2  // Pn Thy Plate Lt
+W MF4-Qa DI4_B2  // Pn Thy Plate Lt
+W MF4-Qa DI5_B2  // Pn Thy Plate Lt
+W MF4-Ra DIS_B3  // Pn Thy Plate Rt
+W MF4-Ra DI1_B3  // Pn Thy Plate Rt
+W MF4-Ra DI2_B3  // Pn Thy Plate Rt
+W MF4-Ra DI3_B3  // Pn Thy Plate Rt
+W MF4-Ra DI4_B3  // Pn Thy Plate Rt
+W MF4-Ra DI5_B3  // Pn Thy Plate Rt
+W MF4-Qe DIS_B4  // Pr Thy Plate Lt
+W MF4-Qe DI1_B4  // Pr Thy Plate Lt
+W MF4-Qe DI2_B4  // Pr Thy Plate Lt
+W MF4-Qe DI3_B4  // Pr Thy Plate Lt
+W MF4-Qe DI4_B4  // Pr Thy Plate Lt
+W MF4-Qe DI5_B4  // Pr Thy Plate Lt
+W MF4-Re DIS_B5  // Pr Thy Plate Rt
+W MF4-Re DI1_B5  // Pr Thy Plate Rt
+W MF4-Re DI2_B5  // Pr Thy Plate Rt
+W MF4-Re DI3_B5  // Pr Thy Plate Rt
+W MF4-Re DI4_B5  // Pr Thy Plate Rt
+W MF4-Re DI5_B5  // Pr Thy Plate Rt
+
+// 5.12.03 Distributor
+W DI6_A2  MF4-09e // Col (6) Lt Exit
+W DI7_A2  MF4-10g // Col (7) Lt Exit
+W DI8_A2  MF4-11e // Col (8) Lt Exit
+W DI9_A2  MF4-12g // Col (9) Lt Exit
+W DI10_A2 MF4-13e // Col (10) Lt Exit
+W DI11_A2 MF4-14g // Col (11) Lt Exit
+W DI12_A2 MF4-15e // Col (12) Lt Exit
+W DI13_A2 MF4-16g // Col (13) Lt Exit
+W DI14_A2 MF4-17e // Col (14) Lt Exit
+W DI15_A2 MF4-18g // Col (15) Lt Exit
+W DI16_A2 MF4-19e // Col (16) Lt Exit
+W DI17_A2 MF4-20g // Col (17) Lt Exit
+W DI18_A2 MF4-21e // Col (18) Lt Exit
+W DI19_A2 MF4-22g // Col (19) Lt Exit
+W DI20_A2 MF4-23e // Col (20) Lt Exit
+W DI21_A2 MF4-24g // Col (21) Lt Exit
+W DI22_A2 MF4-25e // Col (22) Lt Exit
+W DI23_A2 MF4-26g // Col (23) Lt Exit
+W DI24_A2 MF4-27e // Col (24) Lt Exit
+W DI25_A2 MF4-28g // Col (25) Lt Exit
+W DI26_A2 MF4-29e // Col (26) Lt Exit
+W DI27_A2 MF4-30g // Col (27) Lt Exit
+W DI28_A2 MF4-31e // Col (28) Lt Exit
+W DI29_A2 MF4-32g // Col (29) Lt Exit
+W DI6_A3  MF4-09f // Col (6) Rt Exit
+W DI7_A3  MF4-10h // Col (7) Rt Exit
+W DI8_A3  MF4-11f // Col (8) Rt Exit
+W DI9_A3  MF4-12h // Col (9) Rt Exit
+W DI10_A3 MF4-13f // Col (10) Rt Exit
+W DI11_A3 MF4-14h // Col (11) Rt Exit
+W DI12_A3 MF4-15f // Col (12) Rt Exit
+W DI13_A3 MF4-16h // Col (13) Rt Exit
+W DI14_A3 MF4-17f // Col (14) Rt Exit
+W DI15_A3 MF4-18h // Col (15) Rt Exit
+W DI16_A3 MF4-19f // Col (16) Rt Exit
+W DI17_A3 MF4-20h // Col (17) Rt Exit
+W DI18_A3 MF4-21f // Col (18) Rt Exit
+W DI19_A3 MF4-22h // Col (19) Rt Exit
+W DI20_A3 MF4-23f // Col (20) Rt Exit
+W DI21_A3 MF4-25h // Col (21) Rt Exit
+W DI22_A3 MF4-25f // Col (22) Rt Exit
+W DI23_A3 MF4-26h // Col (23) Rt Exit
+W DI24_A3 MF4-27f // Col (24) Rt Exit
+W DI25_A3 MF4-28h // Col (25) Rt Exit
+W DI26_A3 MF4-29f // Col (26) Rt Exit
+W DI27_A3 MF4-30h // Col (27) Rt Exit
+W DI28_A3 MF4-31f // Col (28) Rt Exit
+W DI29_A3 MF4-32h // Col (29) Rt Exit
+W MF4-09b DI6_A4  // Col (6) Lt Entry
+W MF4-10b DI7_A4  // Col (7) Lt Entry
+W MF4-11b DI8_A4  // Col (8) Lt Entry
+W MF4-12b DI9_A4  // Col (9) Lt Entry
+W MF4-13b DI10_A4 // Col (10) Lt Entry
+W MF4-14b DI11_A4 // Col (11) Lt Entry
+W MF4-15b DI12_A4 // Col (12) Lt Entry
+W MF4-16b DI13_A4 // Col (13) Lt Entry
+W MF4-17b DI14_A4 // Col (14) Lt Entry
+W MF4-18b DI15_A4 // Col (15) Lt Entry
+W MF4-19b DI16_A4 // Col (16) Lt Entry
+W MF4-20b DI17_A4 // Col (17) Lt Entry
+W MF4-21b DI18_A4 // Col (18) Lt Entry
+W MF4-22b DI19_A4 // Col (19) Lt Entry
+W MF4-23b DI20_A4 // Col (20) Lt Entry
+W MF4-24b DI21_A4 // Col (21) Lt Entry
+W MF4-25b DI22_A4 // Col (22) Lt Entry
+W MF4-26b DI23_A4 // Col (23) Lt Entry
+W MF4-27b DI24_A4 // Col (24) Lt Entry
+W MF4-28b DI25_A4 // Col (25) Lt Entry
+W MF4-29b DI26_A4 // Col (26) Lt Entry
+W MF4-30b DI27_A4 // Col (27) Lt Entry
+W MF4-31b DI28_A4 // Col (28) Lt Entry
+W MF4-32b DI29_A4 // Col (29) Lt Entry
+W MF4-09c DI6_A5  // Col (6) Rt Entry
+W MF4-10c DI7_A5  // Col (7) Rt Entry
+W MF4-11c DI8_A5  // Col (8) Rt Entry
+W MF4-12c DI9_A5  // Col (9) Rt Entry
+W MF4-13c DI10_A5 // Col (10) Rt Entry
+W MF4-14c DI11_A5 // Col (11) Rt Entry
+W MF4-15c DI12_A5 // Col (12) Rt Entry
+W MF4-16c DI13_A5 // Col (13) Rt Entry
+W MF4-17c DI14_A5 // Col (14) Rt Entry
+W MF4-18c DI15_A5 // Col (15) Rt Entry
+W MF4-19c DI16_A5 // Col (16) Rt Entry
+W MF4-20c DI17_A5 // Col (17) Rt Entry
+W MF4-21c DI18_A5 // Col (18) Rt Entry
+W MF4-22c DI19_A5 // Col (19) Rt Entry
+W MF4-23c DI20_A5 // Col (20) Rt Entry
+W MF4-24c DI21_A5 // Col (21) Rt Entry
+W MF4-25c DI22_A5 // Col (22) Rt Entry
+W MF4-26c DI23_A5 // Col (23) Rt Entry
+W MF4-27c DI24_A5 // Col (24) Rt Entry
+W MF4-28c DI25_A5 // Col (25) Rt Entry
+W MF4-29c DI26_A5 // Col (26) Rt Entry
+W MF4-30c DI27_A5 // Col (27) Rt Entry
+W MF4-31c DI28_A5 // Col (28) Rt Entry
+W MF4-32c DI29_A5 // Col (29) Rt Entry
+W MF4-Qa DI6_B2  // Pn Thy Plate Lt
+W MF4-Qa DI7_B2  // Pn Thy Plate Lt
+W MF4-Qa DI8_B2  // Pn Thy Plate Lt
+W MF4-Qa DI9_B2  // Pn Thy Plate Lt
+W MF4-Qa DI10_B2 // Pn Thy Plate Lt
+W MF4-Qa DI11_B2 // Pn Thy Plate Lt
+W MF4-Qa DI12_B2 // Pn Thy Plate Lt
+W MF4-Qa DI13_B2 // Pn Thy Plate Lt
+W MF4-Qa DI14_B2 // Pn Thy Plate Lt
+W MF4-Qa DI15_B2 // Pn Thy Plate Lt
+W MF4-Qa DI16_B2 // Pn Thy Plate Lt
+W MF4-Qa DI17_B2 // Pn Thy Plate Lt
+W MF4-Qa DI18_B2 // Pn Thy Plate Lt
+W MF4-Qa DI19_B2 // Pn Thy Plate Lt
+W MF4-Qa DI20_B2 // Pn Thy Plate Lt
+W MF4-Qa DI21_B2 // Pn Thy Plate Lt
+W MF4-Qa DI22_B2 // Pn Thy Plate Lt
+W MF4-Qa DI23_B2 // Pn Thy Plate Lt
+W MF4-Qa DI24_B2 // Pn Thy Plate Lt
+W MF4-Qa DI25_B2 // Pn Thy Plate Lt
+W MF4-Qa DI26_B2 // Pn Thy Plate Lt
+W MF4-Qa DI27_B2 // Pn Thy Plate Lt
+W MF4-Qa DI28_B2 // Pn Thy Plate Lt
+W MF4-Qa DI29_B2 // Pn Thy Plate Lt
+W MF4-Ra DI6_B3  // Pn Thy Plate Rt
+W MF4-Ra DI7_B3  // Pn Thy Plate Rt
+W MF4-Ra DI8_B3  // Pn Thy Plate Rt
+W MF4-Ra DI9_B3  // Pn Thy Plate Rt
+W MF4-Ra DI10_B3 // Pn Thy Plate Rt
+W MF4-Ra DI11_B3 // Pn Thy Plate Rt
+W MF4-Ra DI12_B3 // Pn Thy Plate Rt
+W MF4-Ra DI13_B3 // Pn Thy Plate Rt
+W MF4-Ra DI14_B3 // Pn Thy Plate Rt
+W MF4-Ra DI15_B3 // Pn Thy Plate Rt
+W MF4-Ra DI16_B3 // Pn Thy Plate Rt
+W MF4-Ra DI17_B3 // Pn Thy Plate Rt
+W MF4-Ra DI18_B3 // Pn Thy Plate Rt
+W MF4-Ra DI19_B3 // Pn Thy Plate Rt
+W MF4-Ra DI20_B3 // Pn Thy Plate Rt
+W MF4-Ra DI21_B3 // Pn Thy Plate Rt
+W MF4-Ra DI22_B3 // Pn Thy Plate Rt
+W MF4-Ra DI23_B3 // Pn Thy Plate Rt
+W MF4-Ra DI24_B3 // Pn Thy Plate Rt
+W MF4-Ra DI25_B3 // Pn Thy Plate Rt
+W MF4-Ra DI26_B3 // Pn Thy Plate Rt
+W MF4-Ra DI27_B3 // Pn Thy Plate Rt
+W MF4-Ra DI28_B3 // Pn Thy Plate Rt
+W MF4-Ra DI29_B3 // Pn Thy Plate Rt
+W MF4-Qe DI6_B4  // Pr Thy Plate Lt
+W MF4-Qe DI7_B4  // Pr Thy Plate Lt
+W MF4-Qe DI8_B4  // Pr Thy Plate Lt
+W MF4-Qe DI9_B4  // Pr Thy Plate Lt
+W MF4-Qe DI10_B4 // Pr Thy Plate Lt
+W MF4-Qe DI11_B4 // Pr Thy Plate Lt
+W MF4-Qe DI12_B4 // Pr Thy Plate Lt
+W MF4-Qe DI13_B4 // Pr Thy Plate Lt
+W MF4-Qe DI14_B4 // Pr Thy Plate Lt
+W MF4-Qe DI15_B4 // Pr Thy Plate Lt
+W MF4-Qe DI16_B4 // Pr Thy Plate Lt
+W MF4-Qe DI17_B4 // Pr Thy Plate Lt
+W MF4-Qe DI18_B4 // Pr Thy Plate Lt
+W MF4-Qe DI19_B4 // Pr Thy Plate Lt
+W MF4-Qe DI20_B4 // Pr Thy Plate Lt
+W MF4-Qe DI21_B4 // Pr Thy Plate Lt
+W MF4-Qe DI22_B4 // Pr Thy Plate Lt
+W MF4-Qe DI23_B4 // Pr Thy Plate Lt
+W MF4-Qe DI24_B4 // Pr Thy Plate Lt
+W MF4-Qe DI25_B4 // Pr Thy Plate Lt
+W MF4-Qe DI26_B4 // Pr Thy Plate Lt
+W MF4-Qe DI27_B4 // Pr Thy Plate Lt
+W MF4-Qe DI28_B4 // Pr Thy Plate Lt
+W MF4-Qe DI29_B4 // Pr Thy Plate Lt
+W MF4-Re DI6_B5  // Pr Thy Plate Rt
+W MF4-Re DI7_B5  // Pr Thy Plate Rt
+W MF4-Re DI8_B5  // Pr Thy Plate Rt
+W MF4-Re DI9_B5  // Pr Thy Plate Rt
+W MF4-Re DI10_B5 // Pr Thy Plate Rt
+W MF4-Re DI11_B5 // Pr Thy Plate Rt
+W MF4-Re DI12_B5 // Pr Thy Plate Rt
+W MF4-Re DI13_B5 // Pr Thy Plate Rt
+W MF4-Re DI14_B5 // Pr Thy Plate Rt
+W MF4-Re DI15_B5 // Pr Thy Plate Rt
+W MF4-Re DI16_B5 // Pr Thy Plate Rt
+W MF4-Re DI17_B5 // Pr Thy Plate Rt
+W MF4-Re DI18_B5 // Pr Thy Plate Rt
+W MF4-Re DI19_B5 // Pr Thy Plate Rt
+W MF4-Re DI20_B5 // Pr Thy Plate Rt
+W MF4-Re DI21_B5 // Pr Thy Plate Rt
+W MF4-Re DI22_B5 // Pr Thy Plate Rt
+W MF4-Re DI23_B5 // Pr Thy Plate Rt
+W MF4-Re DI24_B5 // Pr Thy Plate Rt
+W MF4-Re DI25_B5 // Pr Thy Plate Rt
+W MF4-Re DI26_B5 // Pr Thy Plate Rt
+W MF4-Re DI27_B5 // Pr Thy Plate Rt
+W MF4-Re DI28_B5 // Pr Thy Plate Rt
+W MF4-Re DI29_B5 // Pr Thy Plate Rt
+
+// 5.12.04 Distributor
+W DI30_A2 MF4-33e // Col (30) Lt Exit
+W DI31_A2 MF4-34g // Col (31) Lt Exit
+W DI32_A2 MF4-35e // Col (32) Lt Exit
+W DI33_A2 MF4-36g // Col (33) Lt Exit
+W DI34_A2 MF4-37e // Col (34) Lt Exit
+W DI35_A2 MF4-38g // Col (35) Lt Exit
+W DI30_A3 MF4-33f // Col (30) Rt Exit
+W DI31_A3 MF4-34h // Col (31) Rt Exit
+W DI32_A3 MF4-35f // Col (32) Rt Exit
+W DI33_A3 MF4-36h // Col (33) Rt Exit
+W DI34_A3 MF4-37f // Col (34) Rt Exit
+W DI35_A3 MF4-38h // Col (35) Rt Exit
+W MF4-33b DI30_A4 // Col (30) Lt Entry
+W MF4-34b DI31_A4 // Col (31) Lt Entry
+W MF4-35b DI32_A4 // Col (32) Lt Entry
+W MF4-36b DI33_A4 // Col (33) Lt Entry
+W MF4-37b DI34_A4 // Col (34) Lt Entry
+W MF4-38b DI35_A4 // Col (35) Lt Entry
+W MF4-33c DI30_A5 // Col (30) Rt Entry
+W MF4-34c DI31_A5 // Col (31) Rt Entry
+W MF4-35c DI32_A5 // Col (32) Rt Entry
+W MF4-36c DI33_A5 // Col (33) Rt Entry
+W MF4-37c DI34_A5 // Col (34) Rt Entry
+W MF4-38c DI35_A5 // Col (35) Rt Entry
+W MF4-Qe DI30_B4 // Pr Thy Plate Lt
+W MF4-Qe DI31_B4 // Pr Thy Plate Lt
+W MF4-Qe DI32_B4 // Pr Thy Plate Lt
+W MF4-Qe DI33_B4 // Pr Thy Plate Lt
+W MF4-Qe DI34_B4 // Pr Thy Plate Lt
+W MF4-Qe DI35_B4 // Pr Thy Plate Lt
+W MF4-Re DI30_B5 // Pr Thy Plate Rt
+W MF4-Re DI31_B5 // Pr Thy Plate Rt
+W MF4-Re DI32_B5 // Pr Thy Plate Rt
+W MF4-Re DI33_B5 // Pr Thy Plate Rt
+W MF4-Re DI34_B5 // Pr Thy Plate Rt
+W MF4-Re DI35_B5 // Pr Thy Plate Rt
+W MF4-Qa DI30_B2 // Pn Thy Plate Lt
+W MF4-Qa DI31_B2 // Pn Thy Plate Lt
+W MF4-Qa DI32_B2 // Pn Thy Plate Lt
+W MF4-Qa DI33_B2 // Pn Thy Plate Lt
+W MF4-Qa DI34_B2 // Pn Thy Plate Lt
+W MF4-Qa DI35_B2 // Pn Thy Plate Lt
+W MF4-Ra DI30_B3 // Pn Thy Plate Rt
+W MF4-Ra DI31_B3 // Pn Thy Plate Rt
+W MF4-Ra DI32_B3 // Pn Thy Plate Rt
+W MF4-Ra DI33_B3 // Pn Thy Plate Rt
+W MF4-Ra DI34_B3 // Pn Thy Plate Rt
+W MF4-Ra DI35_B3 // Pn Thy Plate Rt
 
 
 // 6.03.02 Ring Shift Ctrl
@@ -1068,14 +1813,17 @@ W MF4_CL A36_CL // Clock
 
 W MF4_CL DL_CL // Clock
 
-// SS_CL MF4_CL64 MF4_CL128 MF4_CL8192 MF4_CL16384 MF4_CL32768 : SSCLOCK
+// SS_CL SS_CL64 SS_CL128 SS_CL4096 SS_CL8192 SS_CL16384 SS_CL32768 : SSCL
 W MF4_CL SS_CL // Clock
 W SS_CL64 A23_CL64 // Clock64
 W SS_CL64 A26_CL64 // Clock64
+W SS_CL64 MF4_CL64 // Clock64
 W SS_CL128 A23_CL128 // Clock128
 W SS_CL128 A26_CL128 // Clock128
 W SS_CL128 A20_CL128 // Clock128
 W SS_CL128 A21_CL128 // Clock128
+W SS_CL128 MF4_CL128 // Clock128
+W SS_CL4096 MF4_CL4096 // Clock4096
 W SS_CL8192 A21_CL8192 // Clock8192
 
 // Fast Start

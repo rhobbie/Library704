@@ -1,0 +1,32 @@
+﻿.Module 5_05_05 // 5.05.05 Pr Sense Outputs (1-10) Pnch Outputs (1-2) 
+5_05_05_[A-B][1-9] : 5_05_05
+.Signals
+I 5_05_05_A1 Pr Sense Thy Plates
+O 5_05_05_A2 Pr Sense (1)
+O 5_05_05_A3 Pr Sense (2)
+O 5_05_05_A4 Pr Sense (3)
+O 5_05_05_A5 Pr Sense (4)
+O 5_05_05_A6 Pr Sense (5)
+O 5_05_05_A7 Pr Sense (6)
+O 5_05_05_A8 Pr Sense (7)
+O 5_05_05_A9 Pr Sense (8)
+O 5_05_05_B1 Pr Sense (9)
+O 5_05_05_B2 Pr Sense (10)
+I 5_05_05_B3 Pn Sense Thy Plate
+O 5_05_05_B4 Pn Sense (1)
+.Connect
+1MEG 5_05_05_A1 0V // Pr Sense Thy Plates
+W -30V 5_05_05_A2 // Pr Sense (1)
+W -30V 5_05_05_A3 // Pr Sense (2)
+W -30V 5_05_05_A4 // Pr Sense (3)
+W -30V 5_05_05_A5 // Pr Sense (4)
+W -30V 5_05_05_A6 // Pr Sense (5)
+W -30V 5_05_05_A7 // Pr Sense (6)
+W -30V 5_05_05_A8 // Pr Sense (7)
+W -30V 5_05_05_A9 // Pr Sense (8)
+W -30V 5_05_05_B1 // Pr Sense (9)
+W -30V 5_05_05_B2 // Pr Sense (10)
+1MEG 5_05_05_B3 0V //  Pn Sense Thy Plate
+W -30V 5_05_05_B4 // Pn Sense (1)
+
+.End

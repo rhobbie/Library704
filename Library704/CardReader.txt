@@ -1,0 +1,288 @@
+﻿.Module CardReader // Cardreader 
+CR_[A-K][1-9] CL64 RES : CardReader
+
+.Signals
+BW CR_A1 Col (S) Lt Entry
+BW CR_A2 Col (S) Rt Entry
+BW CR_A3 Col (1) Lt Entry
+BW CR_A4 Col (1) Rt Entry
+BW CR_A5 Col (2) Lt Entry
+BW CR_A6 Col (2) Rt Entry
+BW CR_A7 Col (3) Lt Entry
+BW CR_A8 Col (3) Rt Entry
+BW CR_A9 Col (4) Lt Entry
+BW CR_B1 Col (4) Rt Entry
+BW CR_B2 Col (5) Lt Entry
+BW CR_B3 Col (5) Rt Entry
+BW CR_B4 Col (6) Lt Entry
+BW CR_B5 Col (6) Rt Entry
+BW CR_B6 Col (7) Lt Entry
+BW CR_B7 Col (7) Rt Entry
+BW CR_B8 Col (8) Lt Entry
+BW CR_B9 Col (8) Rt Entry
+BW CR_C1 Col (9) Lt Entry
+BW CR_C2 Col (9) Rt Entry
+BW CR_C3 Col (10) Lt Entry
+BW CR_C4 Col (10) Rt Entry
+BW CR_C5 Col (11) Lt Entry
+BW CR_C6 Col (11) Rt Entry
+BW CR_C7 Col (12) Lt Entry
+BW CR_C8 Col (12) Rt Entry
+BW CR_C9 Col (13) Lt Entry
+BW CR_D1 Col (13) Rt Entry
+BW CR_D2 Col (14) Lt Entry
+BW CR_D3 Col (14) Rt Entry
+BW CR_D4 Col (15) Lt Entry
+BW CR_D5 Col (15) Rt Entry
+BW CR_D6 Col (16) Lt Entry
+BW CR_D7 Col (16) Rt Entry
+BW CR_D8 Col (17) Lt Entry
+BW CR_D9 Col (17) Rt Entry
+BW CR_E1 Col (18) Lt Entry
+BW CR_E2 Col (18) Rt Entry
+BW CR_E3 Col (19) Lt Entry
+BW CR_E4 Col (19) Rt Entry
+BW CR_E5 Col (20) Lt Entry
+BW CR_E6 Col (20) Rt Entry
+BW CR_E7 Col (21) Lt Entry
+BW CR_E8 Col (21) Rt Entry
+BW CR_E9 Col (22) Lt Entry
+BW CR_F1 Col (22) Rt Entry
+BW CR_F2 Col (23) Lt Entry
+BW CR_F3 Col (23) Rt Entry
+BW CR_F4 Col (24) Lt Entry
+BW CR_F5 Col (24) Rt Entry
+BW CR_F6 Col (25) Lt Entry
+BW CR_F7 Col (25) Rt Entry
+BW CR_F8 Col (26) Lt Entry
+BW CR_F9 Col (26) Rt Entry
+BW CR_G1 Col (27) Lt Entry
+BW CR_G2 Col (27) Rt Entry
+BW CR_G3 Col (28) Lt Entry
+BW CR_G4 Col (28) Rt Entry
+BW CR_G5 Col (29) Lt Entry
+BW CR_G6 Col (29) Rt Entry
+BW CR_G7 Col (30) Lt Entry
+BW CR_G8 Col (30) Rt Entry
+BW CR_G9 Col (31) Lt Entry
+BW CR_H1 Col (31) Rt Entry
+BW CR_H2 Col (32) Lt Entry
+BW CR_H3 Col (32) Rt Entry
+BW CR_H4 Col (33) Lt Entry
+BW CR_H5 Col (33) Rt Entry
+BW CR_H6 Col (34) Lt Entry
+BW CR_H7 Col (34) Rt Entry
+BW CR_H8 Col (35) Lt Entry
+BW CR_H9 Col (35) Rt Entry
+
+O CR_J1 Cr Sel 1 // 1= ready for selection 0= selected
+I CR_J2 Cr Sel 2 // 1= request for selection
+O CR_J3 Cr Disc 1 // 1= ready for disconect // 0= disconnected or not selected
+I CR_J4 Cr Disc 2  // 1= disconnect request
+
+BW CR_J5 Tgr Reset
+BW CR_J6 CB Signal Set
+
+O CR_J7 CR-EOF 1  // 1= EOF detected
+I CR_J8 CR-EOF 2  // 1= clear EOF flag
+O CR_J9 CR-EOR 1 // 1= EOR detected
+I CR_K1 CR-EOR 2 // 1= clear EOR flag
+O CR_K2 Fuse Blow // 1= file io error
+
+
+I CL64 Clock64
+I RES Reset
+.Logic
+reg rotate;
+reg [3:0]Sub_Cnt;
+reg [4:0]Unit_Cnt;
+reg [4:0]Cycle_Cnt;
+reg active;        
+reg CB_Signal_Set;		
+reg [71:0] Set_Tk;
+reg CB_reset;
+reg ready;           
+reg request_pending; 
+reg [6:0] delay;
+reg restart_possible;
+reg eor;
+reg eof;
+reg err;
+integer cbnfile;
+integer i;
+reg [7:0] trecord[159:0];
+reg [3:0] bit;
+reg byte;
+reg endfile;
+
+assign CR_J1 = ready; // Cr Sel 1
+assign CR_J3 = active; // Cr Disc 1
+assign CR_J5 = CB_reset; // Tgr Reset
+assign CR_J6 = CB_Signal_Set; // CB Signal Set
+assign CR_J7 = eof;  // EOF detected
+assign CR_J9 = eor; // EOR detected
+assign CR_K2 = err; // 1= file or parity error
+assign {CR_A1,CR_A3,CR_A5,CR_A7,CR_A9,CR_B2,CR_B4,CR_B6,CR_B8,CR_C1,CR_C3,CR_C5,CR_C7,CR_C9,CR_D2,CR_D4,CR_D6,CR_D8,CR_E1,CR_E3,CR_E5,CR_E7,CR_E9,CR_F2,CR_F4,CR_F6,CR_F8,CR_G1,CR_G3,CR_G5,CR_G7,CR_G9,CR_H2,CR_H4,CR_H6,CR_H8,CR_A2,CR_A4,CR_A6,CR_A8,CR_B1,CR_B3,CR_B5,CR_B7,CR_B9,CR_C2,CR_C4,CR_C6,CR_C8,CR_D1,CR_D3,CR_D5,CR_D7,CR_D9,CR_E2,CR_E4,CR_E6,CR_E8,CR_F1,CR_F3,CR_F5,CR_F7,CR_F9,CR_G2,CR_G4,CR_G6,CR_G8,CR_H1,CR_H3,CR_H5,CR_H7,CR_H9}=Set_Tk;
+
+always @*
+  if(RES)
+  begin
+     rotate=0;
+	 Sub_Cnt=0;
+	 Cycle_Cnt=15;	 
+	 Unit_Cnt=8;
+	 active=0;
+	 CB_Signal_Set=0;
+     Set_Tk=0;
+     CB_reset=0;
+	 ready=1;
+	 request_pending=0;
+	 restart_possible=0;
+	 delay=0;
+	 eor=0;
+	 eof=0;
+	 err=0;
+	 bit=0;
+	 byte=0;
+	 cbnfile=0;
+	 endfile=0;
+	 i=0;
+  end  
+
+always@*
+ if(CR_K1) //  CR-EOR 2  1= clear EOR flag
+   eor=0;
+
+always@*
+ if(CR_J8) // CR-EOF 2  // 1= clear EOF flag
+   eof=0;
+
+always@(negedge CL64)
+begin
+   Sub_Cnt++;    
+   if(Sub_Cnt==10)		
+	 Sub_Cnt=0;
+end
+
+wire CL640=Sub_Cnt[3];
+
+always@(negedge CL640)
+  if(!rotate)
+  begin
+    if(CR_J2) //  Cr Sel 2
+	begin
+	  rotate=1;	 // start movement
+	  delay=71;  // number of sub cycles delay to start motion
+	end
+  end
+  else
+  begin  
+    if(delay)
+	begin
+	  delay--; // delay until motion starts
+	  if(delay==0)
+		ready=0;  // inform cpu that rds has been performed
+	end
+	else
+	begin	    
+	  Unit_Cnt++;
+	  if(Unit_Cnt==18)
+	  begin
+	    Unit_Cnt=0;
+	    Cycle_Cnt++;		
+	    if(Cycle_Cnt==20)		
+	      Cycle_Cnt=0;
+		if(active)
+		begin
+		  bit++;
+		  if(bit==6)
+		  begin
+		    bit=0;
+		    byte=0;
+		  end
+		end
+	  end
+	  if(Cycle_Cnt==0&&Unit_Cnt==4&&!endfile) // start CB cycles
+	  begin
+		if(cbnfile==0)
+        begin
+          cbnfile = $fopen("CRD.cbn", "rb");
+	      if(cbnfile==0)
+	      err=1;
+        end
+        if(cbnfile!=0)
+        begin
+	      i = $fread(trecord, cbnfile); 	 	
+        end
+        if(i==0)
+        begin
+          eof=1;
+	      endfile=1;
+        end
+        else if(i!=160||trecord[0][7]!=1)
+          err=1;
+        else
+        begin            
+  	      trecord[0][7]=0;
+  	      for(i=0;i<160;i++) // check valid bits 6&7
+	      begin
+  	        if(trecord[i][7])
+  	          err=1;
+  	        if((trecord[i][0]^trecord[i][1]^trecord[i][2]^trecord[i][3]^trecord[i][4]^trecord[i][5]^trecord[i][6])==0)
+  	          err=1;
+  	      end          
+	    end	
+	    active=1;
+		bit=0;
+	    byte=1;
+	  end
+      if(Cycle_Cnt==12&&Unit_Cnt==12)  // next rds possible
+	  begin
+	    ready=1;
+		if(!endfile)
+		  restart_possible=1;
+		eor=0;
+	  end
+	  if(Cycle_Cnt==14&&Unit_Cnt==9) // end of hatched time
+	    restart_possible=0;
+	  if(restart_possible&&CR_J2) //  Cr Sel 2
+	  begin	  
+		ready=0;	 
+		request_pending=1;
+                restart_possible=0;
+	  end
+	  if (Cycle_Cnt==15&&Unit_Cnt==8) // Stop position
+	  begin
+	    if(!request_pending) 
+		  rotate=0;          // stop movement
+		else
+		  request_pending=0; // no stop because new rds was given
+	  end
+	  if(active)
+	  begin
+		if(Unit_Cnt==4)
+		  CB_reset=1;			
+	    else if(Unit_Cnt==8)
+		begin
+		  CB_reset=0;
+		  if(CR_J4) // Cr Disc 2
+			active=0;
+		  else if(Cycle_Cnt==12)
+		  begin
+		    active=0;
+			eor=1;
+		  end			  
+	    end
+        else if(Unit_Cnt==9)
+		  for(i=0;i<72;i++) // put data on bus
+    	    Set_Tk[71-i]=trecord[(i<<1)|byte][bit];
+	    else if(Unit_Cnt==13)
+		  CB_Signal_Set=1;
+		else if(Unit_Cnt==17) 		
+		  Set_Tk=0;
+		else if(Unit_Cnt==2) 
+		  CB_Signal_Set=0;
+	  end
+	end
+  end
+.End

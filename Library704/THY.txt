@@ -1,0 +1,20 @@
+﻿.Module THY
+P GU GL C : THY
+.Signals
+I P Plate
+I GU Upper Gate
+I GL Lower Gate
+O C Cathode
+.Logic
+reg State=0;
+
+always@*
+  if(~P)
+    State=0;
+
+always@(posedge GL)
+  if(P&GU)
+    State=1;
+
+assign C=State;
+.End

@@ -1,14 +1,14 @@
 .Module SYSTEM
 SYSTEM_CL  SYSTEM_RES : SYSTEM
-MF1-[01-35][a-r] MF1-[A-R][a-h] MF1_[R-V][1-9] MF1_CL MF1_RES : MF1
+MF1-[01-35][a-r] MF1-[A-R][a-h] MF1_[R-W][1-9] MF1_CL MF1_RES : MF1
 MF2-[01-40][a-r] MF2-[A-R][a-h] MF2_[R-T][1-9] MF2_CL MF2_RES : MF2
 MF3-[01-35][a-r] MF3-[A-R][a-h] MF3_[R-W][1-9] MF3_CL MF3_RES : MF3
-MF4-[01-40][a-r] MF4-[A-R][a-h] MF4_[R-T][1-9] MF4_CL MF4_RES : MF4
+MF4-[01-40][a-r] MF4-[A-R][a-h] MF4_[R-T][1-9] MF4_CL MF4_CL64 MF4_CL128 MF4_CL4096 MF4_RES : MF4
 SP[1-150] SPR[1-5] SP_RES : SP
 OP-[01-34][a-h] : OP
 CE[01-04][a-e] : CE
 NIP-[01-28][a-h] : NIP
-
+PR[1-2]-[1-155] PR_CL64 PR_CL128 PR_CL4096 PR_RES : PR
 
 R1-PU1A R1-PU1B R1-HA R1-HB R1-1NO R1-1NC R1-1OP R1-2OP R1-2NO R1-4OP R1-4NO : REL1 // READY
 R3-PU1A R3-PU1B R3-HA R3-HB R3-4NC R3-4NO R3-4OP R3-5NC R3-5NO R3-5OP R3-6NC R3-6NO R3-6OP R3-7NO R3-7OP : REL3 // COPY INST
@@ -824,7 +824,7 @@ W MF4-Gh OP-01a // PROG STOP LITE
 W MF4-Ke OP-23d // TAPE CHECK
 W MF4-26d MF2-02j // MINUS ON TAPE CHECK
 W MF4-26d MF1-04j // MINUS ON TAPE CHECK
-W -30V MF4-26f // +40 ON CARD MACH BLOWN FUSE
+W PR1-78 MF4-26f // +40 ON CARD MACH BLOWN FUSE
 
 // 4.05.04 MSTR STOP TGR & OUTPUTS
 W MF4-22l MF1-04g // PLUS ON MSTR STOP TGR ON
@@ -861,8 +861,8 @@ W 40RETURN R5-P2
 W R50ALNO R5-1OP// +150 ON TRUE MANUAL
 W R5-1NC OP-27b // FULL STEP KEY C
 W OP-27c R5-1NO  // FULL STEP KEY N.O.
-W R5-1NO MF4-08h
-W OP-27d MF4-08g // FULL STEP KEY N.C.
+W R5-1NO MF4-03h
+W OP-27d MF4-03g // FULL STEP KEY N.C.
 W +10V R5-2NO
 2.7k -30V R5-2OP
 W R5-2OP MF4-Fh  // MULT STEP
@@ -1325,6 +1325,23 @@ W MF3_U9 MF4_S4 // IO INTERLOCK
 // 5.01.05 Unit Selector 
 W MF3_W5 MF4_T2 // I/O Sel #1
 
+// 5.01.06 Card Machine Selector
+W PR1-7 MF4-Lb   // Pr Select
+W MF4-Lc PR1-23  // Pr Rd Sel
+W MF4-Lf PR1-30  // Pr Wr Sel
+W PR1-101 MF4-Ma // Cr Sel 1
+W MF4-Mb PR1-110 // Cr Sel 2
+W PR2-101 MF4-Mc // Pn Sel 1
+W MF4-Md PR2-110 // Pn Sel 2
+
+W PR1-37 MF4-Jd // Pr Disc 1
+W MF4-Ka PR1-39  // Pr Disc 2
+W PR2-103 MF4-Kb // Pn Disc 1
+W MF4-Kc PR2-112 // Pn Disc 2
+W PR1-103 MF4-Kd // Cr Disc 1
+W MF4-La PR1-112 // Cr Disc 2
+
+
 // 5.02 Read/Write Exec Timer
 W MF1_V7 MF3_W6 // Set I/O Intlk
 W MF1_V8 MF3_W7 // Reset I/O Intlk
@@ -1341,14 +1358,205 @@ W MF1_S4 MF2_T3 // LDA 1ST STEP E/R TIME
 // 5.05.04 Sense Skip Control
 W MF4_S2 MF1_U1 // SENSE SKIP CNTL
 
+// 5.05.05 Pr Sense Outputs (1-10) Pnch Outputs (1-2) 
+W PR2-14 MF4-Fd  // Pr Sense Thy Plates
+W MF4-Ja PR2-29 // Pr Sense (1)
+W MF4-Jc PR2-30 // Pr Sense (2)
+W MF4-Fb PR2-31 // Pr Sense (3)
+W MF4-Fc PR2-32 // Pr Sense (4)
+W MF4-Ga PR2-37 // Pr Sense (5)
+W MF4-Gb PR2-38 // Pr Sense (6)
+W MF4-Gc PR2-39 // Pr Sense (7)
+W MF4-Gd PR2-40 // Pr Sense (8)
+W MF4-Ha PR2-45 // Pr Sense (9)
+W MF4-Hb PR2-46 // Pr Sense (10)
+W PR2-125 MF4-Hc // Pn Sense Thy Plate
+W MF4-Hd PR2-126 // Pn Sense (1)
+
+
 // 5.05.06 Test Sense
 W MF1_U5 MF4_S3 // REDUNDANCY TAPE TEST
+W PR1-117 MF1-Ed // Pr Sense Entry (was MF4-Ep)
+W MF1-Jb PR2-127 // Pr Sense
 
 // 5.08.01 Clock Pulse Ckts
 W MF1_T2 MF3_T7 // A11(D1)
 
 // 5.08.03 Clock Pulse Power and Mixing
 W MF1_S5 MF4_S1 // A6(D1)
+
+// 5.09.01 EOR/EOF Interlock
+W PR1-62 MF3-12g // CR-EOF 1
+W MF3-12h PR1-63 // CR-EOF 2
+W PR1-69 MF3-13e // CR-EOR 1
+W MF3-13f PR1-72 // CR-EOR 2
+
+
+// 5.11.01 Card Ctrl Pulse Gen
+W PR1-46 MF4-01f // CB Signal Set
+W PR2-47 MF4-01g // Tgr Reset
+
+// 5.11.03 Read-Write Disconnect Gate
+W MF1_V9 MF4_T3 // Read Left
+W MF1_W1 MF4_T4 // Read Right
+W MF1_W2 MF4_T5 // Write Left
+W MF1_W3 MF4_T6 // Write Right
+
+// 5.12.01
+W MF4-03e PR1-1   // Col (S) Lt Exit
+W MF4-03f PR1-130 // Col (S) Rt Exit
+W MF4-04g PR1-9   // Col (1) Lt Exit
+W MF4-04h PR1-138 // Col (1) Rt Exit
+W MF4-05e PR1-17  // Col (2) Lt Exit
+W MF4-05f PR1-146 // Col (2) Rt Exit
+W MF4-06g PR1-25  // Col (3) Lt Exit
+W MF4-06h PR1-154 // Col (3) Rt Exit
+W MF4-07e PR1-33  // Col (4) Lt Exit
+W MF4-07f PR1-3   // Col (4) Rt Exit
+W MF4-08g PR1-41  // Col (5) Lt Exit
+W MF4-08h PR1-11  // Col (5) Rt Exit
+W PR2-1   MF4-03b // Col (S) Lt Entry
+W PR2-130 MF4-03c // Col (S) Rt Entry
+W PR2-9   MF4-04b // Col (1) Lt Entry
+W PR2-138 MF4-04c // Col (1) Rt Entry
+W PR2-17  MF4-05b // Col (2) Lt Entry
+W PR2-146 MF4-05c // Col (2) Rt Entry
+W PR2-25  MF4-06b // Col (3) Lt Entry
+W PR2-154 MF4-06c // Col (3) Rt Entry
+W PR2-33  MF4-07b // Col (4) Lt Entry
+W PR2-3   MF4-07c // Col (4) Rt Entry
+W PR2-41  MF4-08b // Col (5) Lt Entry
+W PR2-11  MF4-08c // Col (5) Rt Entry
+W PR1-53  MF4-Qa // Pn Thy Plate Lt
+W PR1-54  MF4-Ra // Pn Thy Plate Rt
+W PR1-55  MF4-Qe // Pr Thy Plate Lt
+W PR1-56  MF4-Re // Pr Thy Plate Rt
+
+
+
+// 5.12.03
+W MF4-09e PR1-49  // Col (6) Lt Exit
+W MF4-09f PR1-19  // Col (6) Rt Exit
+W MF4-10g PR1-57  // Col (7) Lt Exit
+W MF4-10h PR1-27  // Col (7) Rt Exit
+W MF4-11e PR1-65  // Col (8) Lt Exit
+W MF4-11f PR1-35  // Col (8) Rt Exit
+W MF4-12g PR1-73  // Col (9) Lt Exit
+W MF4-12h PR1-43  // Col (9) Rt Exit
+W MF4-13e PR1-81  // Col (10) Lt Exit
+W MF4-13f PR1-51  // Col (10) Rt Exit
+W MF4-14g PR1-89  // Col (11) Lt Exit
+W MF4-14h PR1-59  // Col (11) Rt Exit
+W MF4-15e PR1-97  // Col (12) Lt Exit
+W MF4-15f PR1-67  // Col (12) Rt Exit
+W MF4-16g PR1-105 // Col (13) Lt Exit
+W MF4-16h PR1-75  // Col (13) Rt Exit
+W MF4-17e PR1-113 // Col (14) Lt Exit
+W MF4-17f PR1-83  // Col (14) Rt Exit
+W MF4-18g PR1-121 // Col (15) Lt Exit
+W MF4-18h PR1-91  // Col (15) Rt Exit
+W MF4-19e PR1-129 // Col (16) Lt Exit
+W MF4-19f PR1-99  // Col (16) Rt Exit
+W MF4-20g PR1-137 // Col (17) Lt Exit
+W MF4-20h PR1-107 // Col (17) Rt Exit
+W MF4-21e PR1-145 // Col (18) Lt Exit
+W MF4-21f PR1-115 // Col (18) Rt Exit
+W MF4-22g PR1-153 // Col (19) Lt Exit
+W MF4-22h PR1-123 // Col (19) Rt Exit
+W MF4-23e PR1-2   // Col (20) Lt Exit
+W MF4-23f PR1-131 // Col (20) Rt Exit
+W MF4-24g PR1-10  // Col (21) Lt Exit
+W MF4-25h PR1-139 // Col (21) Rt Exit
+W MF4-25e PR1-18  // Col (22) Lt Exit
+W MF4-25f PR1-147 // Col (22) Rt Exit
+W MF4-26g PR1-26  // Col (23) Lt Exit
+W MF4-26h PR1-155 // Col (23) Rt Exit
+W MF4-27e PR1-34  // Col (24) Lt Exit
+W MF4-27f PR1-4   // Col (24) Rt Exit
+W MF4-28g PR1-42  // Col (25) Lt Exit
+W MF4-28h PR1-12  // Col (25) Rt Exit
+W MF4-29e PR1-50  // Col (26) Lt Exit
+W MF4-29f PR1-20  // Col (26) Rt Exit
+W MF4-30g PR1-58  // Col (27) Lt Exit
+W MF4-30h PR1-28  // Col (27) Rt Exit
+W MF4-31e PR1-66  // Col (28) Lt Exit
+W MF4-31f PR1-36  // Col (28) Rt Exit
+W MF4-32g PR1-74  // Col (29) Lt Exit
+W MF4-32h PR1-44  // Col (29) Rt Exit
+W PR2-49  MF4-09b // Col (6) Lt Entry
+W PR2-19  MF4-09c // Col (6) Rt Entry
+W PR2-57  MF4-10b // Col (7) Lt Entry
+W PR2-27  MF4-10c // Col (7) Rt Entry
+W PR2-65  MF4-11b // Col (8) Lt Entry
+W PR2-35  MF4-11c // Col (8) Rt Entry
+W PR2-73  MF4-12b // Col (9) Lt Entry
+W PR2-43  MF4-12c // Col (9) Rt Entry
+W PR2-81  MF4-13b // Col (10) Lt Entry
+W PR2-51  MF4-13c // Col (10) Rt Entry
+W PR2-89  MF4-14b // Col (11) Lt Entry
+W PR2-59  MF4-14c // Col (11) Rt Entry
+W PR2-97  MF4-15b // Col (12) Lt Entry
+W PR2-67  MF4-15c // Col (12) Rt Entry
+W PR2-105 MF4-16b // Col (13) Lt Entry
+W PR2-75  MF4-16c // Col (13) Rt Entry
+W PR2-113 MF4-17b // Col (14) Lt Entry
+W PR2-83  MF4-17c // Col (14) Rt Entry
+W PR2-121 MF4-18b // Col (15) Lt Entry
+W PR2-91  MF4-18c // Col (15) Rt Entry
+W PR2-129 MF4-19b // Col (16) Lt Entry
+W PR2-99  MF4-19c // Col (16) Rt Entry
+W PR2-137 MF4-20b // Col (17) Lt Entry
+W PR2-107 MF4-20c // Col (17) Rt Entry
+W PR2-145 MF4-21b // Col (18) Lt Entry
+W PR2-115 MF4-21c // Col (18) Rt Entry
+W PR2-153 MF4-22b // Col (19) Lt Entry
+W PR2-123 MF4-22c // Col (19) Rt Entry
+W PR2-2   MF4-23b // Col (20) Lt Entry
+W PR2-131 MF4-23c // Col (20) Rt Entry
+W PR2-10  MF4-24b // Col (21) Lt Entry
+W PR2-139 MF4-24c // Col (21) Rt Entry
+W PR2-18  MF4-25b // Col (22) Lt Entry
+W PR2-147 MF4-25c // Col (22) Rt Entry
+W PR2-26  MF4-26b // Col (23) Lt Entry
+W PR2-155 MF4-26c // Col (23) Rt Entry
+W PR2-34  MF4-27b // Col (24) Lt Entry
+W PR2-4   MF4-27c // Col (24) Rt Entry
+W PR2-42  MF4-28b // Col (25) Lt Entry
+W PR2-12  MF4-28c // Col (25) Rt Entry
+W PR2-50  MF4-29b // Col (26) Lt Entry
+W PR2-20  MF4-29c // Col (26) Rt Entry
+W PR2-58  MF4-30b // Col (27) Lt Entry
+W PR2-28  MF4-30c // Col (27) Rt Entry
+W PR2-66  MF4-31b // Col (28) Lt Entry
+W PR2-36  MF4-31c // Col (28) Rt Entry
+W PR2-74  MF4-32b // Col (29) Lt Entry
+W PR2-44  MF4-32c // Col (29) Rt Entry
+
+// 5.12.04
+W MF4-33e PR1-82  // Col (30) Lt Exit
+W MF4-33f PR1-52  // Col (30) Rt Exit
+W MF4-34g PR1-90  // Col (31) Lt Exit
+W MF4-34h PR1-60  // Col (31) Rt Exit
+W MF4-35e PR1-98  // Col (32) Lt Exit
+W MF4-35f PR1-68  // Col (32) Rt Exit
+W MF4-36g PR1-106 // Col (33) Lt Exit
+W MF4-36h PR1-76  // Col (33) Rt Exit
+W MF4-37e PR1-114 // Col (34) Lt Exit
+W MF4-37f PR1-84  // Col (34) Rt Exit
+W MF4-38g PR1-122 // Col (35) Lt Exit
+W MF4-38h PR1-92  // Col (35) Rt Exit
+W PR2-82  MF4-33b // Col (30) Lt Entry
+W PR2-52  MF4-33c // Col (30) Rt Entry
+W PR2-90  MF4-34b // Col (31) Lt Entry
+W PR2-60  MF4-34c // Col (31) Rt Entry
+W PR2-98  MF4-35b // Col (32) Lt Entry
+W PR2-68  MF4-35c // Col (32) Rt Entry
+W PR2-106 MF4-36b // Col (33) Lt Entry
+W PR2-76  MF4-36c // Col (33) Rt Entry
+W PR2-114 MF4-37b // Col (34) Lt Entry
+W PR2-84  MF4-37c // Col (34) Rt Entry
+W PR2-122 MF4-38b // Col (35) Lt Entry
+W PR2-92  MF4-38c // Col (35) Rt Entry
 
 
 // 6.03.01 ??
@@ -1423,9 +1631,16 @@ W SYSTEM_CL MF1_CL // Clock
 W SYSTEM_CL MF2_CL // Clock
 W SYSTEM_CL MF3_CL // Clock
 W SYSTEM_CL MF4_CL // Clock
+
+W MF4_CL64 PR_CL64 // Clock64 
+W MF4_CL128 PR_CL128 // Clock128
+W MF4_CL4096 PR_CL4096 // Clock64 
+
 W SYSTEM_RES MF1_RES // Reset
 W SYSTEM_RES MF2_RES // Reset
 W SYSTEM_RES MF3_RES // Reset
 W SYSTEM_RES MF4_RES // Reset
 W SYSTEM_RES SP_RES // Reset
+W SYSTEM_RES PR_RES // Reset
+
 .End 

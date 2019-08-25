@@ -42,7 +42,7 @@ MF3-[01-35][a-r] MF3-[A-R][a-h] MF3_[R-W][1-9] MF3_CL MF3_RES : MF3
 5_01_04_A[1-5] : 5_01_04  // 5.01.04 I/O Selection Intlk
 5_01_05_A[1-7]  5_01_05_RES : 5_01_05 // 5.01.05 Unit Selector
 5_04_MF3_A[1-3] : 5_04_MF3 // 5.04 LDA
-5_09_01_A[1-3] : 5_09_01 // 5.09.01 EOR/EOF Interlock
+5_09_01_A[1-7] : 5_09_01 // 5.09.01 EOR/EOF Interlock
 6_01_A1 : 6_01 // 6.01 Tape Sync Sel
 
 6_01_01_A[1-4] : 6_01_01 // 6.01.01 Tape Coding Select
@@ -417,6 +417,13 @@ I MF3_W7 Reset I/O Intlk
 
 // 5.08.01 Clock Pulse Ckts
 I MF3_T7 A11(D1)
+
+// 5.09.01 EOR/EOF Interlock
+I MF3-12g CR-EOF 1
+O MF3-12h CR-EOF 2
+
+I MF3-13e CR-EOR 1
+O MF3-13f CR-EOR 2
 
 
 // 7.02.01 Drum Counter
@@ -1127,6 +1134,12 @@ W MF3_W7 5_01_03_B2 // Reset I/O Intlk
 
 // 5.08.01 Clock Pulse Ckts
 W MF3_T7 N18-2 // A11(D1)
+
+// 5.09.01 EOR/EOF Interlock
+W MF3-12g 5_09_01_A4 // CR-EOF 1
+W 5_09_01_A5 MF3-12h // CR-EOF 2
+W MF3-13e 5_09_01_A6 // CR-EOR 1
+W 5_09_01_A7 MF3-13f // CR-EOR 2
 
 
 // 7.02.01 Drum Counter
