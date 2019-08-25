@@ -87,7 +87,7 @@ O CR_J7 CR-EOF 1  // 1= EOF detected
 I CR_J8 CR-EOF 2  // 1= clear EOF flag
 O CR_J9 CR-EOR 1 // 1= EOR detected
 I CR_K1 CR-EOR 2 // 1= clear EOR flag
-O CR_K2 Fuse Blow // 1= file io error
+BW CR_K2 Fuse Blow // 1= file io error
 
 
 I CL64 Clock64
@@ -109,7 +109,8 @@ reg eor;
 reg eof;
 reg err;
 integer cbnfile;
-integer i;
+reg [7:0] i;
+integer f;
 reg [7:0] trecord[159:0];
 reg [3:0] bit;
 reg byte;
@@ -129,24 +130,24 @@ always @*
   begin
      rotate=0;
 	 Sub_Cnt=0;
-	 Cycle_Cnt=15;	 
 	 Unit_Cnt=8;
+	 Cycle_Cnt=15;
 	 active=0;
 	 CB_Signal_Set=0;
      Set_Tk=0;
      CB_reset=0;
 	 ready=1;
 	 request_pending=0;
-	 restart_possible=0;
 	 delay=0;
+	 restart_possible=0;	 
 	 eor=0;
 	 eof=0;
 	 err=0;
+	 cbnfile=0;
+	 i=0;
 	 bit=0;
 	 byte=0;
-	 cbnfile=0;
-	 endfile=0;
-	 i=0;
+	 endfile=0;	 
   end  
 
 always@*
@@ -192,15 +193,6 @@ always@(negedge CL640)
 	    Cycle_Cnt++;		
 	    if(Cycle_Cnt==20)		
 	      Cycle_Cnt=0;
-		if(active)
-		begin
-		  bit++;
-		  if(bit==6)
-		  begin
-		    bit=0;
-		    byte=0;
-		  end
-		end
 	  end
 	  if(Cycle_Cnt==0&&Unit_Cnt==4&&!endfile) // start CB cycles
 	  begin
@@ -208,13 +200,15 @@ always@(negedge CL640)
         begin
           cbnfile = $fopen("CRD.cbn", "rb");
 	      if(cbnfile==0)
-	      err=1;
+	        err=1;
         end
+        for(i=0;i<160;i++)
+		  trecord[i]=0;
         if(cbnfile!=0)
         begin
-	      i = $fread(trecord, cbnfile); 	 	
+	      f = $fread(trecord, cbnfile); 	 	
         end
-        if(i==0)
+        if(f==0)
         begin
           eof=1;
 	      endfile=1;
@@ -249,7 +243,7 @@ always@(negedge CL640)
 	  begin	  
 		ready=0;	 
 		request_pending=1;
-                restart_possible=0;
+        restart_possible=0;
 	  end
 	  if (Cycle_Cnt==15&&Unit_Cnt==8) // Stop position
 	  begin
@@ -274,8 +268,16 @@ always@(negedge CL640)
 		  end			  
 	    end
         else if(Unit_Cnt==9)
+		begin
 		  for(i=0;i<72;i++) // put data on bus
-    	    Set_Tk[71-i]=trecord[(i<<1)|byte][bit];
+    	    Set_Tk[71-i]=trecord[(i<<1)|byte][bit];			
+		  bit++;
+		  if(bit==6)
+		  begin
+		    bit=0;
+		    byte=0;
+		  end
+		end
 	    else if(Unit_Cnt==13)
 		  CB_Signal_Set=1;
 		else if(Unit_Cnt==17) 		

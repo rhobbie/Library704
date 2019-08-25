@@ -213,6 +213,8 @@ I RES Reset
 
 // 4.05.03 TURN ON MSTR STOP TGR ON CHECK STOP
 W CR_K2 PR1-78  // Fuse Blow
+W PT_U5 PR1-78  // Fuse Blow 
+W PN_K2 PR1-78  // Fuse Blow 
 
 // 5.01.06 Card Machine Selector/ Disconnect
 W PT_S3 PR1-7 // Pr Select

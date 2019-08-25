@@ -171,6 +171,7 @@ I PT_U1 Pr Sense (9)
 I PT_U2 Pr Sense (10)
 O PT_U3 Pr Sense Entry
 I PT_U4 Pr Sense
+BW PT_U5 Fuse Blow // 1= file io error
 
 
 I CL128 Clock128
@@ -190,10 +191,12 @@ reg ready;
 reg request_pending;
 reg [7:0] delay;
 reg restart_possible;
+reg err;
 integer txtfile;
+reg [6:0] i;
 integer f;
 reg [7:0] ascii_value;
-reg [6:0] i;
+
 reg [3:0] low_pos;
 reg [3:0] high_pos;
 reg [3:0] echo_pos;
@@ -202,9 +205,9 @@ reg [3:0] print_line_high[71:0];
 reg print_active;
 reg echo_active;
 reg with_echo;
-reg err;
+wire [71:0] print_data;
 
-wire [71:0] print_data={PT_A1,PT_A3,PT_A5,PT_A7,PT_A9,PT_B2,PT_B4,PT_B6,PT_B8,PT_C1,PT_C3,PT_C5,PT_C7,PT_C9,PT_D2,PT_D4,PT_D6,PT_D8,PT_E1,PT_E3,PT_E5,PT_E7,PT_E9,PT_F2,PT_F4,PT_F6,PT_F8,PT_G1,PT_G3,PT_G5,PT_G7,PT_G9,PT_H2,PT_H4,PT_H6,PT_H8,PT_A2,PT_A4,PT_A6,PT_A8,PT_B1,PT_B3,PT_B5,PT_B7,PT_B9,PT_C2,PT_C4,PT_C6,PT_C8,PT_D1,PT_D3,PT_D5,PT_D7,PT_D9,PT_E2,PT_E4,PT_E6,PT_E8,PT_F1,PT_F3,PT_F5,PT_F7,PT_F9,PT_G2,PT_G4,PT_G6,PT_G8,PT_H1,PT_H3,PT_H5,PT_H7,PT_H9};
+assign print_data={PT_A1,PT_A3,PT_A5,PT_A7,PT_A9,PT_B2,PT_B4,PT_B6,PT_B8,PT_C1,PT_C3,PT_C5,PT_C7,PT_C9,PT_D2,PT_D4,PT_D6,PT_D8,PT_E1,PT_E3,PT_E5,PT_E7,PT_E9,PT_F2,PT_F4,PT_F6,PT_F8,PT_G1,PT_G3,PT_G5,PT_G7,PT_G9,PT_H2,PT_H4,PT_H6,PT_H8,PT_A2,PT_A4,PT_A6,PT_A8,PT_B1,PT_B3,PT_B5,PT_B7,PT_B9,PT_C2,PT_C4,PT_C6,PT_C8,PT_D1,PT_D3,PT_D5,PT_D7,PT_D9,PT_E2,PT_E4,PT_E6,PT_E8,PT_F1,PT_F3,PT_F5,PT_F7,PT_F9,PT_G2,PT_G4,PT_G6,PT_G8,PT_H1,PT_H3,PT_H5,PT_H7,PT_H9};
 assign PT_S1 = Write_Pick_magnet; //  Pr Thy Plate Lt
 assign PT_S2 = Write_Pick_magnet; // Pr Thy Plate Rt
 assign PT_S3 = ready; // Pr Sel 1
@@ -214,31 +217,35 @@ assign PT_S9 = CB_Signal_Set; // CB Signal Set
 assign PT_T1 = 0; // Pr Sense Thy Plates
 assign PT_U3 = 0; // Pr Sense Entry
 assign {PT_J1,PT_J3,PT_J5,PT_J7,PT_J9,PT_K2,PT_K4,PT_K6,PT_K8,PT_L1,PT_L3,PT_L5,PT_L7,PT_L9,PT_M2,PT_M4,PT_M6,PT_M8,PT_N1,PT_N3,PT_N5,PT_N7,PT_N9,PT_P2,PT_P4,PT_P6,PT_P8,PT_Q1,PT_Q3,PT_Q5,PT_Q7,PT_Q9,PT_R2,PT_R4,PT_R6,PT_R8,PT_J2,PT_J4,PT_J6,PT_J8,PT_K1,PT_K3,PT_K5,PT_K7,PT_K9,PT_L2,PT_L4,PT_L6,PT_L8,PT_M1,PT_M3,PT_M5,PT_M7,PT_M9,PT_N2,PT_N4,PT_N6,PT_N8,PT_P1,PT_P3,PT_P5,PT_P7,PT_P9,PT_Q2,PT_Q4,PT_Q6,PT_Q8,PT_R1,PT_R3,PT_R5,PT_R7,PT_R9}=Set_Tk;
+assign PT_U5=err; //  Fuse Blow  1= file io error
 
 always @*
   if(RES)
   begin
      rotate=0;
 	 Sub_Cnt=0;
-	 Cycle_Cnt=20;
 	 Unit_Cnt=7;
+	 Cycle_Cnt=20;	 
 	 active=0;	 
 	 CB_Signal_Set=0;
      Set_Tk=0;
-	 Write_Pick_magnet=0;
-     CB_reset=0;
+	 CB_reset=0;
+	 Write_Pick_magnet=0;     
 	 ready=1;
      request_pending=0;
+	 delay=0;
      restart_possible=0;
-     delay=0;
+     err=0;
+	 txtfile=0;
      i=0;
+	 f=0;
+	 ascii_value=0;
 	 low_pos=0;
+	 high_pos=0;
+	 echo_pos=0;	 
 	 print_active=0;
 	 echo_active=0;
 	 with_echo=0;
-	 err=0;
-	 ascii_value=0;
-	 txtfile=0;
   end
 
 always@(posedge CL128)
@@ -454,7 +461,7 @@ if(!rotate)
 				else
 				  print_line_low[i]=15; // Error marker
 			  end		    		  
-		  end // else of if(Unit_Cnt==12&&print_active)
+		  end // else of if(low_pos)
 		end // if(Unit_Cnt==12)
 	  end // if(active)
 	end // else of if(delay)
