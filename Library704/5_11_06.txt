@@ -1,0 +1,24 @@
+﻿.Module 5_11_06 // 5.11.06 Card Copy Proceed and MQ Control
+5_11_06_A[1-4] CL RES : 5_11_06
+01IN 01OP 01C 01R : SSINOP8
+AI1 AI2 AO : OR2
+
+.Signals
+I 5_11_06_A1 Read Left
+I 5_11_06_A2 Read Right
+O 5_11_06_A3 Card Control MQRI
+O 5_11_06_A4 Card Copy Proceed
+I CL Clock
+I RES Reset
+.Connect
+// AI1 AI2 AO : OR2
+W 5_11_06_A1 AI1 // Read Left
+W 5_11_06_A2 AI2 // Read Right
+W AO 5_11_06_A3 // Card Control MQRI
+
+// 01IN 01OP 01C 01R : SSINOP8
+W AO 01IN
+W CL 01C // Clock
+W RES 01R // Reset
+W 01OP 5_11_06_A4 // Card Copy Proceed
+.End

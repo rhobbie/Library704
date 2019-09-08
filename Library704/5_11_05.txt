@@ -1,0 +1,11 @@
+﻿.Module 5_11_05 // 5.11.05 Cards Mixing
+5_11_05_A[1-2] : 5_11_05
+P 1
+.Signals
+I 5_11_05_A1 CR Read Sel
+O 5_11_05_A2 Read Cards
+
+.Connect
+W 5_11_05_A1 P1 // CR Read Sel
+W P1 5_11_05_A2 // Read Cards
+.End

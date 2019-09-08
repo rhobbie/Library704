@@ -1,5 +1,5 @@
 ﻿.Module MF3
-MF3-[01-35][a-r] MF3-[A-R][a-h] MF3_[R-W][1-9] MF3_CL MF3_RES : MF3
+MF3-[01-35][a-r] MF3-[A-R][a-h] MF3_[R-X][1-9] MF3_CL MF3_RES : MF3
 [A-H]05-[1-8] A05_RES : PU9044 // 2.10.01 FLOATING POINT TALLY COUNTER
 [A-H]13-[1-8] : PU9076 // 3.08 F.P. ENTRY TO SHIFT CTR(10-17)
 [A-H]16-[1-8] A16_RES : PU9108 // 3.02 INSTRUCTION REGISTER (S) TGR // 3.03 INSTRUCTION REGISTER (1-5) (PRIMARY OPERATION PART)
@@ -32,17 +32,18 @@ MF3-[01-35][a-r] MF3-[A-R][a-h] MF3_[R-W][1-9] MF3_CL MF3_RES : MF3
 [J-R]28-[1-8] J28_RES : PU5113 // 3.42 ADDRESSS REGISTER
 [J-R]29-[1-8] J29_RES : PU5112 // 3.21 INSTRUCTION COUNTER // 3.40 ADDRESSS SWITCH INPUT CONTROLS
 
-1_04_05_[A-B][1-9] : 1_04_05 // 1.04.05 Store Control in Storage
+1_04_05_[A-C][1-9] : 1_04_05 // 1.04.05 Store Control in Storage
 1_05_01_A[1-5] : 1_05_01 // 1.05.01 Use time
 1_05_02_[A-B][1-9] : 1_05_02 // 1.05.02 RI/RO Sample
 1_05_03_[A-B][1-9] : 1_05_03 // 1.05.03 Pulse Gen II
 5_01_01_[A-B][1-9] : 5_01_01 // 5.01.01 Class Decoder
 5_01_02_[A-B][1-9] : 5_01_02 // 5.01.02 Unit Select Matrix
 5_01_03_[A-C][1-9] 5_01_03_RES : 5_01_03 // 5.01.03 Class Selector
-5_01_04_A[1-5] : 5_01_04  // 5.01.04 I/O Selection Intlk
-5_01_05_A[1-7]  5_01_05_RES : 5_01_05 // 5.01.05 Unit Selector
+5_01_04_A[1-7] : 5_01_04  // 5.01.04 I/O Selection Intlk
+5_01_05_A[1-5]  5_01_05_RES : 5_01_05 // 5.01.05 Unit Selector
 5_04_MF3_A[1-3] : 5_04_MF3 // 5.04 LDA
-5_09_01_A[1-7] : 5_09_01 // 5.09.01 EOR/EOF Interlock
+5_09_01_[A-B][1-9] 5_09_01_RES : 5_09_01 // 5.09.01 EOR/EOF Interlock
+5_09_02_A[1-7] 5_09_02_RES : 5_09_02 // 5.09.02 Disconnect Synchronizer
 6_01_A1 : 6_01 // 6.01 Tape Sync Sel
 
 6_01_01_A[1-4] : 6_01_01 // 6.01.01 Tape Coding Select
@@ -407,13 +408,21 @@ O MF3_W4 PR Read Sel
 
 // 5.01.04 I/O Selection Intlk
 O MF3_U9 IO INTERLOCK
+O MF3_W8 I/O Intlk Off
 
 // 5.01.05 Unit Selector 
 O MF3_W5 I/O Sel #1
 
+// 5.01.06 Card Machine Selector
+I MF3_X6 Card Machine Active
+I MF3_X7 Card Machine Ready
+
 // 5.02 Read/Write Exec Timer
 I MF3_W6 Set I/O Intlk
-I MF3_W7 Reset I/O Intlk
+I MF3_W7 Reset EOR/EOF Intlk
+
+// 5.03.03 Cpy Execution Timer
+I MF3_X2 COPY(READ)
 
 // 5.08.01 Clock Pulse Ckts
 I MF3_T7 A11(D1)
@@ -421,10 +430,16 @@ I MF3_T7 A11(D1)
 // 5.09.01 EOR/EOF Interlock
 I MF3-12g CR-EOF 1
 O MF3-12h CR-EOF 2
-
 I MF3-13e CR-EOR 1
 O MF3-13f CR-EOR 2
+O MF3_X3 EOR Interlock
+O MF3_X4 EOF Interlock
 
+// 5.09.02 Disconnect Synchronizer
+O MF3_X1 Reset I/O Intlk Reset
+
+// 5.11.03 Read-Write Disconnect Gate
+I MF3_X5 Minus on Read or write without Copy
 
 // 7.02.01 Drum Counter
 O MF3_R3 DRUM ADDER GATE
@@ -447,12 +462,11 @@ O MF3_S8 DRUM TIMING PULSE [LDA]
 I MF3_T6 SHIFT CNTR DRIVE LINE
 
 // 8.04.01 Clock
-I MF3_T3 MA1(D1)
-I MF3_V1 MA3(D1)
-I MF3_V2 MA0(D1)
 
-// 8.04.01 Clock
+I MF3_V2 MA0(D1)
+I MF3_T3 MA1(D1)
 I MF3_V4 MA2(D1)
+I MF3_V1 MA3(D1)
 
 // 8.04.02 Clock
 I MF3_V5 MA4(D1)
@@ -460,6 +474,7 @@ I MF3_V5 MA4(D1)
 
 // 8.04.03 Clock
 I MF3_T4 MA8(D1)
+I MF3_W9 MA9(D1)
 I MF3_T5 MA10(D1)
 
 
@@ -1111,26 +1126,34 @@ W 5_01_02_B8 5_01_05_A2 // UNIT ADR 01
 // 5.01.03 Class Selector
 W 5_01_03_B3 MF3_W1 // CR Read Sel
 W 5_01_03_B8 MF3_W2 // CP Write Sel
-W 5_01_03_B9 MF3_W3 // PR Write Sel
-W 5_01_03_C1 MF3_W4 // PR Read Sel
+W 5_01_03_B4 MF3_W3 // PR Write Sel
+W 5_01_03_B5 MF3_W4 // PR Read Sel
 
 W 5_01_03_B3 5_01_04_A2 // CR Read Sel
 W 5_01_03_B8 5_01_04_A3 // CP Write Sel
-W 5_01_03_B9 5_01_04_A4 // PR Write Sel
-W 5_01_03_C1 5_01_04_A5 // PR Read Sel
+W 5_01_03_B4 5_01_04_A4 // PR Write Sel
+W 5_01_03_B5 5_01_04_A5 // PR Read Sel
 
 
 // 5.01.04 I/O Selection Intlk
 W 5_01_04_A1 MF3_U9 // IO INTERLOCK
+W 5_01_04_A6 MF3_W8 // I/O Intlk Off
 
 // 5.01.05 Unit Selector 
 W 5_01_05_A5 MF3_W5 // I/O Sel #1
 
+
+// 5.01.06 Card Machine Selector
+W MF3_X6 5_09_02_A7 // Card Machine Active
+W MF3_X7 5_01_04_A7 // Card Machine Ready
+
 // 5.02 Read/Write Exec Timer
 W MF3_W6 5_01_05_A3 // Set I/O Intlk
-W MF3_W7 5_01_05_A4 // Reset I/O Intlk
 W MF3_W6 5_01_03_B1 // Set I/O Intlk
-W MF3_W7 5_01_03_B2 // Reset I/O Intlk
+W MF3_W7 5_09_01_A8 // Reset EOR/EOF Intlk
+
+// 5.03.03 Cpy Execution Timer
+W MF3_X2 1_04_05_C1 // COPY(READ)
 
 // 5.08.01 Clock Pulse Ckts
 W MF3_T7 N18-2 // A11(D1)
@@ -1140,7 +1163,17 @@ W MF3-12g 5_09_01_A4 // CR-EOF 1
 W 5_09_01_A5 MF3-12h // CR-EOF 2
 W MF3-13e 5_09_01_A6 // CR-EOR 1
 W 5_09_01_A7 MF3-13f // CR-EOR 2
+W 5_09_01_A9 MF3_X4 // EOF Interlock
+W 5_09_01_B1 MF3_X3 // EOR Interlock
 
+
+// 5.09.02 Disconnect Synchronizer
+W 5_09_02_A1 5_01_03_B2 // Reset I/O Intlk
+W 5_09_02_A1 5_01_05_A4 // Reset I/O Intlk
+W 5_09_02_A5 MF3_X1 // Reset I/O Intlk Reset
+
+// 5.11.03 Read-Write Disconnect Gate
+W MF3_X5 5_09_02_A6 // Minus on Read or write without Copy
 
 // 7.02.01 Drum Counter
 W 7_02_01_A1 MF3_R3 // DRUM ADDER GATE
@@ -1165,8 +1198,12 @@ W MF3_T6 B28-7 // SHIFT CNTR DRIVE LINE
 // 8.04.01 Clock
 W MF3_V2 1_05_03_A2  // MA0(D1)
 W MF3_T3 K18-1 // MA1(D1)
+W MF3_T3 5_09_02_A4 // MA1(D1)
+W MF3_T3 5_09_01_B2 // MA1(D1)
+
 W MF3_V4 1_05_03_A3 // MA2(D1)
 W MF3_V1 1_05_02_A2 // MA3(D1)
+W MF3_V1 5_09_02_A3 // MA3(D1)
 
 // 8.04.02 Clock
 W MF3_V5 1_05_02_B6 // MA4(D1)
@@ -1174,6 +1211,8 @@ W MF3_V5 1_05_02_B6 // MA4(D1)
 // 8.04.03 Clock
 W MF3_T4 K18-2 // MA8(D1)
 W MF3_T4 1_05_02_B1 // MA8(D1)
+W MF3_W9 5_09_02_A2 // MA9(D1)
+W MF3_W9 5_09_01_B3 // MA9(D1)
 W MF3_T5 L19-7 // MA10(D1)
 
 // 8.05.01 Cycle Timer
@@ -1208,6 +1247,9 @@ W MF3_RES J28_RES // Reset
 W MF3_RES J29_RES // Reset
 W MF3_RES 5_01_03_RES // Reset
 W MF3_RES 5_01_05_RES // Reset
+W MF3_RES 5_09_01_RES // Reset 
+W MF3_RES 5_09_02_RES // Reset
+
 W MF3_CL DL_CL // Clock
 W MF3_RES DL_RES // Reset
 .End

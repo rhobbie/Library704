@@ -1,17 +1,53 @@
 ﻿.Module 5_11_03 // 5.11.03 Read-Write Disconnect Gate
-5_11_03_A[1-5] : 5_11_03 
+5_11_03_[A-B][1-9] : 5_11_03 
+AI1 AI2 AI3 AO : AND3
+BI1 BI2 BI3 BO : AND3
+CI1 CI2 CO : OR2
+01I 01O : I
+DI1 DI2 DO : OR2
+
 .Signals
 I 5_11_03_A1 PRI OPN [70] COPY(&SKIP)
 O 5_11_03_A2 Read Left
 O 5_11_03_A3 Read Right
 O 5_11_03_A4 Write Left
 O 5_11_03_A5 Write Right
-
+I 5_11_03_A6 Write Left Ring Output
+I 5_11_03_A7 Write Right Ring Output
+I 5_11_03_A8 Read Left Ring Output
+I 5_11_03_A9 Read Right Ring Output
+I 5_11_03_B1 Read Cards
+I 5_11_03_B2 IO INTERLOCK
+O 5_11_03_B3 Minus on Read or write without Copy
 .Connect
-1MEG 5_11_03_A1 0V // PRI OPN [70] COPY(&SKIP)
-W -30V 5_11_03_A2 // Read Left
-W -30V 5_11_03_A3 // Read Right
 W -30V 5_11_03_A4 // Write Left
 W -30V 5_11_03_A5 // Write Right
+1MEG 5_11_03_A7 0V // Write Right Ring Output
+1MEG 5_11_03_A6 0V // Write Left Ring Output
+
+// AI1 AI2 AI3 AO : AND3
+W 5_11_03_A8 AI1 // Read Left Ring Output
+W 5_11_03_B1 AI2 // Read Cards
+W 5_11_03_B2 AI3 // IO INTERLOCK
+W AO 5_11_03_A2 // Read Left
+
+// BI1 BI2 BI3 BO : AND3
+W 5_11_03_A9 BI1 // Read Right Ring Output
+W 5_11_03_B1 BI2 // Read Cards
+W 5_11_03_B2 BI3 // IO INTERLOCK
+W BO 5_11_03_A3 // Read Right
+
+// CI1 CI2 CO : OR2
+W AO CI1
+W BO CI2
+
+// 01I 01O : I
+W CO 01I
+
+// DI1 DI2 DO : OR2
+W 01O DI1
+W 5_11_03_A1 DI2 // PRI OPN [70] COPY(&SKIP)
+W DO 5_11_03_B3 // Minus on Read or write without Copy
+
 
 .End

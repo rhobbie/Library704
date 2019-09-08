@@ -115,9 +115,9 @@ reg [7:0] trecord[159:0];
 reg [3:0] bit;
 reg byte;
 reg endfile;
-
+reg disc;
 assign CR_J1 = ready; // Cr Sel 1
-assign CR_J3 = active; // Cr Disc 1
+assign CR_J3 = disc; // Cr Disc 1
 assign CR_J5 = CB_reset; // Tgr Reset
 assign CR_J6 = CB_Signal_Set; // CB Signal Set
 assign CR_J7 = eof;  // EOF detected
@@ -133,6 +133,7 @@ always @*
 	 Unit_Cnt=8;
 	 Cycle_Cnt=15;
 	 active=0;
+	 disc=0;
 	 CB_Signal_Set=0;
      Set_Tk=0;
      CB_reset=0;
@@ -227,11 +228,13 @@ always@(negedge CL640)
   	      end          
 	    end	
 	    active=1;
+		disc=1;
 		bit=0;
 	    byte=1;
 	  end
       if(Cycle_Cnt==12&&Unit_Cnt==12)  // next rds possible
 	  begin
+	    disc=0;
 	    ready=1;
 		if(!endfile)
 		  restart_possible=1;
@@ -260,7 +263,10 @@ always@(negedge CL640)
 		begin
 		  CB_reset=0;
 		  if(CR_J4) // Cr Disc 2
+		  begin
 			active=0;
+			disc=0;
+		  end
 		  else if(Cycle_Cnt==12)
 		  begin
 		    active=0;

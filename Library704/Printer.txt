@@ -195,6 +195,7 @@ reg err;
 integer txtfile;
 reg [6:0] i;
 integer f;
+reg disc;
 reg [7:0] ascii_value;
 
 reg [3:0] low_pos;
@@ -211,7 +212,7 @@ assign print_data={PT_A1,PT_A3,PT_A5,PT_A7,PT_A9,PT_B2,PT_B4,PT_B6,PT_B8,PT_C1,P
 assign PT_S1 = Write_Pick_magnet; //  Pr Thy Plate Lt
 assign PT_S2 = Write_Pick_magnet; // Pr Thy Plate Rt
 assign PT_S3 = ready; // Pr Sel 1
-assign PT_S6 = active; // Pr Disc 1
+assign PT_S6 = disc; // Pr Disc 1
 assign PT_S8 = CB_reset; // Tgr Reset
 assign PT_S9 = CB_Signal_Set; // CB Signal Set
 assign PT_T1 = 0; // Pr Sense Thy Plates
@@ -227,6 +228,7 @@ always @*
 	 Unit_Cnt=7;
 	 Cycle_Cnt=20;	 
 	 active=0;	 
+	 disc=0;
 	 CB_Signal_Set=0;
      Set_Tk=0;
 	 CB_reset=0;
@@ -287,6 +289,7 @@ if(!rotate)
 	  if(Cycle_Cnt==23&&Unit_Cnt==13)  // start CB cycles
       begin
 	    active=1;
+		disc=1;
         print_active=1;
 		low_pos=9;
 		high_pos=0;
@@ -363,6 +366,7 @@ if(!rotate)
 		  end		  
 		  f=$fputc(8'd13,txtfile);
 		end
+	    disc=0;
 	    ready=1;
 		restart_possible=1;
 	  end
@@ -397,6 +401,8 @@ if(!rotate)
 			print_active=0;
 			echo_active=0;
 			active=0;
+			if(PT_S7)
+			  disc=0;
 		  end
 		  else if(Cycle_Cnt==8&&with_echo)
 		  begin

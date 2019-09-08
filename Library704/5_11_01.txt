@@ -1,10 +1,63 @@
 ﻿.Module 5_11_01 // 5.11.01 Card Ctrl Pulse Gen
-5_11_01_A[1-2] : 5_11_01 
+5_11_01_A[1-8] CL4 CL64 RES : 5_11_01 
+
+08IL 08IR 08R 08OL 08OR : Tkx
+AI1 AI2 AO : AND2
+BI1 BI2 BO : OR2
+01I 01O 01CL4 01R : SSINOP50
+02I 02O 02CL64 02R : SSINOP750
+07BI 07RGP 07MOn 07MOff 07R 07LO 07RO : TBRGPMx
 .Signals
 I 5_11_01_A1 CB Signal Set
 I 5_11_01_A2 Tgr Reset
+O 5_11_01_A3 Ring Set
+O 5_11_01_A4 Read Write Pulse
+O 5_11_01_A5 Even Ring Drive
+O 5_11_01_A6 Odd Ring Drive
+M 5_11_01_A7 07MOn 
+M 5_11_01_A8 07MOff
+
+I CL4 Clock4
+I CL64 Clock64
+I RES Reset
+
 .Connect
-1MEG 5_11_01_A1 0V // CB Signal Set
-1MEG 5_11_01_A2 0V // Tgr Reset
+// 08IL 08IR 08R 08OL 08OR : Tkx
+W 5_11_01_A1 08IL //  CB Signal Set
+W 5_11_01_A2 08IR // Tgr Reset
+W RES 08R // Reset
+W 08OL 5_11_01_A3 // Ring Set
+
+
+// 02I 02O : SSINOP750
+
+// AI1 AI2 AO : AND2
+W  08OR AI1 
+W 02O AI2
+
+// BI1 BI2 BO : OR2
+W  08OL BI1 
+W AO BI2
+
+// 01I 01O 01Cl4 01R : SSINOP50
+W BO 01I
+// CI1 CI2 CO : AND2
+W 01O 5_11_01_A4 // Read Write Pulse
+W CL4 01CL4 // Clock4
+W RES 01R // Reset
+
+// 02I 02O 02Cl64 02R : SSINOP750
+W 01O 02I
+W CL64 02CL64 // Clock64
+W RES 02R // Reset
+
+// 07BI 07RGP 07MOn 07MOff 07R 07LO 07RO : TBRGPMx
+W 08OL 07RGP
+W 01O 07BI 
+W RES 07R // Reset
+W 07LO 5_11_01_A5 // Even Ring Drive
+W 07RO 5_11_01_A6 // Odd Ring Drive
+W 5_11_01_A7 07MOn  // 07MOn 
+W 5_11_01_A8 07MOff // 07MOff
 
 .End

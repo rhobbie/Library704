@@ -1,13 +1,17 @@
 ﻿.Module 5_01_04 // 5.01.04 I/O Selection Intlk
-5_01_04_A[1-5] : 5_01_04
+5_01_04_A[1-7] : 5_01_04
 AI1 AI2 AI3 AI4 AO : OR4
+BI1 BI2 BO : AND2
+01AI 01AO : I
+
 .Signals
 O 5_01_04_A1 IO INTERLOCK
 I 5_01_04_A2 CR Read Sel
 I 5_01_04_A3 CP Write Sel
 I 5_01_04_A4 PR Write Sel
 I 5_01_04_A5 PR Read Sel
-
+O 5_01_04_A6 I/O Intlk Off
+I 5_01_04_A7 Card Machine Ready
 .Connect
 // AI1 AI2 AI3 AI4 AO : OR4
 W 5_01_04_A2 AI1 // CR Read Sel
@@ -16,5 +20,12 @@ W 5_01_04_A4 AI3 // PR Write Sel
 W 5_01_04_A5 AI4 // PR Read Sel
 
 W AO 5_01_04_A1 // IO INTERLOCK
+// 01AI 01AO : I
+W AO 01AI 
+
+// BI1 BI2 BO : AND2
+W 01AO BI1
+W 5_01_04_A7 BI2 // Card Machine Ready
+W BO 5_01_04_A6 // I/O Intlk Off
 
 .End

@@ -1,10 +1,8 @@
-﻿.Module TRGNERGPMx
-RH_GridNegEdge RH_GridPos Manual_On Manual_Off Reset LH_Divider_Junction RH_Divider_Junction : TRGNERGPMx
+﻿.Module TRGNERGPx
+RH_GridNegEdge RH_GridPos Reset LH_Divider_Junction RH_Divider_Junction : TRGNERGPx
 .Signals
 I RH_GridNegEdge
 I RH_GridPos
-M Manual_On
-M Manual_Off
 I Reset
 O LH_Divider_Junction
 O RH_Divider_Junction

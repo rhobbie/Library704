@@ -1,4 +1,4 @@
-﻿.Module 5_01_02
+﻿.Module 5_01_02 // 
 5_01_02_[A-B][1-9] : 5_01_02
 AI1 AI2 AI3 AI4 AO : AND4
 BI1 BI2 BI3 BI4 BO : AND4

@@ -1,7 +1,8 @@
 ﻿.Module SSCL // Clock generator for Single Shot
-CL CL64 CL128 CL4096 CL8192 CL16384 CL32768 : SSCL
+CL CL4 CL64 CL128 CL4096 CL8192 CL16384 CL32768 : SSCL
 .Signals
 I CL 
+O CL4 
 O CL64 
 O CL128 
 O CL4096
@@ -13,7 +14,7 @@ reg[14:0] Cnt;
 initial Cnt=0;
 
 always @(negedge CL)  Cnt++;
-
+assign CL4=Cnt[1];
 assign CL64=Cnt[5]; 
 assign CL128=Cnt[6]; 
 assign CL4096=Cnt[11]; 

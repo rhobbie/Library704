@@ -1,0 +1,60 @@
+﻿.Module 5_11_02 // 5.11.02 Card Control Ring
+5_11_02_A[1-8] RES : 5_11_02 
+
+08LGNE 08RGNE 08RES 08RO : TLGNERGNERDx
+06LGNE 06RGNE 06RES 06RO : TLGNERGNERDx
+04LGNE 04RGNE 04RES 04RO : TLGNERGNERDx
+02LGNE 02RGNE 02RES 02RO : TLGNERGNERDx
+BI1 BI2 BO : AND2
+CI1 CI2 CO : AND2
+DI1 DI2 DO : AND2
+.Signals
+I 5_11_02_A1 Ring Set
+I 5_11_02_A2 Read Write Pulse
+I 5_11_02_A3 Even Ring Drive 
+I 5_11_02_A4 Odd Ring Drive
+O 5_11_02_A5 Write Left Ring Output
+O 5_11_02_A6 Write Right Ring Output
+O 5_11_02_A7 Read Left Ring Output
+O 5_11_02_A8 Read Right Ring Output
+I RES Reset
+
+.Connect
+
+// 08LGNE 08RGNE 08RES 08RO : TLGNERGNERDx
+W 5_11_02_A1 08RGNE // Ring Set
+W 5_11_02_A3 08LGNE  // Even Ring Drive 
+W RES 08RES // Reset
+W 08RO 5_11_02_A5 // Write Left Ring Output
+
+// 06LGNE 06RGNE 06RES 06RO : TLGNERGNERDx
+W 08RO 06RGNE 
+W 5_11_02_A4 06LGNE  // Odd Ring Drive 
+W RES 06RES // Reset
+
+// BI1 BI2 BO : AND2
+W 06RO BI1
+W 5_11_02_A2 BI2 // Read Write Pulse
+W BO 5_11_02_A6 // Write Right Ring Output
+
+// 04LGNE 04RGNE 04RES 04RO : TLGNERGNERDx
+W 06RO 04RGNE 
+W 5_11_02_A3 04LGNE  // Even Ring Drive 
+W RES 04RES // Reset
+
+// CI1 CI2 CO : AND2
+W 04RO CI1
+W 5_11_02_A2 CI2 // Read Write Pulse
+W CO 5_11_02_A7 // Read Left Ring Output
+
+// 02LGNE 02RGNE 02RES 02RO : TLGNERGNERDx
+W 04RO 02RGNE 
+W 5_11_02_A4 02LGNE  // Odd Ring Drive 
+W RES 02RES // Reset
+
+// DI1 DI2 DO : AND2
+W 02RO DI1
+W 5_11_02_A2 DI2 // Read Write Pulse
+W DO 5_11_02_A8 // Read Right Ring Output
+
+.End

@@ -1,0 +1,19 @@
+﻿.Module THYA
+P G C : THYA
+.Signals
+I P Plate
+I G Gate
+O C Cathode
+.Logic
+reg State=0;
+
+always@*
+  if(~P)
+    State=0;
+
+always@(posedge G)
+  if(P)
+    State=1;
+
+assign C=State;
+.End

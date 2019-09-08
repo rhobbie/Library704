@@ -1,10 +1,15 @@
-﻿.Module 5_01_06 // 5.01.06 Card Machine Selector
-5_01_06_[A-B][1-9] : 5_01_06 
+﻿.Module 5_01_06 // 5.01.06 Card Machine Selector & Disconnect
+5_01_06_[A-C][1-9] : 5_01_06 
 01P 01GU 01GL 01C : THY
 02P 02GU 02GL 02C : THY
 03P 03GU 03GL 03C : THY
 04P 04GU 04GL 04C : THY
+05P 05G 05C : THYA
+06P 06G 06C : THYA
+07P 07G 07C : THYA
 AI1 AI2 AO : OR2
+BI1 BI2 BI3 BO : OR3
+CI1 CI2 CI3 CO : AND3
 .Signals
 
 I 5_01_06_A1 CR Read Sel
@@ -25,6 +30,9 @@ I 5_01_06_B6 Pn Disc 1
 O 5_01_06_B7 Pn Disc 2
 I 5_01_06_B8 Cr Disc 1
 O 5_01_06_B9 Cr Disc 2
+I 5_01_06_C1 Reset I/O Intlk Reset
+O 5_01_06_C2 Card Machine Active
+O 5_01_06_C3 Card Machine Ready
 
 .Connect
 // 01P 01GU 01GL 01C : THY
@@ -55,12 +63,32 @@ W 5_01_06_A1 04GU // CR Read Sel
 W 5_01_06_A5 04GL // I/O Sel #1
 W 04C 5_01_06_B1 // Cr Sel 2
 
-1MEG 5_01_06_B4 0V // Pr Disc 1
-W -30V 5_01_06_B5 // Pr Disc 2
-1MEG 5_01_06_B6 0V // Pn Disc 1
-W -30V 5_01_06_B7 // Pn Disc 2
-1MEG 5_01_06_B8 0V // Cr Disc 1
-W -30V 5_01_06_B9 // Cr Disc 2
+// 05P 05G 05C THYA
+W 5_01_06_B4 05P // Pr Disc 1
+W 5_01_06_C1 05G // Reset I/O Intlk Reset
+W 05C 5_01_06_B5 // Pr Disc 2
+
+// 06P 06G 06C THYA
+W 5_01_06_B6 06P // Pn Disc 1
+W 5_01_06_C1 06G // Reset I/O Intlk Reset
+W 06C 5_01_06_B7 // Pn Disc 2
+
+// 07P 07G 07C THYA
+W 5_01_06_B8 07P // Cr Disc 1
+W 5_01_06_C1 07G // Reset I/O Intlk Reset
+W 07C 5_01_06_B9 // Cr Disc 2
 
 
+// BI1 BI2 BO : OR3
+W 5_01_06_B4 BI1 // Pr Disc 1
+W 5_01_06_B6 BI2 // Pn Disc 1
+W 5_01_06_B8 BI3 // Cr Disc 1
+W BO 5_01_06_C2 // Card Machine Active
+
+
+// CI1 CI2 CI3 CO : AND3
+W 5_01_06_A6 CI1 // Pr Select
+W 5_01_06_A9 CI2 // Cr Sel 1
+W 5_01_06_B2 CI3 // Pn Sel 1
+W CO 5_01_06_C3 // Card Machine Ready
 .End

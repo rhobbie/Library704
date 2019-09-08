@@ -1,8 +1,17 @@
 ﻿.Module 5_03_02  // 5.03.02 Enter Execute
-5_03_02_A1 : 5_03_02
+5_03_02_A[1-3] : 5_03_02
+AI1 AI2 AO : AND2
 .Signals
 I 5_03_02_A1 PRI OPN [70] COPY(&SKIP)
+I 5_03_02_A2 On Copy Proceed
+O 5_03_02_A3 Go To E Time
+
 .Connect
-1MEG 5_03_02_A1 0V // PRI OPN [70] COPY(&SKIP)
+// AI1 AI2 AO : AND2
+
+W 5_03_02_A1 AI1 // PRI OPN [70] COPY(&SKIP)
+W 5_03_02_A2 AI2 // On Copy Proceed
+W AO 5_03_02_A3 // Go To E Time
+
 .End
 

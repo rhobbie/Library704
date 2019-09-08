@@ -1,0 +1,19 @@
+﻿.Module TLGPRGPRDx
+LH_GridPos RH_GridPos Reset RH_Divider_Junction : TLGPRGPRDx
+.Signals
+I LH_GridPos
+I RH_GridPos
+I Reset
+O RH_Divider_Junction
+.Logic
+reg State=0;
+
+always @*
+begin
+    if(RH_GridPos|Reset)
+        State=0;    
+    else if(LH_GridPos) 
+        State=1;
+end
+assign RH_Divider_Junction=State;
+.End

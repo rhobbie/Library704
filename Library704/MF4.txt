@@ -1,5 +1,5 @@
 ﻿.Module MF4
-MF4-[01-40][a-r] MF4-[A-R][a-h] MF4_[R-T][1-9] MF4_CL MF4_CL64 MF4_CL128 MF4_CL4096 MF4_RES  : MF4
+MF4-[01-40][a-r] MF4-[A-R][a-h] MF4_[R-U][1-9] MF4_CL MF4_CL64 MF4_CL128 MF4_CL4096 MF4_RES  : MF4
 [A-H]01-[1-8] : PU9014 // 2.08.48 INDEXING OPERATION & STG REG 24-35 -> ADDERS (6-17) // 2.08.49 INDEX REGISTER -> ADDER // 2.08.50 XR ENTRY CNTL CARRY 1 -> ADDER 16 CARRY 1 -> ADDER 17 // 2.08.51 INDEXING CONTROLS // 2.08.53 ADDER -> INDEX REG
 [A-H]06-[1-8] A06_RES : PU9015 // 2.06.04 ADDER 6 CARRY TRIGGER // 2.07.02 COND TR EXEC CNTL // 2.08.51 INDEXING CONTROLS // 2.08.53 ADDER -> INDEX REG
 [A-H]07-[1-8] A07_CL A07_RES : PU9018 // 2.12.01 INDEX REGISTER
@@ -33,11 +33,11 @@ MF4-[01-40][a-r] MF4-[A-R][a-h] MF4_[R-T][1-9] MF4_CL MF4_CL64 MF4_CL128 MF4_CL4
 [A-H]35-[1-8] : PU9183 // 4.21 DISPLAY EFFECTIVE ADDRESS & DISPLAY XRS A-B-C
 [A-H]36-[1-8] A36_CL  A36_RES : PU9194  // 2.12.01 INDEX REGISTER // 2.12.04 INDEX REGISTER MIXING
 
-5_01_06_[A-B][1-9]  : 5_01_06 // 5.01.06 Card Machine Selector
+5_01_06_[A-C][1-9]  : 5_01_06 // 5.01.06 Card Machine Selector
 5_05_03_A[1-6] : 5_05_03 // 5.05.03 Op Panel Sense
 5_05_04_A[1-7] : 5_05_04  // 5.05.04 Sense Skip Control
 5_05_05_[A-B][1-9] : 5_05_05 // 5.05.05 Pr Sense Outputs (1-10) Pnch Outputs (1-2) 
-5_11_01_A[1-2] : 5_11_01 // 5.11.01 Card Ctrl Pulse Gen
+5_11_01_A[1-8] 5_11_01_CL4 5_11_01_CL64 5_11_01_RES : 5_11_01  // 5.11.01 Card Ctrl Pulse Gen
 DIS_[A-B][1-9] : 5_12_01 // 5.12.01 Distributor
 DI1_[A-B][1-9] : 5_12_01 // 5.12.01 Distributor
 DI2_[A-B][1-9] : 5_12_01 // 5.12.01 Distributor
@@ -81,7 +81,7 @@ DI35_[A-B][1-9] : 5_12_04 // 5.12.04 Distributor
 DLI DLO DL_CL DL_RES  : DLdot05
 
 
-SS_CL SS_CL64 SS_CL128 SS_CL4096 SS_CL8192 SS_CL16384 SS_CL32768 : SSCL
+SS_CL SS_CL4 SS_CL64 SS_CL128 SS_CL4096 SS_CL8192 SS_CL16384 SS_CL32768 : SSCL
 
 .Signals
 // 2.01.02 STG REG COLS (1-17) 
@@ -460,8 +460,8 @@ I MF4-Kb Pn Disc 1
 O MF4-Kc Pn Disc 2
 I MF4-Kd Cr Disc 1
 O MF4-La Cr Disc 2
-
-
+O MF4_U3 Card Machine Active
+O MF4_U4 Card Machine Ready
 // 5.04 LDA
 I MF4_R6 LDA
 
@@ -489,9 +489,16 @@ I MF4_S3 REDUNDANCY TAPE TEST
 // 5.08.03 Clock Pulse Power and Mixing
 I MF4_S1 A6(D1)
 
+// 5.09.02 Disconnect Synchronizer
+I MF4_U2 Reset I/O Intlk Reset
+
 // 5.11.01 Card Ctrl Pulse Gen
 I MF4-01f CB Signal Set
 I MF4-01g Tgr Reset
+O MF4_T7 Ring Set
+O MF4_T8 Read Write Pulse
+O MF4_T9 Even Ring Drive
+O MF4_U1 Odd Ring Drive
 
 // 5.11.03 Read-Write Disconnect Gate
 I MF4_T3 Read Left
@@ -1250,7 +1257,8 @@ W MF4-Kb 5_01_06_B6 // Pn Disc 1
 W 5_01_06_B7 MF4-Kc // Pn Disc 2
 W MF4-Kd 5_01_06_B8 // Cr Disc 1
 W 5_01_06_B9 MF4-La // Cr Disc 2
-
+W 5_01_06_C2 MF4_U3 // Card Machine Active
+W 5_01_06_C3 MF4_U4 // Card Machine Ready
 
 // 5.04 LDA
 W MF4_R6 D06-5 // LDA
@@ -1285,6 +1293,10 @@ W MF4_S3 G24-1 // REDUNDANCY TAPE TEST
 
 // 5.08.03 Clock Pulse Power and Mixing
 W MF4_S1 H06-5 // A6(D1)
+
+// 5.09.02 Disconnect Synchronizer
+W MF4_U2 5_01_06_C1 // Reset I/O Intlk Reset
+
 
 // 5.11.01 Card Ctrl Pulse Gen
 W MF4-01f 5_11_01_A1 // CB Signal Set
@@ -1325,6 +1337,10 @@ W MF4-01g DI32_A8 // Tgr Reset
 W MF4-01g DI33_A8 // Tgr Reset
 W MF4-01g DI34_A8 // Tgr Reset
 W MF4-01g DI35_A8 // Tgr Reset
+W 5_11_01_A3 MF4_T7 // Ring Set
+W 5_11_01_A4 MF4_T8 // Read Write Pulse
+W 5_11_01_A5 MF4_T9 // Even Ring Drive
+W 5_11_01_A6 MF4_U1 // Odd Ring Drive
 
 
 // 5.11.03 Read-Write Disconnect Gate
@@ -1813,8 +1829,9 @@ W MF4_CL A36_CL // Clock
 
 W MF4_CL DL_CL // Clock
 
-// SS_CL SS_CL64 SS_CL128 SS_CL4096 SS_CL8192 SS_CL16384 SS_CL32768 : SSCL
+// SS_CL SS_CL4 SS_CL64 SS_CL128 SS_CL4096 SS_CL8192 SS_CL16384 SS_CL32768 : SSCL
 W MF4_CL SS_CL // Clock
+
 W SS_CL64 A23_CL64 // Clock64
 W SS_CL64 A26_CL64 // Clock64
 W SS_CL64 MF4_CL64 // Clock64
@@ -1825,6 +1842,10 @@ W SS_CL128 A21_CL128 // Clock128
 W SS_CL128 MF4_CL128 // Clock128
 W SS_CL4096 MF4_CL4096 // Clock4096
 W SS_CL8192 A21_CL8192 // Clock8192
+
+W SS_CL4 5_11_01_CL4  // CLock4
+W SS_CL64 5_11_01_CL64 // Clock64
+
 
 // Fast Start
 W SS_CL128 A26_CL32768 // Clock32768
@@ -1862,7 +1883,7 @@ W MF4_RES A29_RES // Reset
 W MF4_RES A34_RES // Reset
 W MF4_RES A36_RES // Reset
 W MF4_RES DL_RES  // Reset
-
+W MF4_RES 5_11_01_RES // Reset
 
 
 .End

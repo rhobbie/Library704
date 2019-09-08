@@ -1,5 +1,5 @@
 ﻿.Module MF1
-MF1-[01-35][a-r] MF1-[A-R][a-h] MF1_[R-W][1-9]  MF1_CL MF1_RES : MF1
+MF1-[01-35][a-r] MF1-[A-R][a-h] MF1_[R-X][1-9]  MF1_CL MF1_RES : MF1
 
 [A-H]03-[1-8] : PU9046 // 2.07.10 F.P. ADD/SUB EXEC CNTLS  // 2.07.11 F.P. MPY EXEC CNTLS // 2.07.12 F.P. DIVIDE EXEC CNTLS
 [A-H]06-[1-8] A06_RES : PU9152 // 2.09 PULSE AND GATE GENERATOR // 3.20 ADVANCE INST COUNTER
@@ -62,20 +62,22 @@ F2I F2O : Filter
 2_08_05_[A-D][1-8] : 2_08_05 // 2.08.05 STG REG(1-8) -> ADDER & STG REG(9-35) -> ADDER
 
 5_02_[A-B][1-9] 5_02_RES : 5_02 // 5.02 Read/Write Exec TImer
-5_03_01_A[1-5] : 5_03_01 // 5.03.01 Intlk Test, Skip One  & Two
-5_03_02_A1 : 5_03_02 // 5.03.02 Enter Execute
-5_03_03_A[1-4] : 5_03_03 // 5.03.03 Cpy Execution Timer
+5_03_01_[A-B][1-9] : 5_03_01 // 5.03.01 Intlk Test, Skip One  & Two
+5_03_02_A[1-3] : 5_03_02 // 5.03.02 Enter Execute
+5_03_03_A[1-6] : 5_03_03 // 5.03.03 Cpy Execution Timer
+5_03_04_A[1-6] 5_03_04_RES : 5_03_04 // 5.03.04 Copy Proceed
 5_04_MF1_A[1-4] : 5_04_MF1 // 5.04 LDA
 5_05_06_[A-B][1-9] : 5_05_06 // 5.05.06 Test Sense
-5_06_A[1-2] : 5_06 // 5.06 End Op
+5_06_A[1-3] : 5_06 // 5.06 End Op
 5_08_01_[A-B][1-9] : 5_08_01 // 5.08.01 Clock Pulse Ckts
-5_08_03_A[1-6] : 5_08_03 // 5.08.03 Clock Pulse Power and Mixing
+5_08_03_A[1-7] : 5_08_03 // 5.08.03 Clock Pulse Power and Mixing
 
 5_08_04_A[1-6] 5_08_04_RES  : 5_08_04 // 5.08.04 Clock Pulse Ckts
-5_10_A[1-3] : 5_10 // 5.10 MQ Read In and Reset Ckts
-5_11_03_A[1-5] : 5_11_03 // 5.11.03 Read-Write Disconnect Gate
-
-
+5_10_A[1-9] 5_10_RES : 5_10 // 5.10 MQ Read In and Reset Ckts
+5_11_02_A[1-8] 5_11_02_RES : 5_11_02 // 5.11.02 Card Control Ring 
+5_11_03_[A-B][1-9] : 5_11_03 // 5.11.03 Read-Write Disconnect Gate
+5_11_05_A[1-2] : 5_11_05 // Cards Mixing
+5_11_06_A[1-4] 5_11_06_CL 5_11_06_RES : 5_11_06 // 5.11.06 Card Copy Proceed and MQ Control
 8_03_[A-B][1-9] : 8_03 // 8.03 Cycle Timer Mixing Ckts
 8_04_A[1-3] 8_04_01_A[1-4] 8_04_02_A[1-4] 8_04_03_A[1-4] 8_04_CL 8_04_RES : 8_04 // 8.04 Clock  // 8.04.01 Clock // 8.04.02 Clock // 8.04.03 Clock
 8_05_01_[A-C][1-9] 8_05_03_A1 8_05_04_A[1-4] 8_05_RES : 8_05 // 8.05.01 Cycle Timer // 8.05.03 Cycle Timer Ctrl Tgr // 8.05.04 Cycle Timer
@@ -497,13 +499,21 @@ I MF1_T7 UNIT ADR 03
 I MF1_T8 UNIT ADR 06
 I MF1_T9 UNIT ADR 10
 
+// 5.01.03 Class Selector
+I MF1_W9 CR Read Sel
+
+// 5.01.04 I/O Selection Intlk
+I MF1_W8 I/O Intlk Off
+I MF1_X4 IO INTERLOCK
+
 // 5.02 Read/Write Exec Timer
 O MF1_V7 Set I/O Intlk
-O MF1_V8 Reset I/O Intlk
+O MF1_V8 Reset EOR/EOF Intlk
 
 
 // 5.03.03 Cpy Execution Timer
 O MF1_U6 COPY CHECK END OPN CNTL
+O MF1_X1 COPY(READ)
 
 // 5.04 LDA
 O MF1_S1 LDA
@@ -524,11 +534,22 @@ O MF1_T2 A11(D1)
 // 5.08.03 Clock Pulse Power and Mixing
 O MF1_S5 A6(D1)
 
+// 5.09.01 EOR/EOF Interlock
+I MF1_X2 EOR Interlock
+I MF1_X3 EOF Interlock
+
+// 5.11.01 Card Ctrl Pulse Gen
+I MF1_W4 Ring Set
+I MF1_W5 Read Write Pulse
+I MF1_W6 Even Ring Drive
+I MF1_W7 Odd Ring Drive
+
 // 5.11.03 Read-Write Disconnect Gate
 O MF1_V9 Read Left
 O MF1_W1 Read Right
 O MF1_W2 Write Left
 O MF1_W3 Write Right
+O MF1_X5 Minus on Read or write without Copy
 
 // 6.03.03 Tape Redn Ctr
 I MF1_S2 TAPE -> MQ
@@ -1332,6 +1353,7 @@ W B29-7 2_08_05_D5 // LATE A6(D4) 2.08.05
 W C11-7 N20-8 // A6(D4) 2.08.07
 W C11-7 N28-4 // A6(D4) 2.08.26
 W C11-7 P31-5 // A6(D4) 2.08.15
+W C11-7 5_10_A6 // A6(D4) 5.10
 W C11-7 MF1-20l // A6(D4) 
 W C11-7 G19-6 // A6(D4) 
 W F19-3 MF1-19e // E6(D4)
@@ -1351,11 +1373,9 @@ W B20-7 MF1-21m // I9(D1)
 W E17-6 K20-7 // A9(D1) 2.06.01
 W E17-6 C11-2 // A9(D1)
 W E17-6 A29-4 // A9(D1)
-W E17-6 B11-1 // A9(D1)
 W E17-6 F19-5 // A9(D1)
 W E17-6 E20-5 // A9(D1)
 W E17-6 E10-4 // A9(D1)
-W E17-6 5_08_03_A4 // A9(D1)
 W C20-2 C19-3 // PU9073 TO PU9127
 W E19-6 N10-6 // SHIFT/STEP SHIFT CTR CNTL 2.08.10
 W E19-6 N09-6 // SHIFT/STEP SHIFT CTR CNTL 2.08.11
@@ -1723,21 +1743,37 @@ W MF1_T7 D28-8 // UNIT ADR 03
 W MF1_T8 K28-1 // UNIT ADR 06
 W MF1_T9 G28-7 // UNIT ADR 10
 
+// 5.01.03 Class Selector
+W MF1_W9 5_11_05_A1 // CR Read Sel
+
+// 5.01.04 I/O Selection Intlk
+W MF1_W8 5_02_B6 // I/O Intlk Off
+W MF1_W8 5_03_01_A6 // I/O Intlk Off
+W MF1_X4 5_03_01_B1 // IO INTERLOCK
+W MF1_X4 5_11_03_B2 // IO INTERLOCK
+
 // 5.02 Read/Write Exec Timer
 W 5_02_A6 MF1_V7 // Set I/O Intlk
-W 5_02_A7 MF1_V8 // Reset I/O Intlk
+W 5_02_A7 MF1_V8 // Reset EOR/EOF Intlk
 W 5_02_B5 5_06_A2 // R/W Exec Ctrl Tgr On
 
 // 5.03.01 Intlk Test, Skip One  & Two
 W 5_03_01_A3 Q08-7 // COPY EOR SKIP TWO CNTL
 W 5_03_01_A4 K08-1 // COPY EOR/EOF (END OP) SKIP ONE CNTL
+W 5_03_01_B2 5_06_A3 // COPY EOR/EOF/CHECK END OP
+W 5_03_01_A5 MF1_U6 // COPY CHECK END OPN CNTL
+
+// 5.03.02 Enter Execute
+W 5_03_02_A3 8_05_01_C2 // Go To E Time
 
 // 5.03.03 Cpy Execution Timer
 W 5_03_03_A1 R31-1 // COPY WRITE
 W 5_03_03_A2 F33-7 // COPY(READ)
 W 5_03_03_A2 L29-3 // COPY(READ)
-W 5_03_01_A5 MF1_U6 // COPY CHECK END OPN CNTL
+W 5_03_03_A2 MF1_X1 // COPY(READ)
 
+// 5.03.04 Copy Proceed
+W 5_03_04_A5 5_03_02_A2 // On Copy Proceed
 
 // 5.04 LDA
 W 5_04_MF1_A1 N24-3 // MINUS ON LDA 2.06.02
@@ -1781,20 +1817,50 @@ W 5_08_03_A2 E19-2 // A7(D1)
 W 5_08_03_A2 E20-2 // A7(D1)
 W 5_08_03_A2 C06-3 // A7(D1)
 W 5_08_03_A2 Q08-6 // A7(D1)
+W 5_08_03_A4 B11-1 // A9(D1)
+W 5_08_03_A4 5_03_01_A7 // A9(D1)
 
 // 5.08.04 Clock Pulse Ckts
 W 5_08_04_A1 G29-6 // A10(D5)
 W 5_08_04_A2 G06-7 // MINUS ON A10(D5)
 
+// 5.09.01 EOR/EOF Interlock
+W MF1_X2 5_03_01_A8 // EOR Interlock
+W MF1_X3 5_03_01_A9 // EOF Interlock
+
 // 5.10 MQ Read In and Reset Ckts
 W 5_10_A1 P09-3 // CLEAR MQ REG
 W 5_10_A2 L29-8 // I/O BUS (S-35) -> MQ 2.08.21 2.08.22
+
+// 5.11.01 Card Ctrl Pulse Gen
+W MF1_W4 5_11_02_A1 //  Ring Set
+W MF1_W5 5_11_02_A2 // Read Write Pulse
+W MF1_W6 5_11_02_A3 // Even Ring Drive
+W MF1_W7 5_11_02_A4 // Odd Ring Drive
+
+
+// 5.11.02 Card Control Ring 
+W 5_11_02_A5 5_11_03_A6 // Write Left Ring Output
+W 5_11_02_A6 5_11_03_A7 // Write Right Ring Output
+W 5_11_02_A7 5_11_03_A8 // Read Left Ring Output
+W 5_11_02_A8 5_11_03_A9 // Read Right Ring Output
+
 
 // 5.11.03 Read-Write Disconnect Gate
 W 5_11_03_A2 MF1_V9 // Read Left
 W 5_11_03_A3 MF1_W1 // Read Right
 W 5_11_03_A4 MF1_W2 // Write Left
 W 5_11_03_A5 MF1_W3 // Write Right
+W 5_11_03_A2 5_11_06_A1 // Read Left
+W 5_11_03_A3 5_11_06_A2 // Read Right
+W 5_11_03_B3 MF1_X5 // Minus on Read or write without Copy
+
+// 5.11.05 Cards Mixing
+W 5_11_05_A2 5_11_03_B1 // Read Cards
+W 5_11_05_A2 5_03_03_A5 // Read Cards
+// 5.11.06 Card Copy Proceed and MQ Control
+W 5_11_06_A3 5_10_A4 // Card Control MQRI
+W 5_11_06_A4 5_03_04_A1 // Card Copy Proceed
 
 // 6.03.03 Tape Redn Ctr
 W MF1_S2 K29-7 // TAPE -> MQ
@@ -1824,21 +1890,26 @@ W 8_04_01_A1 MF1_U7 // MA0(D1)
 W 8_04_01_A1 5_08_01_B1 // MA0(D1) 
 W 8_04_01_A2 H10-1 // MA1(D1) 2.09
 W 8_04_01_A2 MF1_S7 // MA1(D1)
-W 8_04_01_A3 B17-7 // MA3(D1) 2.09
-W 8_04_01_A3 MF1_V3 // MA3(D1)
 W 8_04_01_A1 8_03_A7 // MA0(D1) 8.03
 W 8_04_01_A2 8_03_A8 // MA1(D1) 8.03
+W 8_04_01_A2 5_10_A7 // MA1(D1)
 W 8_04_01_A4 8_03_A9 // MA2(D1) 8.03
 W 8_04_01_A4 5_08_01_A8 // MA2(D1) 5.08.01
 W 8_04_01_A4 MF1_V5 // MA2(D1)
+W 8_04_01_A4 5_03_04_A4 // MA2(D1)
 W 8_04_01_A3 5_08_04_A4 // MA3(D1) 5.08.04
+W 8_04_01_A3 B17-7 // MA3(D1) 2.09
+W 8_04_01_A3 MF1_V3 // MA3(D1)
+W 8_04_01_A3 5_10_A8 // MA3(D1)
 
 // 8.04.02 Clock
 W 8_04_02_A1 C17-8 // MA4(D1) 2.09
 W 8_04_02_A1 MF1_U4 // MA4(D1)
 W 8_04_02_A1 5_08_01_A9 // MA4(D1)
+W 8_04_02_A1 5_10_A9
 W 8_04_02_A2 J21-8 // MA5(D1) 2.08.06
 W 8_04_02_A2 MF1_U8 // MA5(D1) 
+W 8_04_02_A2 5_10_A5 // MA5(D1)
 W 8_04_02_A2 D17-8 // MA5(D1) 2.09
 W 8_04_02_A3 A19-8 // MA6(D1) 2.09
 W 8_04_02_A4 MF1_U9 // MA7(D1)
@@ -1849,14 +1920,18 @@ W 8_04_02_A4 5_08_03_A6 // MA7(D1) 5.08.03
 // 8.04.03 Clock
 W 8_04_03_A1 E17-4 // MA8(D1) 2.09
 W 8_04_03_A1 MF1_S8 // MA8(D1)
+W 8_04_03_A1 5_03_04_A3 // MA8(D1)
 W 8_04_03_A2 E17-8 // MA9(D1) 2.09
 W 8_04_03_A2 MF1_V1 // MA9(D1) 
+W 8_04_03_A2 5_08_03_A7 // MA9(D1) 
 W 8_04_03_A3 F18-1 // MA10(D1) 2.09
-W 8_04_03_A3 MF1_S9 // MA10(D1) 
+W 8_04_03_A3 MF1_S9 // MA10(D1)
+
 W 8_04_03_A4 J21-4 // MA11(D1) 2.08.06
 W 8_04_03_A4 F17-7 // MA11(D1) 2.09
 W 8_04_03_A4 MF1_V2 // MA11(D1) 
 W 8_04_03_A4 5_08_01_A7 // MA11(D1) 5.08.01
+W 8_04_03_A4 5_03_04_A2 // MA11(D1) 
 W 8_04_03_A3 5_08_04_A3 // MA10(D1) 5.08.04
 
 // 8.05.01 Cycle Timer
@@ -1874,6 +1949,7 @@ W 8_05_04_A1 MF1_T3 // CYCLE TIMER CNTL TGR OFF
 W 8_05_04_A2 E18-2 // M E TIME 2.09
 W 8_05_04_A3 B18-6 // M ER TIME 2.09
 W 8_05_04_A3 MF1_S6 // M ER TIME
+W 8_05_04_A3 5_03_04_A6 // M ER TIME
 W 8_05_04_A4 A18-4 // M INST TIME 2.09
 W 8_05_04_A4 MF1_U3 // M INST TIME
 W 8_05_04_A2 8_03_B2 // M E TIME 8.03
@@ -1881,6 +1957,7 @@ W 8_05_04_A4 8_03_B3 // M INST TIME 8.03
 W 8_05_04_A3 5_08_01_A5 // M ER TIME 5.08.01
 W 8_05_04_A4 5_08_01_A6 // M INST TIME 5.08.01
 W 8_05_04_A2 MF1_V4 // M E TIME
+W 8_05_04_A2 5_03_03_A6 // M E TIME
 
 
 W MF1_RES A06_RES // Reset
@@ -1894,5 +1971,9 @@ W MF1_RES 8_05_RES // Reset
 W MF1_RES 8_04_RES // Reset
 W MF1_CL 8_04_CL // Clock
 W MF1_RES 5_02_RES  // Reset
-
+W MF1_RES 5_03_04_RES // Reset
+W MF1_RES 5_10_RES  // Reset 
+W MF1_RES 5_11_02_RES // Reset
+W MF1_RES 5_11_06_RES // Reset
+W MF1_CL 5_11_06_CL // Clock
 .End

@@ -1,0 +1,33 @@
+﻿.Module SSINOP8 // Single shot 8u duration, 1µs clock input
+InputNeg OutputPos Clock Res : SSINOP8
+
+.Signals
+I InputNeg
+O OutputPos
+I Clock 
+I Res
+.Logic
+reg State=0;
+reg[4:0] Cnt=0;
+
+
+always @(posedge Clock)
+begin
+if(State)
+begin
+  Cnt++;
+  if(Cnt==8)
+     State=0;
+end
+end
+
+always @(negedge InputNeg)
+  if(~Res)
+  begin
+    Cnt=0;
+    State=1;  
+  end
+
+assign OutputPos=State;
+
+.End

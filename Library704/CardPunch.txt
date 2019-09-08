@@ -112,13 +112,14 @@ integer f;
 reg [7:0] trecord[159:0];
 reg [3:0] bit;
 reg byte;
+reg disc;
 wire [71:0] punch_data;
 
 assign punch_data={PN_A1,PN_A3,PN_A5,PN_A7,PN_A9,PN_B2,PN_B4,PN_B6,PN_B8,PN_C1,PN_C3,PN_C5,PN_C7,PN_C9,PN_D2,PN_D4,PN_D6,PN_D8,PN_E1,PN_E3,PN_E5,PN_E7,PN_E9,PN_F2,PN_F4,PN_F6,PN_F8,PN_G1,PN_G3,PN_G5,PN_G7,PN_G9,PN_H2,PN_H4,PN_H6,PN_H8,PN_A2,PN_A4,PN_A6,PN_A8,PN_B1,PN_B3,PN_B5,PN_B7,PN_B9,PN_C2,PN_C4,PN_C6,PN_C8,PN_D1,PN_D3,PN_D5,PN_D7,PN_D9,PN_E2,PN_E4,PN_E6,PN_E8,PN_F1,PN_F3,PN_F5,PN_F7,PN_F9,PN_G2,PN_G4,PN_G6,PN_G8,PN_H1,PN_H3,PN_H5,PN_H7,PN_H9};
 assign PN_J1 = Write_Pick_magnet; //  Pn Thy Plate Lt
 assign PN_J2 = Write_Pick_magnet; // Pn Thy Plate Rt
 assign PN_J3 = ready; // Pn Sel 1
-assign PN_J5 = active; // Pn Disc 1 
+assign PN_J5 = disc; // Pn Disc 1 
 assign PN_J7 = CB_reset; // Tgr Reset
 assign PN_J8 = CB_Signal_Set; // CB Signal Set
 assign PN_J9 = 0; // Pn Sense Thy Plate
@@ -132,6 +133,7 @@ always @*
 	 Unit_Cnt=1;
 	 Cycle_Cnt=12;
 	 active=0;
+	 disc=0;
 	 CB_Signal_Set=0;
 	 CB_reset=0;
 	 Write_Pick_magnet=0;
@@ -144,7 +146,7 @@ always @*
 	 i=0;
 	 f=0;
 	 bit=0;
-	 byte=0;
+	 byte=0;	 
   end
 
 
@@ -178,6 +180,7 @@ always@(negedge CL4096)
 	  if(Cycle_Cnt==13&&Unit_Cnt==5)  // start CB cycles
       begin
 	    active=1;
+		disc=1;
         bit=0;
         byte=1;
 		for(i=0;i<160;i++)
@@ -202,6 +205,7 @@ always@(negedge CL4096)
 		  if(f!=0)
 		   err=1;
         end
+		disc=0;
 	    ready=1;
 		restart_possible=1;
 	  end
@@ -231,7 +235,11 @@ always@(negedge CL4096)
 		begin
 		  CB_reset=0;
 		  if(Cycle_Cnt==11||PN_J6) // Pn Disc 2
-			active=0;
+		  begin
+		    active=0;
+			if(PN_J6) // Pn Disc 2
+			  disc=0;
+		  end
 	    end
         else if(Unit_Cnt==0)
 		begin

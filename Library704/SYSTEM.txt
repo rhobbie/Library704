@@ -1,9 +1,9 @@
 .Module SYSTEM
 SYSTEM_CL  SYSTEM_RES : SYSTEM
-MF1-[01-35][a-r] MF1-[A-R][a-h] MF1_[R-W][1-9] MF1_CL MF1_RES : MF1
+MF1-[01-35][a-r] MF1-[A-R][a-h] MF1_[R-X][1-9] MF1_CL MF1_RES : MF1
 MF2-[01-40][a-r] MF2-[A-R][a-h] MF2_[R-T][1-9] MF2_CL MF2_RES : MF2
-MF3-[01-35][a-r] MF3-[A-R][a-h] MF3_[R-W][1-9] MF3_CL MF3_RES : MF3
-MF4-[01-40][a-r] MF4-[A-R][a-h] MF4_[R-T][1-9] MF4_CL MF4_CL64 MF4_CL128 MF4_CL4096 MF4_RES : MF4
+MF3-[01-35][a-r] MF3-[A-R][a-h] MF3_[R-X][1-9] MF3_CL MF3_RES : MF3
+MF4-[01-40][a-r] MF4-[A-R][a-h] MF4_[R-U][1-9] MF4_CL MF4_CL64 MF4_CL128 MF4_CL4096 MF4_RES : MF4
 SP[1-150] SPR[1-5] SP_RES : SP
 OP-[01-34][a-h] : OP
 CE[01-04][a-e] : CE
@@ -1311,16 +1311,17 @@ W MF3_U5 MF1_T9 // UNIT ADR 10
 
 // 5.01.03 Class Selector
 W MF3_W1 MF4_S7 // CR Read Sel
+W MF3_W1 MF1_W9 // CR Read Sel
 W MF3_W2 MF4_S8 // CP Write Sel
 W MF3_W3 MF4_S9 // PR Write Sel
 W MF3_W4 MF4_T1 // PR Read Sel
-
-
 
 // 5.01.04 I/O Selection Intlk
 W MF3_U9 IO_INTLK_SW_OP // IO INTERLOCK
 W IO_INTLK_SW_NC MF4-31j // I/O INTL'K SW 
 W MF3_U9 MF4_S4 // IO INTERLOCK
+W MF3_U9 MF1_X4 // IO INTERLOCK
+W MF3_W8 MF1_W8 // I/O Intlk Off
 
 // 5.01.05 Unit Selector 
 W MF3_W5 MF4_T2 // I/O Sel #1
@@ -1340,15 +1341,18 @@ W PR2-103 MF4-Kb // Pn Disc 1
 W MF4-Kc PR2-112 // Pn Disc 2
 W PR1-103 MF4-Kd // Cr Disc 1
 W MF4-La PR1-112 // Cr Disc 2
+W MF4_U3 MF3_X6 // Card Machine Active
+W MF4_U4 MF3_X7 // Card Machine Ready
 
 
 // 5.02 Read/Write Exec Timer
 W MF1_V7 MF3_W6 // Set I/O Intlk
-W MF1_V8 MF3_W7 // Reset I/O Intlk
+W MF1_V8 MF3_W7 // Reset EOR/EOF Intlk
  
 
 // 5.03.03 Cpy Execution Timer
 W MF1_U6 MF4-24j // COPY CHECK END OPN CNTL
+W MF1_X1 MF3_X2 // COPY(READ) 
 
 // 5.04 LDA
 W MF1_S1 MF4_R6 // LDA
@@ -1390,18 +1394,29 @@ W PR1-62 MF3-12g // CR-EOF 1
 W MF3-12h PR1-63 // CR-EOF 2
 W PR1-69 MF3-13e // CR-EOR 1
 W MF3-13f PR1-72 // CR-EOR 2
+W MF3_X3 MF1_X2 // EOR Interlock
+W MF3_X4 MF1_X3 // EOF Interlock
+
+// 5.09.02 Disconnect Synchronizer
+W MF3_X1 MF4_U2 // Reset I/O Intlk Reset
 
 
 // 5.11.01 Card Ctrl Pulse Gen
 W PR1-46 MF4-01f // CB Signal Set
 W PR2-47 MF4-01g // Tgr Reset
 
+W MF4_T7 MF1_W4 //  Ring Set
+W MF4_T8 MF1_W5 // Read Write Pulse
+W MF4_T9 MF1_W6 // Even Ring Drive
+W MF4_U1 MF1_W7 // Odd Ring Drive
+
+
 // 5.11.03 Read-Write Disconnect Gate
 W MF1_V9 MF4_T3 // Read Left
 W MF1_W1 MF4_T4 // Read Right
 W MF1_W2 MF4_T5 // Write Left
 W MF1_W3 MF4_T6 // Write Right
-
+W MF1_X5 MF3_X5 // Minus on Read or write without Copy
 // 5.12.01
 W MF4-03e PR1-1   // Col (S) Lt Exit
 W MF4-03f PR1-130 // Col (S) Rt Exit
@@ -1612,6 +1627,7 @@ W MF1_U9 MF4-31l // MA7(D1)
 // 8.04.03 Clock
 W MF1_S8 MF3_T4 // MA8(D1)
 W MF1_V1 MF4-16m // MA9(D1)
+W MF1_V1 MF3_W9 // MA9(D1)
 W MF1_S9 MF3_T5 // MA10(D1)
 W MF1_S9 MF4-17k // MA10(D1)
 W MF1_V2 MF4-18k // MA11(D1)
