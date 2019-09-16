@@ -1,7 +1,16 @@
 ﻿.Module 5_03_03 // 5.03.03 Cpy Execution Timer
 
-5_03_03_A[1-6] : 5_03_03
-AI1 AI2 AI3 AO : AND3
+5_03_03_[A-B][1-9] RES : 5_03_03
+
+AI1 AI2 AO : AND2
+BI1 BI2 BO : AND2
+CI1 CI2 CO : AND2
+DI1 DI2 DO : AND2
+EI1 EI2 EO : AND2
+FI1 FI2 FI3 FO : AND3
+01AI 01AO : CFOR
+02LGP 02RGP 02R 02LO 02RO : TLGPRGPx
+
 .Signals
 O 5_03_03_A1 COPY WRITE
 O 5_03_03_A2 COPY(READ)
@@ -9,17 +18,61 @@ I 5_03_03_A3 E9 TILL CT2
 I 5_03_03_A4 PRI OPN [70] COPY(&SKIP)
 I 5_03_03_A5 Read Cards
 I 5_03_03_A6 M E Time
+I 5_03_03_A7 Write Cards
+I 5_03_03_A8 I11(D1)
+I 5_03_03_A9 A11(D1)	
+O 5_03_03_B1 MQ loaded by copy
+O 5_03_03_B2 MQ not loaded by copy
+O 5_03_03_B3 End Operation Copy Write
+I 5_03_03_B4 On Copy Proceed
+BW 5_03_03_B5 Card Copy Proceed
 
+I RES Reset
 
 .Connect
-W -30V 5_03_03_A1 // COPY WRITE
 
-1MEG 5_03_03_A3 0V // E9 TILL CT2
+// CI1 CI2 CO : AND2
+W 5_03_03_A4 CI1 // PRI OPN [70] COPY(&SKIP)
+W 5_03_03_A6 CI2 // M E Time
+
+
 
 // AI1 AI2 AO : AND2
-W 5_03_03_A4 AI1 // PRI OPN [70] COPY(&SKIP)
+W CO AI1
 W 5_03_03_A5 AI2 // Read Cards
-W 5_03_03_A6 AI3 // M E Time
 W AO 5_03_03_A2 // COPY(READ)
+
+
+// BI1 BI2 BO : AND2
+W CO BI1
+W 5_03_03_A7 BI2 // Write Cards
+W BO 5_03_03_A1 // COPY WRITE
+
+// DI1 DI2 DO : AND4
+W BO DI1
+W 5_03_03_A9 DI2 // A11(D1)	
+
+// 02LGP 02RGP 02R 02LO 02RO : TLGPRGPx
+W DO 02LGP
+W 5_03_03_A8 02RGP // I11(D1)
+W RES 02R // Reset
+W 02LO 5_03_03_B2 // MQ not loaded by copy
+W 02RO 5_03_03_B1 // MQ loaded by copy
+
+1MEG 5_03_03_A3 0V  // E9 TILL CT2
+
+// EI1 EI2 EO : AND2
+W 5_03_03_B4 EI1 // On Copy Proceed
+W 02RO EI2 
+W EO 5_03_03_B3 // End Operation Copy Write 
+
+// FI1 FI2 FI3 FO : AND3
+W 5_03_03_A4 FI1 // PRI OPN [70] COPY(&SKIP)
+W 5_03_03_A7 FI2 // Write Cards
+W 02LO FI3
+
+// 01AI 01AO : CFOR
+W FO 01AI
+W 01AO 5_03_03_B5 // Card Copy Proceed
 
 .End

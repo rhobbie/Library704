@@ -174,7 +174,8 @@ always@(negedge CL640)
     if(CR_J2) //  Cr Sel 2
 	begin
 	  rotate=1;	 // start movement
-	  delay=71;  // number of sub cycles delay to start motion
+	  delay=1 // fast start
+	  //delay=71;  // number of sub cycles delay to start motion
 	end
   end
   else

@@ -12,19 +12,20 @@ I 5_09_02_A2 MA9(D1)
 I 5_09_02_A3 MA3(D1)
 I 5_09_02_A4 MA1(D1)
 O 5_09_02_A5 Reset I/O Intlk Reset
-I 5_09_02_A6 Minus on Read or write without Copy
+I 5_09_02_A6 Minus on read or write without copy
 I 5_09_02_A7 Card Machine Active
 I RES Reset
 
 .Connect
 
 // DI1 DI2 DO : AND2
-W 5_09_02_A6 DI1 // Minus on Read or write without Copy
+W 5_09_02_A6 DI1 // Minus on read or write without copy
 W 5_09_02_A7 DI2 // Card Machine Active
 
 // BI1 BI2 BO : AND2
-W 04RO BI1
-W 5_09_02_A4 BI2 // MA1(D1)
+W 5_09_02_A4 BI1 // MA1(D1)
+W 04RO BI2
+
 
 // 02RGNE 02RGP 02R 02LO 02RO : TRGNERGPx
 W DO 02RGNE // Disconnect on neg edge

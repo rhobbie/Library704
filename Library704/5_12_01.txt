@@ -1,5 +1,5 @@
 ﻿.Module 5_12_01 // 5.12.01 Distributor
-5_12_01_[A-B][1-9] : 5_12_01 
+DIxx_[A-B][1-9] : 5_12_01 
 01AI 01AO : CFOR
 02IL 02IR 02O : TkR
 03IL 03IR 03O : TkR
@@ -13,40 +13,40 @@ CI1 CI2 CO : OR2
 
 .Signals
 
-B 5_12_01_A1 MQ REG (X) I/O BUS
-O 5_12_01_A2 Col (X) Lt Exit
-O 5_12_01_A3 Col (X) Rt Exit
-I 5_12_01_A4 Col (X) Lt Entry
-I 5_12_01_A5 Col (X) Rt Entry
-I 5_12_01_A6 Read Left
-I 5_12_01_A7 Read Right
-I 5_12_01_A8 Tgr Reset
-I 5_12_01_A9 Write Left
-I 5_12_01_B1 Write Right
-I 5_12_01_B2 Pn Thy Plate Lt
-I 5_12_01_B3 Pn Thy Plate Rt
-I 5_12_01_B4 Pr Thy Plate Lt
-I 5_12_01_B5 Pr Thy Plate Rt
+B DIxx_A1 MQ REG (X) I/O BUS
+O DIxx_A2 Col (X) Lt Exit
+O DIxx_A3 Col (X) Rt Exit
+I DIxx_A4 Col (X) Lt Entry
+I DIxx_A5 Col (X) Rt Entry
+I DIxx_A6 Read Left
+I DIxx_A7 Read Right
+I DIxx_A8 Tgr Reset
+I DIxx_A9 Write Left
+I DIxx_B1 Write Right
+I DIxx_B2 Pn Thy Plate Lt
+I DIxx_B3 Pn Thy Plate Rt
+I DIxx_B4 Pr Thy Plate Lt
+I DIxx_B5 Pr Thy Plate Rt
 
  
 .Connect
 
 // 02IL 02IR 02O : TkR
-W 5_12_01_A4 02IL // Col (X) Lt Entry
-W 5_12_01_A8 02IR // Tgr Reset
+W DIxx_A4 02IL // Col (X) Lt Entry
+W DIxx_A8 02IR // Tgr Reset
 
 // AI1 AI2 AO : AND2
 W 02O AI1 
-W 5_12_01_A6 AI2 // Read Left
+W DIxx_A6 AI2 // Read Left
 
 
 // 03IL 03IR 03O : TkR
-W 5_12_01_A5 03IL // Col (X) Rt Entry
-W 5_12_01_A8 03IR // Tgr Reset
+W DIxx_A5 03IL // Col (X) Rt Entry
+W DIxx_A8 03IR // Tgr Reset
 
 // BI1 BI2 BO : AND2
 W 03O BI1 
-W 5_12_01_A7 BI2 // Read Right
+W DIxx_A7 BI2 // Read Right
 
 // CI1 CI2 CO : OR2
 W AO CI1
@@ -55,31 +55,31 @@ W BO CI2
 // 01AI 01AO : CFOR
 W CO 01AI
 
-W 01AO 5_12_01_A1 // MQ REG (X) I/O BUS
+W 01AO DIxx_A1 // MQ REG (X) I/O BUS
 
 // 04P 04GU 04GL 04C : THY
-W 5_12_01_B2 04P // Pn Thy Plate Lt
-W 5_12_01_A1 04GU // MQ REG (X) I/O BUS
-W 5_12_01_A9 04GL // Write Left
-W 04C 5_12_01_A2 // Col (X) Lt Exit
+W DIxx_B2 04P // Pn Thy Plate Lt
+W DIxx_A1 04GU // MQ REG (X) I/O BUS
+W DIxx_A9 04GL // Write Left
+W 04C DIxx_A2 // Col (X) Lt Exit
 
 // 05P 05GU 05GL 05C : THY
-W 5_12_01_B3 05P // Pn Thy Plate Rt
-W 5_12_01_A1 05GU // MQ REG (X) I/O BUS
-W 5_12_01_B1 05GL // Write Right
-W 05C 5_12_01_A3 // Col (X) Rt Exit
+W DIxx_B3 05P // Pn Thy Plate Rt
+W DIxx_A1 05GU // MQ REG (X) I/O BUS
+W DIxx_B1 05GL // Write Right
+W 05C DIxx_A3 // Col (X) Rt Exit
 
 // 06P 06GU 06GL 06C : THY
-W 5_12_01_B4 06P // Pr Thy Plate Lt
-W 5_12_01_A1 06GU // MQ REG (X) I/O BUS
-W 5_12_01_A9 06GL // Write Left
-W 06C 5_12_01_A2 // Col (X) Lt Exit
+W DIxx_B4 06P // Pr Thy Plate Lt
+W DIxx_A1 06GU // MQ REG (X) I/O BUS
+W DIxx_A9 06GL // Write Left
+W 06C DIxx_A2 // Col (X) Lt Exit
 
 // 07P 07GU 07GL 07C : THY
-W 5_12_01_B5 07P // Pr Thy Plate Rt
-W 5_12_01_A1 07GU // MQ REG (X) I/O BUS
-W 5_12_01_B1 07GL // Write Right
-W 07C 5_12_01_A3 // Col (X) Rt Exit
+W DIxx_B5 07P // Pr Thy Plate Rt
+W DIxx_A1 07GU // MQ REG (X) I/O BUS
+W DIxx_B1 07GL // Write Right
+W 07C DIxx_A3 // Col (X) Rt Exit
 
 
 .End

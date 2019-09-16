@@ -2,9 +2,17 @@
 5_11_03_[A-B][1-9] : 5_11_03 
 AI1 AI2 AI3 AO : AND3
 BI1 BI2 BI3 BO : AND3
-CI1 CI2 CO : OR2
-01I 01O : I
-DI1 DI2 DO : OR2
+CI1 CI2 CI3 CI4 CO : OR4
+DI1 DI2 DO : -AND2
+EI1 EI2 EI3 EO : AND3
+FI1 FI2 FI3 FO : AND3
+GI1 GI2 GO : AND2
+HI1 HI2 HO : AND2
+JI1 JI2 JO : AND2
+KI1 KI2 KO : AND2
+
+01AI 01AO : I
+
 
 .Signals
 I 5_11_03_A1 PRI OPN [70] COPY(&SKIP)
@@ -19,33 +27,61 @@ I 5_11_03_A9 Read Right Ring Output
 I 5_11_03_B1 Read Cards
 I 5_11_03_B2 IO INTERLOCK
 O 5_11_03_B3 Minus on Read or write without Copy
+I 5_11_03_B4 Write Cards
 .Connect
-W -30V 5_11_03_A4 // Write Left
-W -30V 5_11_03_A5 // Write Right
-1MEG 5_11_03_A7 0V // Write Right Ring Output
-1MEG 5_11_03_A6 0V // Write Left Ring Output
 
 // AI1 AI2 AI3 AO : AND3
 W 5_11_03_A8 AI1 // Read Left Ring Output
 W 5_11_03_B1 AI2 // Read Cards
 W 5_11_03_B2 AI3 // IO INTERLOCK
-W AO 5_11_03_A2 // Read Left
+
+// GI1 GI2 GO : AND2
+W 5_11_03_A1 GI1 // PRI OPN [70] COPY(&SKIP)
+W AO GI2
+W GO 5_11_03_A2 // Read Left
 
 // BI1 BI2 BI3 BO : AND3
 W 5_11_03_A9 BI1 // Read Right Ring Output
 W 5_11_03_B1 BI2 // Read Cards
 W 5_11_03_B2 BI3 // IO INTERLOCK
-W BO 5_11_03_A3 // Read Right
 
-// CI1 CI2 CO : OR2
+// HI1 HI2 HO : AND2
+W 5_11_03_A1 HI1 // PRI OPN [70] COPY(&SKIP)
+W BO HI2
+W HO 5_11_03_A3 // Read Right
+
+
+// EI1 EI2 EI3 EO : AND3
+W 5_11_03_A6 EI1 // Write Left Ring Output
+W 5_11_03_B4 EI2 // Write Cards
+W 5_11_03_B2 EI3 // IO INTERLOCK
+
+// JI1 JI2 JO : AND2
+W 5_11_03_A1 JI1 // PRI OPN [70] COPY(&SKIP)
+W EO JI2
+W JO 5_11_03_A4 // Write Left
+
+// FI1 FI2 FI3 FO : AND3
+W 5_11_03_A7 FI1 // Write Right Ring Output
+W 5_11_03_B4 FI2 // Write Cards
+W 5_11_03_B2 FI3 // IO INTERLOCK
+
+// KI1 KI2 KO : AND2
+W 5_11_03_A1 KI1 // PRI OPN [70] COPY(&SKIP)
+W FO KI2
+W KO 5_11_03_A5 // Write Right
+
+// CI1 CI2 CI3 CI4 CO : OR4
 W AO CI1
 W BO CI2
+W EO CI3
+W FO CI4
 
-// 01I 01O : I
-W CO 01I
+// 01IA 01OA : I
+W CO 01AI
 
-// DI1 DI2 DO : OR2
-W 01O DI1
+// DI1 DI2 DO : -AND2
+W 01AO DI1
 W 5_11_03_A1 DI2 // PRI OPN [70] COPY(&SKIP)
 W DO 5_11_03_B3 // Minus on Read or write without Copy
 

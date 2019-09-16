@@ -1205,10 +1205,12 @@ namespace Library704
                 }
             return x;
         }
-        private static void Check1()
+        private static bool Check1()
         {
+            bool err = false;
             foreach (KeyValuePair<string, Module> Mkvp in Modules)
             {
+                
                 Module M = Mkvp.Value;
                 foreach (Module.Submodule S in M.Submodules)
                 {
@@ -1219,6 +1221,7 @@ namespace Library704
                             if (IM.NumPins != S.numpins) // Alle verwendeten submodule haben die korrekte pinanzahl.
                             {
                                 Console.WriteLine("Module {0} has reference to Module {1} with pin number mismatch", M.Name, S.Name);
+                                err = true;
                             }
                         }
                         else
@@ -1228,6 +1231,7 @@ namespace Library704
                     }
                 }
             }
+            return err;
 
         }
         private static void Check2()
@@ -1695,7 +1699,8 @@ namespace Library704
                 }
             }
             /* perform checks of Module library */
-            Check1();
+            if (Check1())
+                return;
             Check2();
             Check3();
             Check4();

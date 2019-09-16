@@ -264,7 +264,8 @@ if(!rotate)
     if(PT_S4||PT_S5)   // Pr Rd Sel ||  Pr Wr Sel 
 	begin
 	  rotate=1;	 // start movement
-	  delay=192;  // number of sub cycles delay to start motion
+	  delay=1;// fast start
+	  //delay=192;  // number of sub cycles delay to start motion
 	  with_echo=PT_S4;  // Pr Rd Sel
 	end
   end
@@ -311,6 +312,7 @@ if(!rotate)
 		begin
 		  for(i=0;i<72;i++)
 		  begin
+		    $display("%o %o",print_line_high[71-i],print_line_low[71-i]);
 		    case({print_line_high[71-i],print_line_low[71-i]})
 			  6'h00:ascii_value=" ";
 			  6'h01:ascii_value="1";
@@ -433,13 +435,14 @@ if(!rotate)
 		  Set_Tk=0;
 		else if(Unit_Cnt==10) 
 		  CB_Signal_Set=0;
-		else if(Unit_Cnt==12&&print_active)
+		else if(Unit_Cnt==12&&print_active&&PT_S7==0)
 		begin
 		  if(low_pos)
 		  begin
 		    for(i=0;i<72;i++)
 		      if(print_data[i])
 		      begin
+			    $display("b:%d %d %d",low_pos,i,print_line_low[i]);
 		        if(print_line_low[i]==0)			
 			      print_line_low[i]=low_pos;
 			    else if(print_line_low[i]==8)
@@ -453,19 +456,22 @@ if(!rotate)
 			    end
 				else
 				  print_line_low[i]=15; // Error marker
+				 $display("e:%d",print_line_low[i]);
 			  end
             low_pos--;
           end // if(low_pos)
 		  else
 		  begin
-		    high_pos+=3;
+		    high_pos+=1;
 		    for(i=0;i<72;i++)
 		      if(print_data[i])
 			  begin
+			    $display("B:%d %d %d",low_pos,i,print_line_high[i]);
 			    if(print_line_high[i]==0)
 			      print_line_high[i]=high_pos;
 				else
 				  print_line_low[i]=15; // Error marker
+				$display("E:%d",print_line_high[i]);
 			  end		    		  
 		  end // else of if(low_pos)
 		end // if(Unit_Cnt==12)

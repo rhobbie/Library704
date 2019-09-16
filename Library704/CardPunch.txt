@@ -156,7 +156,8 @@ always@(negedge CL4096)
     if(PN_J4) //  Pn Sel 2
 	begin
 	  rotate=1;	 // start movement
-	  delay=74;  // number of sub cycles delay to start motion
+	  delay=1; // fast start
+	  // delay=74;  // number of sub cycles delay to start motion
 	end
   end
   else

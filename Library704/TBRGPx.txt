@@ -1,0 +1,25 @@
+﻿.Module TBRGPx	
+Binary RH_GridPos Reset LH_Divider_Junction RH_Divider_Junction : TBRGPx
+.Signals
+I Binary
+I RH_GridPos
+I Reset
+O LH_Divider_Junction
+O RH_Divider_Junction
+.Logic
+
+reg State=0;
+
+always @*
+    if(RH_GridPos|Reset) 
+        State=0;
+
+
+always @(negedge Binary) 
+    if(~RH_GridPos&~Reset) 
+		State<=~State;
+
+assign RH_Divider_Junction=State;
+assign LH_Divider_Junction=~State;
+
+.End
