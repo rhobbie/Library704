@@ -135,11 +135,11 @@ assign ReadCntl_18_20=~WriteCntl_18_20;
 assign ReadCntl_21_35=~WriteCntl_21_35;
 
 wire [35:0] ReadCntl;
-assign ReadCntl={ {3{ReadCntl_0_2}},
+assign ReadCntl=({ {3{ReadCntl_0_2}},
                  {15{ReadCntl_3_17}},
                   {3{ReadCntl_18_20}},
                  {15{ReadCntl_21_35}}
-                } & {36{SP53}}; // RO Sample
+                }|{36{SP64}}) & {36{SP53}}; // RO Sample
                 
 wire [35:0] WriteCntl;
 assign WriteCntl={ {3{WriteCntl_0_2}},

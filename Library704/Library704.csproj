@@ -161,6 +161,7 @@
     <Content Include="KEY3.txt" />
     <Content Include="LT.txt" />
     <Content Include="NIP.txt" />
+    <Content Include="OR10.txt" />
     <Content Include="PCFA.txt" />
     <Content Include="PR.txt" />
     <Content Include="Printer.txt" />
