@@ -139,6 +139,7 @@
     <Content Include="6PCF.txt" />
     <Content Include="-AND2.txt" />
     <Content Include="8_06_02.txt" />
+    <Content Include="AND3OR.txt" />
     <Content Include="AND2OR.txt" />
     <Content Include="AND6.txt" />
     <Content Include="AND5.txt" />
