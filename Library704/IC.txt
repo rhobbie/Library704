@@ -1,8 +1,0 @@
-﻿.Module IC // Clock inverter
-Input Output : IC
-.Signals
-I Input
-O Output
-.Logic
-assign Output = ~Input;
-.End

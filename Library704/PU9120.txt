@@ -118,7 +118,7 @@ W 06O P03-6 // STG REG TO MQ (S)
 
 // 7BI 7BO : CF
 
-W GO 7BI
+W 06O 7BI
 
 >|G -30V 7BO
 

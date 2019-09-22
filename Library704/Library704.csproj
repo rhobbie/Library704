@@ -30,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -162,7 +163,6 @@
     <Content Include="KEY3.txt" />
     <Content Include="LT.txt" />
     <Content Include="NIP.txt" />
-    <Content Include="OR10.txt" />
     <Content Include="PCFA.txt" />
     <Content Include="PR.txt" />
     <Content Include="Printer.txt" />
@@ -200,7 +200,6 @@
     <Content Include="SSINONOP150M.txt" />
     <Content Include="SSIPONOP500.txt" />
     <Content Include="IAND.txt" />
-    <Content Include="IC.txt" />
     <Content Include="IG.txt" />
     <Content Include="KEY.txt" />
     <Content Include="NE51.txt" />
