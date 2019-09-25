@@ -312,11 +312,10 @@ if(!rotate)
 		begin
 		  for(i=0;i<72;i++)
 		  begin
-		    $display("%o %o",print_line_high[71-i],print_line_low[71-i]);
 		    case({print_line_high[71-i],print_line_low[71-i]})
 			  6'h00:ascii_value=" ";
 			  6'h01:ascii_value="1";
-		      6'h02:ascii_value="2";
+		          6'h02:ascii_value="2";
 			  6'h03:ascii_value="3";
 			  6'h04:ascii_value="4";
 			  6'h05:ascii_value="5";
@@ -442,7 +441,6 @@ if(!rotate)
 		    for(i=0;i<72;i++)
 		      if(print_data[i])
 		      begin
-			    $display("b:%d %d %d",low_pos,i,print_line_low[i]);
 		        if(print_line_low[i]==0)			
 			      print_line_low[i]=low_pos;
 			    else if(print_line_low[i]==8)
@@ -456,7 +454,6 @@ if(!rotate)
 			    end
 				else
 				  print_line_low[i]=15; // Error marker
-				 $display("e:%d",print_line_low[i]);
 			  end
             low_pos--;
           end // if(low_pos)
@@ -466,12 +463,10 @@ if(!rotate)
 		    for(i=0;i<72;i++)
 		      if(print_data[i])
 			  begin
-			    $display("B:%d %d %d",low_pos,i,print_line_high[i]);
 			    if(print_line_high[i]==0)
 			      print_line_high[i]=high_pos;
 				else
 				  print_line_low[i]=15; // Error marker
-				$display("E:%d",print_line_high[i]);
 			  end		    		  
 		  end // else of if(low_pos)
 		end // if(Unit_Cnt==12)

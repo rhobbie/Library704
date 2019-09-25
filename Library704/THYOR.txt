@@ -9,7 +9,7 @@ BW C Cathode
 reg State=0;
 
 always@*
-  if(~C)
+  if(~P)
     State=0;
 
 always@(posedge GL)
