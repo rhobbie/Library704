@@ -197,11 +197,11 @@ always@(negedge CL4096)
         end
 		for(i=0;i<160;i++)
 		begin
-		  trecord[i][6]=trecord[i][0]^trecord[i][1]^trecord[i][2]^trecord[i][3]^trecord[i][4]^trecord[i][5];		  
+		  trecord[i][6]=trecord[i][0]^trecord[i][1]^trecord[i][2]^trecord[i][3]^trecord[i][4]^trecord[i][5]^1;		  
 		  if(i==0)
-			trecord[i][7]=0;
+			trecord[i][7]=1;
 		  else
-		    trecord[i][7]=1;
+		    trecord[i][7]=0;
 		  f=$fputc(trecord[i],cbnfile);
 		  if(f!=0)
 		   err=1;
