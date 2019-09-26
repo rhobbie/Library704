@@ -12,8 +12,9 @@ always@*
   if(~P)
     State=0;
 
-always@(posedge GL)
-  if(P&GU)
+wire trigger;
+assign trigger=P&GU&GL;
+always@(posedge trigger)
     State=1;
 
 assign C=State;

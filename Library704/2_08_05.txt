@@ -19,8 +19,7 @@ RI1 RI2 RO : OR2
 SI1 SI2 SO : AND2
 TI1 TI2 TO : AND2
 UI1 UI2 UI3 UO : AND3
-// MF1 J27 9130 07
-// MF1 A35 9043 01 03A 04-05 06A 07-08
+
 
 .Signals
 I 2_08_05_A1 ADD/SUB, (E9 UNTIL CT2)
@@ -156,23 +155,5 @@ W AO MI5
 
 W LO 2_08_05_B2 // STG REG(1-8) -> ADDER
 W MO 2_08_05_B3 // STG REG(9-35) -> ADDER
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .End

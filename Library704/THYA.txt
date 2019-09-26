@@ -11,8 +11,9 @@ always@*
   if(~P)
     State=0;
 
-always@(posedge G)
-  if(P)
+wire trigger;
+assign trigger=P&G;
+always@(posedge trigger)
     State=1;
 
 assign C=State;
