@@ -1337,6 +1337,7 @@ W MF3_W2 MF1_X6 // CP Write Sel
 W MF3_W3 MF4_S9 // PR Write Sel
 W MF3_W3 MF1_X7 // PR Write Sel
 W MF3_W4 MF4_T1 // PR Read Sel
+W MF3_W4 MF1_Z5 // PR Read Sel
 
 // 5.01.04 I/O Selection Intlk
 W MF3_U9 IO_INTLK_SW_OP // IO INTERLOCK
@@ -1440,8 +1441,9 @@ W MF3_X1 MF4_U2 // Reset I/O Intlk Reset
 
 // 5.11.01 Card Ctrl Pulse Gen
 W PR1-46 MF4-01f // CB Signal Set
+W PR1-46 MF1_Z3 // CB Signal Set
 W PR2-47 MF4-01g // Tgr Reset
-
+W PR2-47 MF1_Z4 // CB Signal Reset
 W MF4_T7 MF1_W4 //  Ring Set
 W MF4_T8 MF1_W5 // Read Write Pulse
 W MF4_T9 MF1_W6 // Even Ring Drive

@@ -1,5 +1,5 @@
 ﻿.Module 5_11_02 // 5.11.02 Card Control Ring
-5_11_02_A[1-8] RES : 5_11_02 
+5_11_02_A[1-9] RES : 5_11_02 
 
 08LGNE 08RGNE 08RES 08RO : TLGNERGNERDx
 06LGNE 06RGNE 06RES 06RO : TLGNERGNERDx
@@ -17,6 +17,7 @@ O 5_11_02_A5 Write Left Ring Output
 O 5_11_02_A6 Write Right Ring Output
 O 5_11_02_A7 Read Left Ring Output
 O 5_11_02_A8 Read Right Ring Output
+O 5_11_02_A9 Start Read Time
 I RES Reset
 
 .Connect
@@ -41,6 +42,7 @@ W BO 5_11_02_A6 // Write Right Ring Output
 W 06RO 04RGNE 
 W 5_11_02_A3 04LGNE  // Even Ring Drive 
 W RES 04RES // Reset
+W 04RO 5_11_02_A9 // Start Read Time
 
 // CI1 CI2 CO : AND2
 W 04RO CI1

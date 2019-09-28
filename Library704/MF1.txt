@@ -73,9 +73,10 @@ F2I F2O : Filter
 5_08_03_A[1-7] : 5_08_03 // 5.08.03 Clock Pulse Power and Mixing
 5_08_04_A[1-4] 5_08_04_RES  : 5_08_04 // 5.08.04 Clock Pulse Ckts
 5_10_A[1-9] 5_10_RES : 5_10 // 5.10 MQ Read In and Reset Ckts
-5_11_02_A[1-8] 5_11_02_RES : 5_11_02 // 5.11.02 Card Control Ring 
+5_11_02_A[1-9] 5_11_02_RES : 5_11_02 // 5.11.02 Card Control Ring 
 5_11_03_[A-B][1-9] : 5_11_03 // 5.11.03 Read-Write Disconnect Gate
-5_11_05_A[1-5] : 5_11_05 // Cards Mixing
+5_11_04_A[1-6] 5_11_04_CL 5_11_04_RES : 5_11_04 // 5.11.04 Card Control CB Counter
+5_11_05_A[1-7] : 5_11_05 // Cards Mixing
 5_11_06_A[1-7] 5_11_06_CL 5_11_06_RES : 5_11_06 // 5.11.06 Card Copy Proceed and MQ Control
 8_03_[A-B][1-9] : 8_03 // 8.03 Cycle Timer Mixing Ckts
 8_04_A[1-3] 8_04_01_A[1-4] 8_04_02_A[1-4] 8_04_03_A[1-4] 8_04_CL 8_04_RES : 8_04 // 8.04 Clock  // 8.04.01 Clock // 8.04.02 Clock // 8.04.03 Clock
@@ -507,6 +508,7 @@ I MF1_X9 UNIT ADR 12
 I MF1_W9 CR Read Sel
 I MF1_X6 CP Write Sel
 I MF1_X7 PR Write Sel
+I MF1_Z5 PR Read Sel
 
 // 5.01.04 I/O Selection Intlk
 I MF1_W8 I/O Intlk Off
@@ -567,6 +569,10 @@ O MF1_W1 Read Right
 O MF1_W2 Write Left
 O MF1_W3 Write Right
 O MF1_X5 Minus on Read or write without Copy
+
+// 5.11.04 Card Control CB Counter
+I MF1_Z3 CB Signal Set
+I MF1_Z4 CB Signal Reset
 
 // 6.03.03 Tape Redn Ctr
 I MF1_S2 TAPE -> MQ
@@ -1774,6 +1780,7 @@ W MF1_X9 5_05_06_B5 // UNIT ADR 12
 W MF1_W9 5_11_05_A1 // CR Read Sel
 W MF1_X6 5_11_05_A4 // CP Write Sel
 W MF1_X7 5_11_05_A3 // PR Write Sel
+W MF1_Z5 5_11_04_A3 // PR Read Sel
 
 // 5.01.04 I/O Selection Intlk
 W MF1_W8 5_02_B6 // I/O Intlk Off
@@ -1894,6 +1901,7 @@ W 5_11_02_A5 5_11_03_A6 // Write Left Ring Output
 W 5_11_02_A6 5_11_03_A7 // Write Right Ring Output
 W 5_11_02_A7 5_11_03_A8 // Read Left Ring Output
 W 5_11_02_A8 5_11_03_A9 // Read Right Ring Output
+W 5_11_02_A9 5_11_04_A6 // Start Read Time
 
 // 5.11.03 Read-Write Disconnect Gate
 W 5_11_03_A2 MF1_V9 // Read Left
@@ -1905,6 +1913,12 @@ W 5_11_03_A4 5_11_06_A5 // Write Left
 W 5_11_03_A5 MF1_W3 // Write Right
 W 5_11_03_A5 5_11_06_A6 // Write Right
 W 5_11_03_B3 MF1_X5 // Minus on Read or write without Copy
+
+// 5.11.04 Card Control CB Counter
+W MF1_Z3 5_11_04_A1 // CB Signal Set
+W MF1_Z4 5_11_04_A2 // CB Signal Reset
+W 5_11_04_A4 5_11_05_A6 // PR Read Write Time
+W 5_11_04_A5 5_11_05_A7 // PR Read Read Time
 
 // 5.11.05 Cards Mixing
 W 5_11_05_A2 5_11_03_B1 // Read Cards
@@ -2032,6 +2046,8 @@ W MF1_RES 5_03_04_RES // Reset
 W MF1_RES 5_03_03_RES // Reset
 W MF1_RES 5_10_RES  // Reset 
 W MF1_RES 5_11_02_RES // Reset
+W MF1_RES 5_11_04_RES // Reset
 W MF1_RES 5_11_06_RES // Reset
+W MF1_CL 5_11_04_CL // Clock
 W MF1_CL 5_11_06_CL // Clock
 .End

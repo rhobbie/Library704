@@ -1,0 +1,24 @@
+﻿.Module TLGNBx	
+LH_GridNeg Binary Reset LH_Divider_Junction RH_Divider_Junction : TLGNBx
+.Signals
+I LH_GridNeg
+I Binary
+I Reset
+O LH_Divider_Junction
+O RH_Divider_Junction
+.Logic
+
+reg State=0;
+
+always @*
+    if(~LH_GridNeg|Reset) 
+        State=0;
+
+always @(negedge Binary) 
+    if(LH_GridNeg&~Reset) 
+		State<=~State;
+
+assign RH_Divider_Junction=State;
+assign LH_Divider_Junction=~State;
+
+.End

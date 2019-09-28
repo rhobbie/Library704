@@ -98,6 +98,7 @@
     <Content Include="5_08_01.txt" />
     <Content Include="5_08_03.txt" />
     <Content Include="5_09_01.txt" />
+    <Content Include="5_11_04.txt" />
     <Content Include="5_11_06.txt" />
     <Content Include="6PCFA.txt" />
     <Content Include="6_01.txt" />
@@ -366,6 +367,8 @@
     <Content Include="TB.txt" />
     <Content Include="8_03.txt" />
     <Content Include="5_11_05.txt" />
+    <Content Include="TLGNBRDx.txt" />
+    <Content Include="TLGNBx.txt" />
     <Content Include="TBRGPx.txt" />
     <Content Include="THYA.txt" />
     <Content Include="THYOR.txt" />
