@@ -1,0 +1,21 @@
+﻿.Module Txk // Key Trigger
+INL INR Reset OUTL OUTR : Txk
+.Signals
+I INL 
+I INR 
+I Reset
+O OUTL 
+O OUTR
+.Logic
+reg State=0;
+
+
+always @*
+    if(INL|Reset) 
+        State=1;
+    else if(INR)
+        State=0;
+
+assign OUTR=State;
+assign OUTL=~State;
+.End

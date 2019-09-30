@@ -1,0 +1,34 @@
+﻿.Module SSIN1IN2OP1M // Single shot 1ms duration two inputs, 128µs clock input
+InputNeg1 InputNeg2 OutputPos Clock128 Res : SSIN1IN2OP1M
+
+.Signals
+I InputNeg1
+I InputNeg2
+O OutputPos
+I Clock128 
+I Res
+.Logic
+reg State=0;
+reg[2:0] Cnt=0;
+
+
+always @(posedge Clock128)
+begin
+if(State)
+begin
+  Cnt++;
+  if(Cnt==7)
+     State=0;
+end
+end
+
+always @(negedge InputNeg1,negedge InputNeg2)
+  if(~Res)
+  begin
+    Cnt=0;
+    State=1;  
+  end
+
+assign OutputPos=State;
+
+.End

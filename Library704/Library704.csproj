@@ -158,7 +158,6 @@
     <Content Include="DLdot05.txt" />
     <Content Include="Filter.txt" />
     <Content Include="IN.txt" />
-    <Content Include="IpsA.txt" />
     <Content Include="Ips.txt" />
     <Content Include="IR.txt" />
     <Content Include="KEY3.txt" />
@@ -188,6 +187,7 @@
     <Content Include="REL56.txt" />
     <Content Include="REL55.txt" />
     <Content Include="SSCL.txt" />
+    <Content Include="SSIN1IN2OP1M.txt" />
     <Content Include="SSINOP8.txt" />
     <Content Include="SSINOP750.txt" />
     <Content Include="SSINOP50.txt" />
@@ -367,6 +367,8 @@
     <Content Include="TB.txt" />
     <Content Include="8_03.txt" />
     <Content Include="5_11_05.txt" />
+    <Content Include="Txk.txt" />
+    <Content Include="TxkL.txt" />
     <Content Include="TLGNBRDx.txt" />
     <Content Include="TLGNBx.txt" />
     <Content Include="TBRGPx.txt" />

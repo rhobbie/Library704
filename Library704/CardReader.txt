@@ -116,6 +116,7 @@ reg [3:0] bit;
 reg byte;
 reg endfile;
 reg disc;
+integer cardno;
 assign CR_J1 = ready; // Cr Sel 1
 assign CR_J3 = disc; // Cr Disc 1
 assign CR_J5 = CB_reset; // Tgr Reset
@@ -149,6 +150,7 @@ always @*
 	 bit=0;
 	 byte=0;
 	 endfile=0;	 
+	 cardno=0;
   end  
 
 always@*
@@ -208,7 +210,9 @@ always@(negedge CL640)
 		  trecord[i]=0;
         if(cbnfile!=0)
         begin
-	      f = $fread(trecord, cbnfile); 	 	
+	      f = $fread(trecord, cbnfile); 	
+		  cardno++;
+		  $display("Read Card %d",cardno);
         end
         if(f==0)
         begin

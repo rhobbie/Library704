@@ -14,7 +14,7 @@ I R50BLOP
 O R50BLNO
 .Logic
 wire State;
-assign State=R50PUA & ~R50PUB;
+assign State=~R50PUA & R50PUB;
 assign R50AUNO=R50AUOP & State; 
 assign R50AUNC=R50AUOP & ~State; 
 assign R50ALNO=R50ALOP & State; 

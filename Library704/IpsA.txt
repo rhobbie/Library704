@@ -1,8 +1,0 @@
-﻿.Module IpsA			// pull over Inverter 
-Input Output : IpsA
-.Signals
-I Input
-AW Output
-.Logic
-assign Output = ~Input;
-.End
