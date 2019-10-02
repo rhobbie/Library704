@@ -1075,9 +1075,9 @@ namespace Library704
                                         && d1 != Module.Direction.manualinput
                                         && d2 != Module.Direction.manualinput)
                                     {
-                                        if (s[1] == "-30V" || s[1] == "40RETURN" || s[1] == "+150RELAY")
+                                        if (s[1] == "-30V" || s[1] == "40RETURN" )
                                             fo.Write("assign {0}=0;", sconv(s[2]));
-                                        else if (s[1] == "+10V" || s[1] == "+40V" || s[1] == "+150V")
+                                        else if (s[1] == "+10V" || s[1] == "+40V" || s[1] == "+150V" || s[1] == "+150RELAY")
                                             fo.Write("assign {0}=1;", sconv(s[2]));
                                         else
                                             fo.Write("assign {0}={1};", sconv(s[2]), sconv(s[1]));

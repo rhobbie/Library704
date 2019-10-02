@@ -1,0 +1,11 @@
+﻿.Module AND4OR
+A 5 AND4OR
+.Signals
+I A1
+I A2
+I A3
+I A4
+BW A5
+.Logic
+assign A5 = A1 & A2 & A3 & A4;
+.End
