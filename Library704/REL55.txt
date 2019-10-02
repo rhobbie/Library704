@@ -9,7 +9,7 @@ I R55BOP
 O R55BNC
 .Logic
 wire State;
-assign State=R55PUA & ~R55PUB;
-assign R55ANO=R55AOP & State;
+assign State=~R55PUA & R55PUB;
+assign R55ANO=R55AOP | ~State;
 assign R55BNC=R55BOP & ~State;
 .End

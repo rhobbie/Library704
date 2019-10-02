@@ -12,7 +12,7 @@ O R13_2NC
 I R13_3NC 
 O R13_3OP
 I R13_4OP 
-BW R13_4NO
+AW R13_4NO
 I R13_5OP 
 O R13_5NO
 I R13_6OP 
@@ -35,7 +35,7 @@ else if(~H)
 assign R13_1NO=R13_1OP & State;
 assign R13_2NC=R13_2OP & ~State;
 assign R13_3OP=R13_3NC & ~State;
-assign R13_4NO=R13_4OP & State;
+assign R13_4NO=R13_4OP | ~State;
 assign R13_5NO=R13_5OP & State;
 assign R13_6NO=R13_6OP & State;
 .End

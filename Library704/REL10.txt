@@ -12,7 +12,7 @@ O R10_2NC
 I R10_3OP 
 O R10_3NC
 I R10_4OP 
-BW R10_4NO
+AW R10_4NO
 I R10_5OP 
 O R10_5NO 
 O R10_5NC
@@ -36,7 +36,7 @@ else if(~H)
 assign R10_1NO=R10_1OP & State;
 assign R10_2NC=R10_2OP & ~State;
 assign R10_3NC=R10_3OP & ~State;
-assign R10_4NO=R10_4OP & State;
+assign R10_4NO=R10_4OP | ~State;
 assign R10_5NO=R10_5OP & State;
 assign R10_5NC=R10_5OP & ~State;
 assign R10_6NO=R10_6OP & State;
