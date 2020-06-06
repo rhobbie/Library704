@@ -195,7 +195,7 @@ namespace Library704
                 l.Add(s); /*no expansion, only one element in list */
             return l;
         }
-        #region Module file syntax and description 
+        #region Module file syntax and description (incomplete)
         /* 
            Each line of a module file can contain a // followed by a comment 
            The following refers to the remaining part of the line after removing of the // and the comment
@@ -1712,7 +1712,7 @@ namespace Library704
             /* convert all *.txt files from source Dir to *.v files */
             foreach (string n in Directory.GetFiles(@"..\..\", "*.txt"))
             {
-                using (ModuleConverter MC = new ModuleConverter(n, @"D:\"))
+                using (ModuleConverter MC = new ModuleConverter(n, @"..\..\Testbench\"))
                 {
                     while (!MC.Eof) /* more text in file ?*/
                     {

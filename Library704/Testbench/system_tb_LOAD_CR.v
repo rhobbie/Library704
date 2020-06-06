@@ -1,0 +1,96 @@
+// Verilog test bench for SYSTEM
+`timescale 100ns/100ns
+module SYSTEM_tb;
+
+reg CL=0;
+reg RESET=1;
+
+SYSTEM S(CL,RESET);
+
+integer i;
+
+initial 
+begin
+
+
+  # 5 RESET=0;
+  while(RD_WR_SELECT||!(PROG_STOP||RD_WR_CHECK))
+  begin
+    # 5 CL=1;
+    # 5 CL=0;   
+  end
+  
+end
+
+initial
+begin 
+    
+  # 20000
+      S.OP.SENSE_KEY_3.State=1;
+      S.OP.SENSE_KEY_5.State=1;
+      S.OP.LOAD_CR.State=1;
+  # 10000  
+      S.OP.LOAD_CR.State=0;
+  # 10;
+
+end
+initial
+  $display("IC     AC            MQ              XR1    XR2   XR4");
+  
+wire inst=S.MF1_21m&S.MF3_34c; // I9(D1) & not load
+always @(posedge inst) 
+
+begin
+    $display("%o   %o  %o %o %o %o   %o",INST_CTR,ACC,MQ,XRA,XRB,XRC,STG);
+end
+
+wire PROG_STOP;
+assign PROG_STOP=S.OP.PROG_STOP_LITE.State;
+
+wire RD_WR_SELECT;
+assign RD_WR_SELECT=S.OP.RD_WR_SELECT.State;
+
+wire RD_WR_CHECK;
+assign RD_WR_CHECK=S.OP.RD_WR_CHECK.State;
+
+
+wire  [35:0] STG;
+assign STG={S.OP.STG_S_NEON.State,S.OP.STG_1_NEON.State,S.OP.STG_2_NEON.State,S.OP.STG_3_NEON.State,S.OP.STG_4_NEON.State,S.OP.STG_5_NEON.State,
+  S.OP.STG_6_NEON.State,S.OP.STG_7_NEON.State,S.OP.STG_8_NEON.State,S.OP.STG_9_NEON.State,S.OP.STG_10_NEON.State,S.OP.STG_11_NEON.State,     
+  S.OP.STG_12_NEON.State,S.OP.STG_13_NEON.State,S.OP.STG_14_NEON.State,S.OP.STG_15_NEON.State,S.OP.STG_16_NEON.State,S.OP.STG_17_NEON.State,
+  S.OP.STG_18_NEON.State,S.OP.STG_19_NEON.State,S.OP.STG_20_NEON.State,S.OP.STG_21_NEON.State,S.OP.STG_22_NEON.State,S.OP.STG_23_NEON.State,
+  S.OP.STG_24_NEON.State,S.OP.STG_25_NEON.State,S.OP.STG_26_NEON.State,S.OP.STG_27_NEON.State,S.OP.STG_28_NEON.State,S.OP.STG_29_NEON.State,
+  S.OP.STG_30_NEON.State,S.OP.STG_31_NEON.State,S.OP.STG_32_NEON.State,S.OP.STG_33_NEON.State,S.OP.STG_34_NEON.State,S.OP.STG_35_NEON.State};
+
+
+wire  [37:0] ACC;
+assign ACC={S.OP.ACC_S_NEON.State,S.OP.ACC_Q_NEON.State,S.OP.ACC_P_NEON.State,S.OP.ACC_1_NEON.State,S.OP.ACC_2_NEON.State,S.OP.ACC_3_NEON.State,S.OP.ACC_4_NEON.State,S.OP.ACC_5_NEON.State,
+  S.OP.ACC_6_NEON.State,S.OP.ACC_7_NEON.State,S.OP.ACC_8_NEON.State,S.OP.ACC_9_NEON.State,S.OP.ACC_10_NEON.State,S.OP.ACC_11_NEON.State,     
+  S.OP.ACC_12_NEON.State,S.OP.ACC_13_NEON.State,S.OP.ACC_14_NEON.State,S.OP.ACC_15_NEON.State,S.OP.ACC_16_NEON.State,S.OP.ACC_17_NEON.State,
+  S.OP.ACC_18_NEON.State,S.OP.ACC_19_NEON.State,S.OP.ACC_20_NEON.State,S.OP.ACC_21_NEON.State,S.OP.ACC_22_NEON.State,S.OP.ACC_23_NEON.State,
+  S.OP.ACC_24_NEON.State,S.OP.ACC_25_NEON.State,S.OP.ACC_26_NEON.State,S.OP.ACC_27_NEON.State,S.OP.ACC_28_NEON.State,S.OP.ACC_29_NEON.State,
+  S.OP.ACC_30_NEON.State,S.OP.ACC_31_NEON.State,S.OP.ACC_32_NEON.State,S.OP.ACC_33_NEON.State,S.OP.ACC_34_NEON.State,S.OP.ACC_35_NEON.State};
+
+wire  [35:0] MQ;
+assign MQ={S.OP.MQ_S_NEON.State,S.OP.MQ_1_NEON.State,S.OP.MQ_2_NEON.State,S.OP.MQ_3_NEON.State,S.OP.MQ_4_NEON.State,S.OP.MQ_5_NEON.State,
+  S.OP.MQ_6_NEON.State,S.OP.MQ_7_NEON.State,S.OP.MQ_8_NEON.State,S.OP.MQ_9_NEON.State,S.OP.MQ_10_NEON.State,S.OP.MQ_11_NEON.State,     
+  S.OP.MQ_12_NEON.State,S.OP.MQ_13_NEON.State,S.OP.MQ_14_NEON.State,S.OP.MQ_15_NEON.State,S.OP.MQ_16_NEON.State,S.OP.MQ_17_NEON.State,
+  S.OP.MQ_18_NEON.State,S.OP.MQ_19_NEON.State,S.OP.MQ_20_NEON.State,S.OP.MQ_21_NEON.State,S.OP.MQ_22_NEON.State,S.OP.MQ_23_NEON.State,
+  S.OP.MQ_24_NEON.State,S.OP.MQ_25_NEON.State,S.OP.MQ_26_NEON.State,S.OP.MQ_27_NEON.State,S.OP.MQ_28_NEON.State,S.OP.MQ_29_NEON.State,
+  S.OP.MQ_30_NEON.State,S.OP.MQ_31_NEON.State,S.OP.MQ_32_NEON.State,S.OP.MQ_33_NEON.State,S.OP.MQ_34_NEON.State,S.OP.MQ_35_NEON.State};
+
+
+wire  [12:0] INST_CTR;
+assign INST_CTR={S.OP.INST_CTR_5_NEON.State,
+ S.OP.INST_CTR_6_NEON.State,S.OP.INST_CTR_7_NEON.State,S.OP.INST_CTR_8_NEON.State,S.OP.INST_CTR_9_NEON.State,S.OP.INST_CTR_10_NEON.State,S.OP.INST_CTR_11_NEON.State,
+ S.OP.INST_CTR_12_NEON.State,S.OP.INST_CTR_13_NEON.State,S.OP.INST_CTR_14_NEON.State,S.OP.INST_CTR_15_NEON.State,S.OP.INST_CTR_16_NEON.State,S.OP.INST_CTR_17_NEON.State};  
+
+wire [12:0] XRA;
+wire [12:0] XRB;
+wire [12:0] XRC;
+
+assign XRA={S.MF4.A36._03O,S.MF4.A07_7,S.MF4.A08_7,S.MF4.A09_7,S.MF4.C07_7,S.MF4.C08_7,S.MF4.C09_7,S.MF4.D07_7,S.MF4.D08_7,S.MF4.D09_7,S.MF4.E07_7,S.MF4.E08_7,S.MF4.E09_7};
+assign XRB={S.MF4.A36._04O,S.MF4.A10_7,S.MF4.A11_7,S.MF4.A13_7,S.MF4.C10_7,S.MF4.C11_7,S.MF4.C13_7,S.MF4.D10_7,S.MF4.D11_7,S.MF4.D13_7,S.MF4.E10_7,S.MF4.E11_7,S.MF4.E13_7};
+assign XRC={S.MF4.A36._06O,S.MF4.A14_7,S.MF4.A15_7,S.MF4.A16_7,S.MF4.C14_7,S.MF4.C15_7,S.MF4.C16_7,S.MF4.D14_7,S.MF4.D15_7,S.MF4.D16_7,S.MF4.E14_7,S.MF4.E15_7,S.MF4.E16_7};
+
+endmodule
