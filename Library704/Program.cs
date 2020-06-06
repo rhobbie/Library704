@@ -593,7 +593,11 @@ namespace Library704
             filename = path;
             line = 0;
             fi = new StreamReader(path);
-            fo = new StreamWriter(DestDir + sconv(Path.GetFileNameWithoutExtension(path)) + ".v");
+#if multiplefiles
+           fo = new StreamWriter(DestDir + sconv(Path.GetFileNameWithoutExtension(path)) + ".v");
+#else
+            fo = new StreamWriter(DestDir + "I704.v",true);
+#endif
         }
         private void Error(string s)
         {
@@ -609,7 +613,7 @@ namespace Library704
         }
 
         private enum States { before_Module, after_Module, after_Signals, after_Connect, after_Logic, after_End }; /* states for module loader */
-        private string getcommonPrefix(string[] names, int start)
+        private string GetcommonPrefix(string[] names, int start)
         {
             int i;
             for (i = start; i < names[0].Length; i++)
@@ -628,11 +632,11 @@ namespace Library704
                 i--;
             if (i == start)
             {
-                return names[0].Substring(0, start) + getcommonPrefix(names, start + 1);
+                return names[0].Substring(0, start) + GetcommonPrefix(names, start + 1);
             }
             return names[0].Substring(0, i);
         }
-        private string sconv(string s)
+        private string Sconv(string s)
         {
             string r = s;
             if (char.IsDigit(s[0]))
@@ -677,7 +681,7 @@ namespace Library704
                     case States.before_Module: /* before .Module Keyword ? */
                         if (s.Length == 2 && s[0] == ".Module")
                         {
-                            fo.Write("module {0} (", sconv(s[1]));
+                            fo.Write("module {0} (", Sconv(s[1]));
                             if (comm != "")
                             {
                                 fo.Write(" // {0}", comm);
@@ -751,7 +755,7 @@ namespace Library704
                                 }
                                 if (printsig)
                                 {
-                                    string sig = sconv(M.Submodules[M.thismodule].PinNames[i]);
+                                    string sig = Sconv(M.Submodules[M.thismodule].PinNames[i]);
                                     if (fullbus)
                                     {
                                         fo.WriteLine("{0}_i,", sig);
@@ -792,7 +796,7 @@ namespace Library704
                                         }
                                         else
                                             fo.Write(",");
-                                        fo.Write(sconv(S.PinNames[j]));
+                                        fo.Write(Sconv(S.PinNames[j]));
                                         pcnt++;
                                         if (pcnt > 15)
                                         {
@@ -807,7 +811,7 @@ namespace Library704
                                 else if (i != M.thismodule && M.Submodules[i].Name != null)
                                 {
                                     Module.Submodule S = M.Submodules[i];
-                                    string instance = getcommonPrefix(S.PinNames, 0);
+                                    string instance = GetcommonPrefix(S.PinNames, 0);
                                     if (instance[instance.Length - 1] == '-'|| instance[instance.Length - 1] == '_')
                                         instance = instance.Substring(0, instance.Length - 1);
                                     Module N = Modules[S.Name];
@@ -843,7 +847,7 @@ namespace Library704
                                             }
                                             else
                                                 fo.Write(",");
-                                            fo.Write(sconv(S.PinNames[j]));
+                                            fo.Write(Sconv(S.PinNames[j]));
                                             if (fullbus)
                                                 fo.Write("_i");
                                             pcnt++;
@@ -862,7 +866,7 @@ namespace Library704
                                                 }
                                                 else
                                                     fo.Write(",");
-                                                fo.Write(sconv(S.PinNames[j]));
+                                                fo.Write(Sconv(S.PinNames[j]));
                                                 fo.Write("_o");
                                                 pcnt++;
                                                 if (pcnt > 15)
@@ -877,7 +881,7 @@ namespace Library704
                                     if (prif)
                                         fo.WriteLine(";");
 
-                                    fo.Write("{0} {1}(", sconv(S.Name), sconv(instance));
+                                    fo.Write("{0} {1}(", Sconv(S.Name), Sconv(instance));
                                     pcnt = 0;
                                     for (int j = 0; j < N.NumPins; j++)
                                     {
@@ -907,7 +911,7 @@ namespace Library704
                                         }
                                         if (printsig)
                                         {
-                                            fo.Write("{0}", sconv(S.PinNames[j]));
+                                            fo.Write("{0}", Sconv(S.PinNames[j]));
                                             if (fullbus)
                                                 fo.Write("_i,");
                                             else
@@ -924,7 +928,7 @@ namespace Library704
                                             }
                                             if (fullbus)
                                             {
-                                                fo.Write("{0}_o", sconv(S.PinNames[j]));
+                                                fo.Write("{0}_o", Sconv(S.PinNames[j]));
                                                 if (j < lastsignal)
                                                     fo.Write(",");
                                                 pcnt++;
@@ -1020,16 +1024,16 @@ namespace Library704
                                                 else
                                                     w.Append(" & ");
                                             }
-                                            w.Append(sconv(S));
+                                            w.Append(Sconv(S));
                                         }
                                         if (B.interfacewrite != null)
                                         {
-                                            fo.WriteLine("assign {0} = {1};", sconv(B.interfacewrite), w.ToString());
+                                            fo.WriteLine("assign {0} = {1};", Sconv(B.interfacewrite), w.ToString());
                                             w.Clear();
                                             if (B.interfaceread != null)
-                                                w.Append(sconv(B.interfaceread));
+                                                w.Append(Sconv(B.interfaceread));
                                             else
-                                                w.Append(sconv(B.interfacewrite));
+                                                w.Append(Sconv(B.interfacewrite));
                                         }
                                         if (B.Readpins.Count > 0)
                                         {
@@ -1039,12 +1043,12 @@ namespace Library704
                                             {
                                                 if (firstx == null)
                                                 {
-                                                    firstx = sconv(x);
+                                                    firstx = Sconv(x);
                                                     fo.WriteLine("assign {0} = {1};", firstx, w.ToString());
                                                 }
                                                 else
                                                 {
-                                                    fo.WriteLine("assign {0} = {1};", sconv(x), firstx);
+                                                    fo.WriteLine("assign {0} = {1};", Sconv(x), firstx);
                                                 }
                                             }
                                         }
@@ -1076,11 +1080,11 @@ namespace Library704
                                         && d2 != Module.Direction.manualinput)
                                     {
                                         if (s[1] == "-30V" || s[1] == "40RETURN" )
-                                            fo.Write("assign {0}=0;", sconv(s[2]));
+                                            fo.Write("assign {0}=0;", Sconv(s[2]));
                                         else if (s[1] == "+10V" || s[1] == "+40V" || s[1] == "+150V" || s[1] == "+150RELAY")
-                                            fo.Write("assign {0}=1;", sconv(s[2]));
+                                            fo.Write("assign {0}=1;", Sconv(s[2]));
                                         else
-                                            fo.Write("assign {0}={1};", sconv(s[2]), sconv(s[1]));
+                                            fo.Write("assign {0}={1};", Sconv(s[2]), Sconv(s[1]));
 
                                         if (comm != "")
                                         {
