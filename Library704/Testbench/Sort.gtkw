@@ -1,27 +1,32 @@
 [*]
 [*] GTKWave Analyzer v3.3.100 (w)1999-2019 BSI
-[*] Wed Oct 23 19:11:09 2019
+[*] Sat Jun 06 20:30:27 2020
 [*]
-[dumpfile] "D:\Sort.lxt"
-[dumpfile_mtime] "Wed Oct 23 19:07:59 2019"
-[dumpfile_size] 10351795
-[savefile] "D:\Sort.gtkw"
-[timestart] 1825000
+[dumpfile] "D:\Testbench\Sort.vcd"
+[dumpfile_mtime] "Sat Jun 06 20:24:14 2020"
+[dumpfile_size] 51325599
+[savefile] "D:\Testbench\Sort.gtkw"
+[timestart] 0
 [size] 1536 841
-[pos] -1 -1
-*-20.031105 3956500 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] 18 38
+*-22.031105 3467500 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] SYSTEM_tb.
 [treeopen] SYSTEM_tb.S.
+[treeopen] SYSTEM_tb.S.MF1.
+[treeopen] SYSTEM_tb.S.MF1._8_05.
 [treeopen] SYSTEM_tb.S.MF4.A19.
 [sst_width] 197
 [signals_width] 629
 [sst_expanded] 1
 [sst_vpaned_height] 238
 @28
-+{I Time} SYSTEM_tb.S.MF1._8_05._8_05_04_A4[0]
-+{E Time} SYSTEM_tb.S.MF1._8_05._8_05_04_A2[0]
-+{ER Time} SYSTEM_tb.S.MF1._8_05._8_05_04_A3[0]
-SYSTEM_tb.PROG_STOP[0]
++{I Time} SYSTEM_tb.S.MF1._8_05._8_05_04_A4
++{E Time} SYSTEM_tb.S.MF1._8_05._8_05_04_A2
++{ER Time} SYSTEM_tb.S.MF1._8_05._8_05_04_A3
+@29
++{START_BUTTON} SYSTEM_tb.S.OP.START_BUTTON.State
+@28
+SYSTEM_tb.PROG_STOP
 @30
 SYSTEM_tb.STG[35:0]
 SYSTEM_tb.ACC[37:0]
@@ -30,8 +35,6 @@ SYSTEM_tb.MQ[35:0]
 SYSTEM_tb.INST_CTR[12:0]
 @30
 SYSTEM_tb.INST_REG[17:0]
-@28
-+{START_BUTTON} SYSTEM_tb.S.OP.START_BUTTON.State[0]
 @22
 SYSTEM_tb.A1[35:0]
 SYSTEM_tb.A2[35:0]
