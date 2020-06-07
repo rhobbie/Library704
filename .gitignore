@@ -261,6 +261,7 @@ __pycache__/
 *.pyc
 
 #
-Library704/Testbench/I704.v
-*.vcd
-*.vvp
+/Library704/Testbench/I704.v
+/Library704/Testbench/*.vcd
+/Library704/Testbench/*.vvp
+/Library704/Testbench/LPT.txt

@@ -586,6 +586,7 @@ namespace Library704
     {
         StreamReader fi;
         StreamWriter fo;
+        static StreamWriter fo_static=null;
         private int line;
         private readonly string filename;
         public ModuleConverter(string path, string DestDir)
@@ -596,7 +597,9 @@ namespace Library704
 #if multiplefiles
            fo = new StreamWriter(DestDir + sconv(Path.GetFileNameWithoutExtension(path)) + ".v");
 #else
-            fo = new StreamWriter(DestDir + "I704.v",true);
+            if(fo_static==null)
+                fo_static = new StreamWriter(DestDir + "I704.v");
+            fo = fo_static;
 #endif
         }
         private void Error(string s)
@@ -1157,11 +1160,21 @@ namespace Library704
                     fi.Dispose();
                     fi = null;
                 }
+#if multiplefiles
                 if (fo != null)
                 {
                     fo.Dispose();
                     fo = null;
                 }
+#endif
+            }
+        }
+        public static void DisposeStreamWriter()
+        {
+            if (fo_static != null)
+            {
+                fo_static.Dispose();
+                fo_static = null;
             }
         }
     }
@@ -1678,7 +1691,7 @@ namespace Library704
             /* Library of all Modules */
             Modules = new Dictionary<string, Module>();
 
-            /* load all *.txt files from source Directory and add content to module library*/
+            Console.WriteLine("load all *.txt files from source directory and add content to module library");
             foreach (string n in Directory.GetFiles(@"..\..\", "*.txt"))
             {
                 using (ModuleLoader l = new ModuleLoader(n))
@@ -1702,14 +1715,15 @@ namespace Library704
                     }
                 }
             }
-            /* perform checks of Module library */
+            Console.WriteLine("perform checks of module library");
             if (Check1())
                 return;
             Check2();
             Check3();
             Check4();
 
-            /* convert all *.txt files from source Dir to *.v files */
+            Console.WriteLine("convert all *.txt files from source dir to Verilog");
+
             foreach (string n in Directory.GetFiles(@"..\..\", "*.txt"))
             {
                 using (ModuleConverter MC = new ModuleConverter(n, @"..\..\Testbench\"))
@@ -1721,6 +1735,11 @@ namespace Library704
                     }
                 }
             }
+#if !multiplefiles
+            /* Close single output file*/
+            ModuleConverter.DisposeStreamWriter();
+#endif
+            Console.WriteLine("done");
 #if print
             foreach(KeyValuePair<string,int> c in Links)
             {
