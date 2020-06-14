@@ -1,4 +1,6 @@
-﻿using System;
+﻿#undef multiplefiles
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -586,7 +588,11 @@ namespace Library704
     {
         StreamReader fi;
         StreamWriter fo;
-        static StreamWriter fo_static=null;
+
+#if !multiplefiles
+        static StreamWriter fo_static = null;
+        static bool nettypenone_printed = false;
+#endif
         private int line;
         private readonly string filename;
         public ModuleConverter(string path, string DestDir)
@@ -595,7 +601,7 @@ namespace Library704
             line = 0;
             fi = new StreamReader(path);
 #if multiplefiles
-           fo = new StreamWriter(DestDir + sconv(Path.GetFileNameWithoutExtension(path)) + ".v");
+           fo = new StreamWriter(DestDir + Sconv(Path.GetFileNameWithoutExtension(path)) + ".v");
 #else
             if(fo_static==null)
                 fo_static = new StreamWriter(DestDir + "I704.v");
@@ -651,8 +657,16 @@ namespace Library704
             States state = States.before_Module;
             Module M = null;
             bool[][] Written = null;
+#if multiplefiles
             fo.WriteLine("`default_nettype none");
-            
+#else
+            if (!nettypenone_printed)
+            { 
+
+                fo.WriteLine("`default_nettype none");
+                nettypenone_printed = true;
+            }
+#endif
             while (state != States.after_End)
             {
                 if (fi.EndOfStream) /* ENd of file reached? */
@@ -942,7 +956,7 @@ namespace Library704
                                                     pcnt = 0;
                                                 }
                                             }
-                                    
+
                                         }
                                     }
                                     fo.WriteLine(");");
@@ -1014,14 +1028,14 @@ namespace Library704
                                         bool first = true;
                                         if(B.Writepins.Count==0)
                                         {
-                                            Error("Bus without writepins");                                        
+                                            Error("Bus without writepins");
                                         }
                                         foreach (string S in B.Writepins)
                                         {
                                             if (first)
                                                 first = false;
                                             else
-                                            { 
+                                            {
                                                 if (B.isor)
                                                     w.Append(" | ");
                                                 else
@@ -1169,6 +1183,7 @@ namespace Library704
 #endif
             }
         }
+#if !multiplefiles
         public static void DisposeStreamWriter()
         {
             if (fo_static != null)
@@ -1177,6 +1192,7 @@ namespace Library704
                 fo_static = null;
             }
         }
+#endif
     }
     internal class Program
     {
@@ -1227,7 +1243,7 @@ namespace Library704
             bool err = false;
             foreach (KeyValuePair<string, Module> Mkvp in Modules)
             {
-                
+
                 Module M = Mkvp.Value;
                 foreach (Module.Submodule S in M.Submodules)
                 {
